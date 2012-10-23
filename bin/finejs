@@ -1,0 +1,96 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var fs = require('fs');
+var _ = require('underscore');
+var finejs = require('../');
+
+program
+  .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
+  .usage('[options] files...')
+  .option('-i, --in-place', 'Fix the file in-place')
+  .option('-n, --no-color', 'No color')
+  .parse(process.argv);
+
+if (program.args.length < 1) {
+  program.help();
+}
+
+program.args.forEach(function(file) {
+  console.log('===================================');
+  console.log('File: ' + file + '\n');
+  var src = fs.readFileSync(file, 'utf-8');
+  var info = finejs.parse(src);
+  console.log('Provided:');
+  console.log(info.provided.join('\n'));
+  console.log('');
+  console.log('Required:');
+  console.log(info.required.join('\n'));
+  console.log('');
+
+  var needToFix = false;
+
+  var dupProvide = getDuplicated(info.provided);
+  if (dupProvide.length > 0) {
+    needToFix = true;
+    console.log('Duplicated Provide:');
+    console.log(_.uniq(dupProvide).join('\n'));
+    console.log('');
+  }
+
+  var missingProvide = _.difference(info.toProvide, info.provided);
+  if (missingProvide.length > 0) {
+    needToFix = true;
+    console.log('Missing Provide:');
+    console.log(missingProvide.join('\n'));
+    console.log('');
+  }
+
+  var unnecessaryProvide = _.difference(info.provide, info.toProvide);
+  if (unnecessaryProvide.length > 0) {
+    needToFix = true;
+    console.log('Not Provided Actually:');
+    console.log(unnecessaryProvide.join('\n'));
+    console.log('');
+  }
+
+  var dupRequire = getDuplicated(info.required);
+  if (dupRequire.length > 0) {
+    needToFix = true;
+    console.log('Duplicated Require:');
+    console.log(_.uniq(dupRequire).join('\n'));
+    console.log('');
+  }
+
+  var missingRequire = _.difference(info.toRequire, info.required);
+  if (missingRequire.length > 0) {
+    needToFix = true;
+    console.log('Missing Require:');
+    console.log(missingRequire.join('\n'));
+    console.log('');
+  }
+
+  var unnecessaryRequire = _.difference(info.provide, info.toRequire);
+  if (unnecessaryRequire.length > 0) {
+    needToFix = true;
+    console.log('Not Required Actually:');
+    console.log(unnecessaryRequire.join('\n'));
+    console.log('');
+  }
+
+  if (needToFix && program.inPlace) {
+    finejs.fix(file, info);
+    console.log('Fixed.');
+  }
+});
+
+function getDuplicated(namespaces) {
+  var dups = [];
+  namespaces.reduce(function(prev, cur) {
+    if (prev === cur) {
+      dups.push(cur);
+    }
+    return cur;
+  });
+  return dups;
+}
