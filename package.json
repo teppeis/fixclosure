@@ -1,5 +1,5 @@
 {
-  "name": "finejs",
+  "name": "fixclosure",
   "version": "0.1",
   "description": "Lint and fix Google Closure Library code.",
   "main": "index.js",

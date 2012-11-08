@@ -3,13 +3,13 @@ fs = require 'fs'
 exec = require('child_process').exec
 
 opt = {cwd: __dirname}
-finejs = '../bin/finejs'
+fixclosure = '../bin/fixclosure'
 
 describe 'Command line', ->
   it 'exec without args', (done) ->
-    exec finejs, opt, (err, stdout, stderr) ->
+    exec fixclosure, opt, (err, stdout, stderr) ->
       done(err)
 
   it 'exec with file', (done) ->
-    exec finejs + ' fixtures/exec.js', opt, (err) ->
+    exec fixclosure + ' fixtures/exec.js', opt, (err) ->
       done(err)

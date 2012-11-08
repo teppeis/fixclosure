@@ -4,7 +4,7 @@ var clc = require('cli-color');
 var program = require('commander');
 var fs = require('fs');
 var _ = require('underscore');
-var finejs = require('../');
+var fixclosure = require('../');
 
 program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
@@ -20,7 +20,7 @@ if (program.args.length < 1) {
 program.args.forEach(function(file) {
   console.log(clc.yellow('File: ' + file + '\n'));
   var src = fs.readFileSync(file, 'utf-8');
-  var info = finejs.parse(src);
+  var info = fixclosure.parse(src);
   console.log(clc.green('Provided:'));
   console.log(info.provided.join('\n'));
   console.log('');
@@ -81,7 +81,7 @@ program.args.forEach(function(file) {
   if (needToFix) {
     console.log(clc.red('FAIL!'));
     if (program.inPlace) {
-        finejs.fix(file, info);
+        fixclosure.fix(file, info);
         console.log(clc.green('Fixed!'));
     }
   } else {
