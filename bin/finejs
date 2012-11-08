@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+var clc = require('cli-color');
 var program = require('commander');
 var fs = require('fs');
 var _ = require('underscore');
@@ -17,14 +18,13 @@ if (program.args.length < 1) {
 }
 
 program.args.forEach(function(file) {
-  console.log('===================================');
-  console.log('File: ' + file + '\n');
+  console.log(clc.yellow('File: ' + file + '\n'));
   var src = fs.readFileSync(file, 'utf-8');
   var info = finejs.parse(src);
-  console.log('Provided:');
+  console.log(clc.green('Provided:'));
   console.log(info.provided.join('\n'));
   console.log('');
-  console.log('Required:');
+  console.log(clc.green('Required:'));
   console.log(info.required.join('\n'));
   console.log('');
 
@@ -33,7 +33,7 @@ program.args.forEach(function(file) {
   var dupProvide = getDuplicated(info.provided);
   if (dupProvide.length > 0) {
     needToFix = true;
-    console.log('Duplicated Provide:');
+    console.log(clc.red('Duplicated Provide:'));
     console.log(_.uniq(dupProvide).join('\n'));
     console.log('');
   }
@@ -41,7 +41,7 @@ program.args.forEach(function(file) {
   var missingProvide = _.difference(info.toProvide, info.provided);
   if (missingProvide.length > 0) {
     needToFix = true;
-    console.log('Missing Provide:');
+    console.log(clc.red('Missing Provide:'));
     console.log(missingProvide.join('\n'));
     console.log('');
   }
@@ -49,7 +49,7 @@ program.args.forEach(function(file) {
   var unnecessaryProvide = _.difference(info.provide, info.toProvide);
   if (unnecessaryProvide.length > 0) {
     needToFix = true;
-    console.log('Not Provided Actually:');
+    console.log(clc.red('Not Provided Actually:'));
     console.log(unnecessaryProvide.join('\n'));
     console.log('');
   }
@@ -57,7 +57,7 @@ program.args.forEach(function(file) {
   var dupRequire = getDuplicated(info.required);
   if (dupRequire.length > 0) {
     needToFix = true;
-    console.log('Duplicated Require:');
+    console.log(clc.red('Duplicated Require:'));
     console.log(_.uniq(dupRequire).join('\n'));
     console.log('');
   }
@@ -65,22 +65,27 @@ program.args.forEach(function(file) {
   var missingRequire = _.difference(info.toRequire, info.required);
   if (missingRequire.length > 0) {
     needToFix = true;
-    console.log('Missing Require:');
+    console.log(clc.red('Missing Require:'));
     console.log(missingRequire.join('\n'));
     console.log('');
   }
 
-  var unnecessaryRequire = _.difference(info.provide, info.toRequire);
+  var unnecessaryRequire = _.difference(info.required, info.toRequire);
   if (unnecessaryRequire.length > 0) {
     needToFix = true;
-    console.log('Not Required Actually:');
+    console.log(clc.red('Not Required Actually:'));
     console.log(unnecessaryRequire.join('\n'));
     console.log('');
   }
 
-  if (needToFix && program.inPlace) {
-    finejs.fix(file, info);
-    console.log('Fixed.');
+  if (needToFix) {
+    console.log(clc.red('FAIL!'));
+    if (program.inPlace) {
+        finejs.fix(file, info);
+        console.log(clc.green('Fixed!'));
+    }
+  } else {
+    console.log(clc.green('GREEN!'));
   }
 });
 

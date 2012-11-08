@@ -17,6 +17,7 @@
   "dependencies": {
     "commander": "~1.0.5",
     "esprima": "~1.0.0",
-    "underscore": "~1.4.2"
+    "underscore": "~1.4.2",
+    "cli-color": "~0.2.1"
   }
 }
