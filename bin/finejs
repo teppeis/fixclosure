@@ -91,6 +91,6 @@ function getDuplicated(namespaces) {
       dups.push(cur);
     }
     return cur;
-  });
+  }, null);
   return dups;
 }
