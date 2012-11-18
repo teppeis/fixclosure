@@ -1,5 +1,5 @@
-goog.require('goog.baz1');
-goog.require('goog.baz2');
+goog.require('goog.foo1');
+goog.require('goog.foo2');
 
-// required: goog.baz1
-// required: goog.baz2
+// required: goog.foo1
+// required: goog.foo2

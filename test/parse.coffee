@@ -1,6 +1,6 @@
 require('chai').should()
 fs = require 'fs'
-fixclosure = require('../')
+Parser = require('../').Parser
 
 describe 'Parser', ->
   files = fs.readdirSync(__dirname + '/fixtures/parse/')
@@ -27,7 +27,8 @@ assertFile = (file) ->
   toRequire = while (matches = regex.exec src) != null
     matches[1]
 
-  info = fixclosure.parse(src)
+  parser = new Parser()
+  info = parser.parse(src)
   #info.should.have.keys ['provided', 'required', 'toProvide', 'toRequire']
   info.provided.should.be.eql provided
   info.required.should.be.eql required
