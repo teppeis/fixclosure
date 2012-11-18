@@ -7,11 +7,26 @@ var _ = require('underscore');
 var fixclosure = require('../');
 var Parser = fixclosure.Parser;
 
+function list(val) {
+  return val.split(',');
+}
+
+function map(val) {
+  var map = {};
+  val.split(',').forEach(function(item) {
+    var entry = item.split(':');
+    map[entry[0]] = entry[1];
+  });
+  return map;
+}
+
 program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
   .usage('[options] files...')
-  .option('-i, --in-place', 'Fix the file in-place')
-  .option('-n, --no-color', 'No color')
+  .option('-f, --fix-in-place', 'Fix the file in-place.')
+  .option('--roots <roots>', 'Root of target package to provide and require separated by comma. Dafault: "goog"', list)
+  .option('--packageMethods <methods>', 'Method exprted as a package itself. Comma separated list.', list)
+  .option('--replaceMap <map>', 'Method replace map. Like "before1:after1,before2:after2"', map)
   .parse(process.argv);
 
 if (program.args.length < 1) {
@@ -21,7 +36,13 @@ if (program.args.length < 1) {
 program.args.forEach(function(file) {
   console.log(clc.yellow('File: ' + file + '\n'));
   var src = fs.readFileSync(file, 'utf-8');
-  var parser = new Parser();
+  var options = {
+    roots: program.roots,
+    packageMethods: program.packageMethods,
+    replaceMap: program.replaceMap
+  };
+  console.log(options);
+  var parser = new Parser(options);
   var info = parser.parse(src);
   console.log(clc.green('Provided:'));
   console.log(info.provided.join('\n'));
@@ -82,7 +103,7 @@ program.args.forEach(function(file) {
 
   if (needToFix) {
     console.log(clc.red('FAIL!'));
-    if (program.inPlace) {
+    if (program.fixInPlace) {
         fixclosure.fix(file, info);
         console.log(clc.green('Fixed!'));
     }

@@ -5,7 +5,6 @@ var Parser = require('./lib/parser.js');
 module.exports.Parser = Parser;
 module.exports.fix = fix;
 
-// TODO: replace option
 // TODO: suppress warning
 // TODO: namespace re-assignment
 // TODO: goog.scope
