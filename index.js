@@ -116,7 +116,7 @@ function parseAst(node) {
     leave: function(node) {
       switch (node.type) {
         case Syntax.MemberExpression:
-          if (hasObjectIdentifier(node)) {
+          if (hasObjectIdentifier(node) && !hasScope(node)) {
             var use = registerIdentifier(node.object);
             if (use) {
               uses.push(use);
@@ -130,6 +130,44 @@ function parseAst(node) {
   });
 
   return uses;
+}
+
+
+/**
+ * @param {Object} node
+ * @return {boolean} True if the node has a local or a lexical scope.
+ */
+function hasScope(node) {
+  var nodeName = node.object.name;
+
+  while (node.parent) {
+    node = node.parent;
+    switch (node.type) {
+
+      case Syntax.FunctionExpression:
+        if (node.params &&
+            node.params.some(function(param) {
+              return param.name === nodeName;
+            })) {
+          return true;
+        }
+        break;
+
+      case Syntax.BlockStatement:
+        if (node.body &&
+            node.body.some(function(bodyPart) {
+              return bodyPart.type === Syntax.VariableDeclaration &&
+                     bodyPart.declarations.some(function(declaration) {
+                       return declaration.type === Syntax.VariableDeclarator &&
+                              declaration.id.name === nodeName;
+                     });
+            })) {
+          return true;
+        }
+        break;
+    }
+  }
+  return false;
 }
 
 /**
