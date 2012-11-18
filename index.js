@@ -7,7 +7,6 @@ var Syntax = require('./lib/syntax.js');
 module.exports.parse = parse;
 module.exports.fix = fix;
 
-// TODO: root namespace
 // TODO: replace option
 // TODO: suppress warning
 // TODO: namespace re-assignment
@@ -84,7 +83,11 @@ function extractToProvide(parsed) {
 }
 
 function extractToRequire(parsed, toProvide) {
-  var toRequire = parsed.map(toRequireMapper).filter(isDefAndNotNull).sort().reduce(uniq, []);
+  var toRequire = parsed.map(toRequireMapper).
+    filter(isDefAndNotNull).
+    filter(rootFilter).
+    sort().
+    reduce(uniq, []);
   return _.difference(toRequire, toProvide);
 }
 
@@ -186,6 +189,16 @@ function createMemberObject(namespace, node, key) {
  */
 function isDefAndNotNull(item) {
   return item != null;
+}
+
+/**
+ * @param {*} item
+ * @return {boolean} True if the item has a root namespace to extract.
+ */
+function rootFilter(item) {
+  var root = item.split('.')[0]
+  var roots = ['goog'];
+  return _.contains(roots, root);
 }
 
 /**
