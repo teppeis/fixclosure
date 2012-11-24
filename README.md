@@ -31,6 +31,9 @@ $ fixclosure --replaceMap foo.foobar:foo.foo foo.js
 
 ## Changelog
 
+* 0.1.1 (2012/11/25)
+  * Scope check (by piglovesyou)
+  * Root package filter works for toProvide list.
 * 0.1.0 Add some options
   * Changes "fix in place" option to "-f" from "-i"
   * Implements root package filter (default: "goog")
