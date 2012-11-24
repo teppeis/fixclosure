@@ -41,7 +41,6 @@ program.args.forEach(function(file) {
     packageMethods: program.packageMethods,
     replaceMap: program.replaceMap
   };
-  console.log(options);
   var parser = new Parser(options);
   var info = parser.parse(src);
   console.log(clc.green('Provided:'));
