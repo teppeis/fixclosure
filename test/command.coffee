@@ -3,7 +3,7 @@ fs = require 'fs'
 exec = require('child_process').exec
 
 opt = {cwd: __dirname}
-fixclosure = '../bin/fixclosure'
+fixclosure = '../bin/fixclosure.js'
 
 describe 'Command line', ->
   it 'exec without args', (done) ->
