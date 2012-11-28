@@ -1,6 +1,4 @@
 /**
- * @typedef {Element}
+ * @typedef {Element} Should not be provide.
  */
 goog.foo.SomeType;
-
-// toProvide: goog.foo.SomeType
