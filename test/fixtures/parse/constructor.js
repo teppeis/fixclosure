@@ -1,12 +1,9 @@
 /**
- * @param {string} arg1 Arg1.
- * @param {string|Element} opt_arg2 Arg2.
- * @param {goog.dom.DomHelper=} opt_domHelper
  * @constructor
  * @extends {goog.ui.Component}
  */
-goog.ui.Bubble = function(arg1, opt_arg2, opt_domHelper) {
-  goog.base(this, opt_domHelper);
+goog.ui.Bubble = function() {
+  goog.base(this);
 
   /**
    * @type {goog.ui.Popup}
@@ -25,6 +22,14 @@ goog.inherits(goog.ui.Bubble, goog.ui.Component);
 /**
  */
 goog.ui.Bubble.prototype.hello = function() {
+};
+
+/**
+ * Private class should not be provide.
+ * @constructor
+ * @private
+ */
+goog.ui.Private_ = function() {
 };
 
 // toProvide: goog.ui.Bubble
