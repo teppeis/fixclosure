@@ -31,6 +31,14 @@ $ fixclosure --replaceMap foo.foobar:foo.foo foo.js
 
 ## Changelog
 
+* 0.1.2 (2012/11/28)
+  * Supports const property correctly.
+  * Supports a method starting with "$".
+  * Ignore goog.global.
+  * Don't provide @typedef type resources.
+  * Fix #5 don't provide a private class.
+  * Fix #6 Don't require a private method defined in the same file.
+  * Add some package methods.
 * 0.1.1 (2012/11/25)
   * Scope check (by piglovesyou)
   * Root package filter works for toProvide list.
