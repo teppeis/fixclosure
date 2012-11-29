@@ -30,7 +30,8 @@ program
   .parse(process.argv);
 
 if (program.args.length < 1) {
-  program.help();
+  program.outputHelp();
+  process.exit(1);
 }
 
 program.args.forEach(function(file) {
