@@ -21,7 +21,7 @@ function map(val) {
 }
 
 program
-  .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
+  .version(require('../package.json').version, '-v, --version')
   .usage('[options] files...')
   .option('-f, --fix-in-place', 'Fix the file in-place.')
   .option('--roots <roots>', 'Root of target package to provide and require separated by comma. Dafault: "goog"', list)
