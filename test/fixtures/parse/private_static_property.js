@@ -47,7 +47,4 @@ goog.p4.hello = function() {
 };
 
 // toRequire: goog.debug.Logger
-// toProvide: goog.p1
-// toProvide: goog.p2
-// toProvide: goog.p3
 // toProvide: goog.p4
