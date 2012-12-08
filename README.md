@@ -31,6 +31,11 @@ $ fixclosure --replaceMap foo.foobar:foo.foo foo.js
 
 ## Changelog
 
+* 0.1.3 (2012/12/08)
+  * Append package methods of Closure Library.
+  * Change version option from -V to -v.
+  * Change exit code of invalid argument to 1.
+  * Fix for private properties.
 * 0.1.2 (2012/11/28)
   * Supports const property correctly.
   * Supports a method starting with "$".
