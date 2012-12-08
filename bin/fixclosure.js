@@ -7,6 +7,46 @@ var _ = require('underscore');
 var fixclosure = require('../');
 var Parser = fixclosure.Parser;
 
+var Logger = function(enableColor) {
+  this.color_ = !!enableColor;
+  this.messages_ = [];
+};
+
+Logger.prototype.raw = function(msg) {
+  this.messages_.push(msg);
+};
+
+Logger.prototype.info = function(msg) {
+  this.messages_.push(msg);
+};
+
+Logger.prototype.warn = function(msg) {
+  this.messages_.push(this.color_ ? clc.yellow(msg) : msg);
+};
+
+Logger.prototype.error = function(msg) {
+  this.messages_.push(this.color_ ? clc.red(msg) : msg);
+};
+
+Logger.prototype.success = function(msg) {
+  this.messages_.push(this.color_ ? clc.green(msg) : msg);
+};
+
+Logger.prototype.items = function(items) {
+  if (items.length === 0) items = ['(none)'];
+  this.messages_ = this.messages_.concat(items.map(function(item) {
+    item = '- ' + item;
+    return this.color_ ? clc.blackBright(item) : item;
+  }, this));
+};
+
+Logger.prototype.flush = function(success) {
+  var method = success ? console.log : console.error;
+  this.messages_.forEach(function(msg) {
+    method(msg);
+  });
+};
+
 function list(val) {
   return val.split(',');
 }
@@ -27,6 +67,7 @@ program
   .option('--roots <roots>', 'Root of target package to provide and require separated by comma. Dafault: "goog"', list)
   .option('--packageMethods <methods>', 'Method exprted as a package itself. Comma separated list.', list)
   .option('--replaceMap <map>', 'Method replace map. Like "before1:after1,before2:after2"', map)
+  .option('--no-color', 'Highlight the output.')
   .parse(process.argv);
 
 if (program.args.length < 1) {
@@ -35,7 +76,8 @@ if (program.args.length < 1) {
 }
 
 program.args.forEach(function(file) {
-  console.log(clc.yellow('File: ' + file + '\n'));
+  var log = new Logger(program.color);
+  log.warn('File: ' + file + '\n');
   var src = fs.readFileSync(file, 'utf-8');
   var options = {
     roots: program.roots,
@@ -44,71 +86,73 @@ program.args.forEach(function(file) {
   };
   var parser = new Parser(options);
   var info = parser.parse(src);
-  console.log(clc.green('Provided:'));
-  console.log(info.provided.join('\n'));
-  console.log('');
-  console.log(clc.green('Required:'));
-  console.log(info.required.join('\n'));
-  console.log('');
+  log.info('Provided:');
+  log.items(info.provided);
+  log.info('');
+  log.info('Required:');
+  log.items(info.required);
+  log.info('');
 
   var needToFix = false;
 
   var dupProvide = getDuplicated(info.provided);
   if (dupProvide.length > 0) {
     needToFix = true;
-    console.log(clc.red('Duplicated Provide:'));
-    console.log(_.uniq(dupProvide).join('\n'));
-    console.log('');
+    log.error('Duplicated Provide:');
+    log.items(_.uniq(dupProvide));
+    log.info('');
   }
 
   var missingProvide = _.difference(info.toProvide, info.provided);
   if (missingProvide.length > 0) {
     needToFix = true;
-    console.log(clc.red('Missing Provide:'));
-    console.log(missingProvide.join('\n'));
-    console.log('');
+    log.error('Missing Provide:');
+    log.items(missingProvide);
+    log.info('');
   }
 
   var unnecessaryProvide = _.difference(info.provide, info.toProvide);
   if (unnecessaryProvide.length > 0) {
     needToFix = true;
-    console.log(clc.red('Not Provided Actually:'));
-    console.log(unnecessaryProvide.join('\n'));
-    console.log('');
+    log.error('Not Provided Actually:');
+    log.items(unnecessaryProvide);
+    log.info('');
   }
 
   var dupRequire = getDuplicated(info.required);
   if (dupRequire.length > 0) {
     needToFix = true;
-    console.log(clc.red('Duplicated Require:'));
-    console.log(_.uniq(dupRequire).join('\n'));
-    console.log('');
+    log.error('Duplicated Require:');
+    log.items(_.uniq(dupRequire));
+    log.info('');
   }
 
   var missingRequire = _.difference(info.toRequire, info.required);
   if (missingRequire.length > 0) {
     needToFix = true;
-    console.log(clc.red('Missing Require:'));
-    console.log(missingRequire.join('\n'));
-    console.log('');
+    log.error('Missing Require:');
+    log.items(missingRequire);
+    log.info('');
   }
 
   var unnecessaryRequire = _.difference(info.required, info.toRequire);
   if (unnecessaryRequire.length > 0) {
     needToFix = true;
-    console.log(clc.red('Not Required Actually:'));
-    console.log(unnecessaryRequire.join('\n'));
-    console.log('');
+    log.error('Not Required Actually:');
+    log.items(unnecessaryRequire);
+    log.info('');
   }
 
   if (needToFix) {
-    console.log(clc.red('FAIL!'));
+    log.error('FAIL!');
     if (program.fixInPlace) {
         fixclosure.fix(file, info);
-        console.log(clc.green('Fixed!'));
+        log.raw(clc.cyanBright('Fixed!'));
     }
+    log.flush(false);
   } else {
-    console.log(clc.green('GREEN!'));
+    log.success('GREEN!');
+    log.flush(true);
   }
 });
 
