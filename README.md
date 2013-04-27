@@ -56,4 +56,4 @@ $ fixclosure --replaceMap foo.foobar:foo.foo foo.js
 
 ### License
 
-MIT License: teppeis@gmail.com
+MIT License: Teppei Sato <teppeis@gmail.com>
