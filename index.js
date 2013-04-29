@@ -1,6 +1,11 @@
+var dir = './lib/';
+if (process.env.COVERAGE) {
+  dir = './lib-cov/';
+}
+
 var fs = require('fs');
-var Syntax = require('./lib/syntax.js');
-var Parser = require('./lib/parser.js');
+var Syntax = require(dir + 'syntax.js');
+var Parser = require(dir + 'parser.js');
 
 module.exports.Parser = Parser;
 module.exports.fix = fix;
