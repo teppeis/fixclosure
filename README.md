@@ -1,4 +1,4 @@
-fixclosure [![Build Status](https://secure.travis-ci.org/teppeis/fixclosure.png?branch=master)](https://travis-ci.org/teppeis/fixclosure) [![Dependency Status](https://david-dm.org/teppeis/fixclosure.png)](https://david-dm.org/teppeis/fixclosure)
+fixclosure [![Build Status](https://secure.travis-ci.org/teppeis/fixclosure.png?branch=master)](https://travis-ci.org/teppeis/fixclosure) [![Dependency Status](https://david-dm.org/teppeis/fixclosure.png)](https://david-dm.org/teppeis/fixclosure) [![Coverage Status](https://coveralls.io/repos/teppeis/fixclosure/badge.png?branch=master)](https://coveralls.io/r/teppeis/fixclosure)
 ====
 fixclosure is JavaScirpt linter/fixer based on Esprima for Google Closure Library.
 now alpha version...
