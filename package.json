@@ -7,7 +7,10 @@
     "fixclosure": "./bin/fixclosure.js"
   },
   "scripts": {
-    "test": "make test"
+    "test": "node_modules/grunt-cli/bin/grunt",
+    "blanket": {
+      "pattern": "/fixclosure/lib/"
+    }
   },
   "repository": "https://github.com/teppeis/fixclosure",
   "author": "Teppei Sato <teppeis@gmail.com>",
@@ -18,7 +21,10 @@
     "coffee-script": "~1.6.0",
     "jscoverage": "~0.3.6",
     "mocha-lcov-reporter": "0.0.1",
-    "coveralls": "~2.0.7"
+    "coveralls": "~2.0.7",
+    "grunt": "~0.4.1",
+    "grunt-mocha-cov": "0.0.7",
+    "grunt-cli": "~0.1.8"
   },
   "dependencies": {
     "commander": "~1.1.0",
