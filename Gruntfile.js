@@ -21,6 +21,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-cov');
 
   grunt.registerTask('coveralls', ['mochacov:coveralls']);
-  grunt.registerTask('test', ['mochacov:test']);
-  grunt.registerTask('default', ['test', 'coveralls']);
+  var testTasks = ['mochacov:test'];
+  if (process.env.TRAVIS_JOB_ID) {
+    testTasks.push('coveralls');
+  }
+  grunt.registerTask('test', testTasks);
+  grunt.registerTask('default', ['test']);
 };
