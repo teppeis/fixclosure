@@ -31,7 +31,10 @@ $ fixclosure --replaceMap foo.foobar:foo.foo foo.js
 
 ## Changelog
 
-* 0.1.4 (2013/11/15)
+* 0.2.0-dev (2013/11/15)
+  * Add .fixclosurerc
+  * Add --no-color
+* 0.1.5 (2013/11/15)
   * Update dependencies.
 * 0.1.3 (2012/12/08)
   * Append package methods of Closure Library.
