@@ -17,4 +17,5 @@ describe 'Command line', ->
 
   it 'exit with 1 if the result is NG', (done) ->
     exec fixclosure + ' fixtures/ng.js', opt, (err) ->
-      done(err)
+      err.code.should.be.eql 1
+      done()

@@ -75,6 +75,8 @@ if (program.args.length < 1) {
   process.exit(1);
 }
 
+var failed = false;
+
 program.args.forEach(function(file) {
   var log = new Logger(program.color);
   log.warn('File: ' + file + '\n');
@@ -148,6 +150,8 @@ program.args.forEach(function(file) {
     if (program.fixInPlace) {
         fixclosure.fix(file, info);
         log.raw(clc.cyanBright('Fixed!'));
+    } else {
+        failed = true;
     }
     log.flush(false);
   } else {
@@ -155,6 +159,10 @@ program.args.forEach(function(file) {
     log.flush(true);
   }
 });
+
+if (failed) {
+  process.exit(1);
+}
 
 function getDuplicated(namespaces) {
   var dups = [];
