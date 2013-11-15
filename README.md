@@ -28,10 +28,23 @@ $ fixclosure --packageMethods foo.foo1,bar.bar1 foo.js
 $ fixclosure --replaceMap foo.foobar:foo.foo foo.js
 ```
 
+You can load these options with `.fixclosurerc` config file.
+
+```
+--roots foo,bar foo.js
+--packageMethods foo.foo1,bar.bar1 foo.js
+--replaceMap foo.foobar:foo.foo foo.js
+```
+
+Also specify the config file.
+
+```bash
+$ fixclosure --config path/to/.fixclosurerc
+```
 
 ## Changelog
 
-* 0.2.0-dev (2013/11/15)
+* 0.2.0 (2013/11/15)
   * Add .fixclosurerc
   * Add --no-color
 * 0.1.5 (2013/11/15)
