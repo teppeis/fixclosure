@@ -7,7 +7,7 @@ fixclosure = '../bin/fixclosure.js'
 
 describe 'Command line', ->
   it 'suceed with file argument', (done) ->
-    exec fixclosure + ' fixtures/ok.js', opt, (err) ->
+    exec fixclosure + ' fixtures/cli/ok.js', opt, (err) ->
       done(err)
 
   it 'exit with 1 if no file argument', (done) ->
@@ -16,6 +16,6 @@ describe 'Command line', ->
       done()
 
   it 'exit with 1 if the result is NG', (done) ->
-    exec fixclosure + ' fixtures/ng.js', opt, (err) ->
+    exec fixclosure + ' fixtures/cli/ng.js', opt, (err) ->
       err.code.should.be.eql 1
       done()
