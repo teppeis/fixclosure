@@ -26,10 +26,10 @@
     "mocha-lcov-reporter": "0.0.1"
   },
   "dependencies": {
-    "commander": "~1.1.0",
-    "esprima": "~1.0.0",
-    "underscore": "~1.4.2",
-    "cli-color": "~0.2.1",
-    "doctrine": "~0.0.3"
+    "commander": "~2.0.0",
+    "esprima": "~1.0.4",
+    "underscore": "~1.5.2",
+    "cli-color": "~0.2.3",
+    "doctrine": "~0.1.0"
   }
 }
