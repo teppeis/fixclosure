@@ -1,6 +1,6 @@
 {
   "name": "fixclosure",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Lint and fix Google Closure Library code.",
   "main": "index.js",
   "bin": {

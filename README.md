@@ -31,6 +31,8 @@ $ fixclosure --replaceMap foo.foobar:foo.foo foo.js
 
 ## Changelog
 
+* 0.1.4 (2013/11/15)
+  * Update dependencies.
 * 0.1.3 (2012/12/08)
   * Append package methods of Closure Library.
   * Change version option from -V to -v.
