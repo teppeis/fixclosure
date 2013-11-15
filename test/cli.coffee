@@ -72,6 +72,7 @@ describe 'Command line', ->
           - goog.baz
           
           FAIL!
+
           1 of 2 files failed
 
           '''
