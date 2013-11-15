@@ -48,3 +48,22 @@ describe 'Command line', ->
       ].join(' ')
       exec cmd, opt, (err) ->
         done(err)
+
+  describe '.fixclosurerc', ->
+    it 'default', (done) ->
+      cmd = [
+        fixclosure,
+        'fixtures/cli/config.js',
+      ].join(' ')
+      exec cmd, opt, (err) ->
+        done(err)
+
+    it '--config', (done) ->
+      cmd = [
+        fixclosure,
+        'fixtures/cli/config.js',
+        '--config=fixtures/cli/.fixclosurerc1'
+      ].join(' ')
+      exec cmd, opt, (err) ->
+        done(err)
+
