@@ -60,15 +60,29 @@ function map(val) {
   return map;
 }
 
-program
-  .version(require('../package.json').version, '-v, --version')
-  .usage('[options] files...')
-  .option('-f, --fix-in-place', 'Fix the file in-place.')
-  .option('--roots <roots>', 'Root of target package to provide and require separated by comma. Dafault: "goog"', list)
-  .option('--packageMethods <methods>', 'Method exprted as a package itself. Comma separated list.', list)
-  .option('--replaceMap <map>', 'Method replace map. Like "before1:after1,before2:after2"', map)
-  .option('--no-color', 'Highlight the output.')
-  .parse(process.argv);
+function setCommandOptions(command) {
+  return command
+    .version(require('../package.json').version, '-v, --version')
+    .usage('[options] files...')
+    .option('-f, --fix-in-place', 'Fix the file in-place.')
+    .option('--roots <roots>', 'Root of target package to provide and require separated by comma. Dafault: "goog"', list)
+    .option('--packageMethods <methods>', 'Method exprted as a package itself. Comma separated list.', list)
+    .option('--replaceMap <map>', 'Method replace map. Like "before1:after1,before2:after2"', map)
+    .option('--config <file>', 'Specify .fixclosurerc file', '.fixclosurerc')
+    .option('--no-color', 'Highlight the output.');
+}
+
+// Load .fixclosurerc
+try {
+  var command = setCommandOptions(new program.Command());
+  command.parse(process.argv);
+  var opts = fs.readFileSync(command.config, 'utf8').trim().split(/\s+/);
+  process.argv = process.argv.slice(0, 2).concat(opts.concat(process.argv.slice(2)));
+} catch (err) {
+  // ignore
+}
+
+setCommandOptions(program).parse(process.argv);
 
 if (program.args.length < 1) {
   program.outputHelp();

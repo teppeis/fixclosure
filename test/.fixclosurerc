@@ -1,0 +1,2 @@
+--roots=foo,bar
+--packageMethods=goog.foo.packagemethod1
