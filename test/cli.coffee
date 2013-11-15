@@ -49,6 +49,34 @@ describe 'Command line', ->
       exec cmd, opt, (err) ->
         done(err)
 
+    it '--no-success', (done) ->
+      cmd = [
+        fixclosure,
+        'fixtures/cli/ok.js',
+        'fixtures/cli/ng.js',
+        '--no-success'
+      ].join(' ')
+      exec cmd, opt, (err, stdout, stderr) ->
+        err.code.should.be.eql 1
+        stdout.should.be.eql ''
+        stderr.should.be.eql '''
+          File: fixtures/cli/ng.js
+
+          Provided:
+          - goog.bar
+          
+          Required:
+          - (none)
+          
+          Missing Require:
+          - goog.baz
+          
+          FAIL!
+          1 of 2 files failed
+
+          '''
+        done()
+
   describe '.fixclosurerc', ->
     it 'default', (done) ->
       cmd = [
