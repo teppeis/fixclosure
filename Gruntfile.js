@@ -16,9 +16,21 @@ module.exports = function(grunt) {
           }
         }
       }
+    },
+    watch: {
+      test: {
+        files: [
+          'index.js',
+          'bin/**/*',
+          'lib/**/*',
+          'test/**/*'
+        ],
+        tasks: ['test']
+      }
     }
   });
   grunt.loadNpmTasks('grunt-mocha-cov');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('coveralls', ['mochacov:coveralls']);
   var testTasks = ['mochacov:test'];

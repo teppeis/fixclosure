@@ -23,7 +23,8 @@
     "grunt": "~0.4.1",
     "grunt-mocha-cov": "0.0.7",
     "grunt-cli": "~0.1.11",
-    "mocha-lcov-reporter": "0.0.1"
+    "mocha-lcov-reporter": "0.0.1",
+    "grunt-contrib-watch": "~0.5.3"
   },
   "dependencies": {
     "commander": "~2.0.0",
