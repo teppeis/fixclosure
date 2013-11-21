@@ -44,6 +44,8 @@ $ fixclosure --config path/to/.fixclosurerc
 
 ## Changelog
 
+* 0.2.X
+  * Fix --replaceMap
 * 0.2.0 (2013/11/15)
   * Add .fixclosurerc
   * Add --no-color
