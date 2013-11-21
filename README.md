@@ -44,7 +44,7 @@ $ fixclosure --config path/to/.fixclosurerc
 
 ## Changelog
 
-* 0.2.X
+* 0.2.1 (2013/11/21)
   * Fix --replaceMap
 * 0.2.0 (2013/11/15)
   * Add .fixclosurerc
