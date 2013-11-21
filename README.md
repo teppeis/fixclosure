@@ -47,6 +47,8 @@ $ fixclosure --config path/to/.fixclosurerc
 * 0.3.0-alpha
   * Add --no-success
   * Fix messages
+* 0.2.1 (2013/11/21)
+  * Fix --replaceMap
 * 0.2.0 (2013/11/15)
   * Add .fixclosurerc
   * Add --no-color
