@@ -2,97 +2,105 @@ require('chai').should()
 fs = require 'fs'
 _ = require 'underscore'
 exec = require('child_process').exec
+cli = require('../lib/cli')
+sinon = require('sinon')
 
-opt = {cwd: __dirname}
-fixclosure = '../bin/fixclosure.js --no-color'
+cmd = ['node', 'fixclosure', '--no-color']
+
+class MockStdOut
+  constructor: () ->
+    @buffer = []
+  write: (msg) ->
+    @buffer.push msg
+  toString: () ->
+    @buffer.join ''
 
 describe 'Command line', ->
-  it 'suceed with file argument', (done) ->
-    exec fixclosure + ' fixtures/cli/ok.js', opt, (err) ->
-      done(err)
+  out = null
+  err = null
+  exit = null
 
-  it 'exit with 1 if no file argument', (done) ->
-    exec fixclosure, opt, (err, stdout, stderr) ->
-      err.code.should.be.eql 1
-      done()
+  beforeEach ->
+    out = new MockStdOut
+    err = new MockStdOut
+    exit = sinon.spy()
 
-  it 'exit with 1 if the result is NG', (done) ->
-    exec fixclosure + ' fixtures/cli/ng.js', opt, (err) ->
-      err.code.should.be.eql 1
-      done()
+  it 'suceed with file argument', () ->
+    cli(cmd.concat(['test/fixtures/cli/ok.js']), out, err, exit)
+    exit.called.should.be.false
+
+  it 'exit with 1 if no file argument', () ->
+    stubWrite = sinon.stub(process.stdout, 'write');
+    cli(cmd, out, err, exit)
+    stubWrite.restore()
+
+    exit.calledOnce.should.be.true
+    exit.firstCall.args.should.eql [1]
+
+  it 'exit with 1 if the result is NG', () ->
+    cli(cmd.concat(['test/fixtures/cli/ng.js']), out, err, exit)
+    exit.calledOnce.should.be.true
+    exit.firstCall.args.should.eql [1]
 
   describe 'Options', ->
-    it '--packageMethods', (done) ->
-      cmd = [
-        fixclosure,
-        'fixtures/cli/package_method.js',
+    it '--packageMethods', () ->
+      cli(cmd.concat([
+        'test/fixtures/cli/package_method.js',
         '--packageMethods=goog.foo.packagemethod1,goog.foo.packagemethod2'
-      ].join(' ')
-      exec cmd, opt, (err) ->
-        done(err)
+      ]), out, err, exit)
+      exit.called.should.be.false
 
-    it '--roots', (done) ->
-      cmd = [
-        fixclosure,
-        'fixtures/cli/roots.js',
+    it '--roots', () ->
+      cli(cmd.concat([
+        'test/fixtures/cli/roots.js',
         '--roots=foo,bar'
-      ].join(' ')
-      exec cmd, opt, (err) ->
-        done(err)
+      ]), out, err, exit)
+      exit.called.should.be.false
 
-    it '--replaceMap', (done) ->
-      cmd = [
-        fixclosure,
-        'fixtures/cli/replacemap.js',
+    it '--replaceMap', () ->
+      cli(cmd.concat([
+        'test/fixtures/cli/replacemap.js',
         '--replaceMap=goog.foo.foo:goog.bar.bar,goog.baz.Baz:goog.baz.Baaz'
-      ].join(' ')
-      exec cmd, opt, (err) ->
-        done(err)
+      ]), out, err, exit)
+      exit.called.should.be.false
 
-    it '--no-success', (done) ->
-      cmd = [
-        fixclosure,
-        'fixtures/cli/ok.js',
-        'fixtures/cli/ng.js',
+    it '--no-success', () ->
+      cli(cmd.concat([
+        'test/fixtures/cli/ok.js',
+        'test/fixtures/cli/ng.js',
         '--no-success'
-      ].join(' ')
-      exec cmd, opt, (err, stdout, stderr) ->
-        err.code.should.be.eql 1
-        stdout.should.be.eql ''
-        stderr.should.be.eql '''
-          File: fixtures/cli/ng.js
+      ]), out, err, exit)
+      exit.calledOnce.should.be.true
+      exit.firstCall.args.should.eql [1]
+      out.toString().should.be.eql ''
+      err.toString().should.be.eql '''
+        File: test/fixtures/cli/ng.js
 
-          Provided:
-          - goog.bar
-          
-          Required:
-          - (none)
-          
-          Missing Require:
-          - goog.baz
-          
-          FAIL!
+        Provided:
+        - goog.bar
+        
+        Required:
+        - (none)
+        
+        Missing Require:
+        - goog.baz
+        
+        FAIL!
 
-          1 of 2 files failed
+        1 of 2 files failed
 
-          '''
-        done()
+        '''
 
   describe '.fixclosurerc', ->
-    it 'default', (done) ->
-      cmd = [
-        fixclosure,
-        'fixtures/cli/config.js',
-      ].join(' ')
-      exec cmd, opt, (err) ->
-        done(err)
+    it 'default', () ->
+      cli(cmd.concat([
+        'test/fixtures/cli/config.js',
+      ]), out, err, exit)
+      exit.called.should.be.false
 
-    it '--config', (done) ->
-      cmd = [
-        fixclosure,
-        'fixtures/cli/config.js',
+    it '--config', () ->
+      cli(cmd.concat([
+        'test/fixtures/cli/config.js',
         '--config=fixtures/cli/.fixclosurerc1'
-      ].join(' ')
-      exec cmd, opt, (err) ->
-        done(err)
-
+      ]), out, err, exit)
+      exit.called.should.be.false
