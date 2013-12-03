@@ -64,11 +64,10 @@ describe 'Command line', ->
       ]), out, err, exit)
       exit.called.should.be.false
 
-    it '--no-success', () ->
+    it 'without --showSsuccess', () ->
       cli(cmd.concat([
         'test/fixtures/cli/ok.js',
         'test/fixtures/cli/ng.js',
-        '--no-success'
       ]), out, err, exit)
       exit.calledOnce.should.be.true
       exit.firstCall.args.should.eql [1]
@@ -85,6 +84,44 @@ describe 'Command line', ->
         Missing Require:
         - goog.baz
         
+        FAIL!
+
+        1 of 2 files failed
+
+        '''
+
+    it '--showSuccess', () ->
+      cli(cmd.concat([
+        'test/fixtures/cli/ok.js',
+        'test/fixtures/cli/ng.js',
+        '--showSuccess'
+      ]), out, err, exit)
+      exit.calledOnce.should.be.true
+      exit.firstCall.args.should.eql [1]
+      out.toString().should.be.eql '''
+        File: test/fixtures/cli/ok.js
+
+        Provided:
+        - goog.bar
+
+        Required:
+        - goog.baz
+
+        GREEN!
+
+      '''
+      err.toString().should.be.eql '''
+        File: test/fixtures/cli/ng.js
+
+        Provided:
+        - goog.bar
+
+        Required:
+        - (none)
+
+        Missing Require:
+        - goog.baz
+
         FAIL!
 
         1 of 2 files failed
