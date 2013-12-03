@@ -45,7 +45,7 @@ $ fixclosure --config path/to/.fixclosurerc
 ## Changelog
 
 * 0.3.0 (dev)
-  * Add --no-success
+  * Doesn't ouput success log and add --showSuccess option
   * Fix output messages
   * Use JSHint and "use strict" internally 
   * Fix CLI module and the test
