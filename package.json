@@ -1,6 +1,6 @@
 {
   "name": "fixclosure",
-  "version": "0.2.1",
+  "version": "0.3.0-alpha.1",
   "description": "Lint and fix Google Closure Library code.",
   "main": "index.js",
   "bin": {
@@ -24,7 +24,9 @@
     "grunt-mocha-cov": "0.0.7",
     "grunt-cli": "~0.1.11",
     "mocha-lcov-reporter": "0.0.1",
-    "grunt-contrib-watch": "~0.5.3"
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-jshint": "~0.7.2",
+    "sinon": "~1.7.3"
   },
   "dependencies": {
     "commander": "~2.0.0",

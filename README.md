@@ -44,6 +44,11 @@ $ fixclosure --config path/to/.fixclosurerc
 
 ## Changelog
 
+* 0.3.0 (dev)
+  * Add --no-success
+  * Fix output messages
+  * Use JSHint and "use strict" internally 
+  * Fix CLI module and the test
 * 0.2.1 (2013/11/21)
   * Fix --replaceMap
 * 0.2.0 (2013/11/15)
