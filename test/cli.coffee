@@ -42,6 +42,13 @@ describe 'Command line', ->
     exit.calledOnce.should.be.true
     exit.firstCall.args.should.eql [1]
 
+  it 'output all error types', () ->
+    cli(cmd.concat(['test/fixtures/cli/all-ng-types.js']), out, err, exit)
+    exit.calledOnce.should.be.true
+    exit.firstCall.args.should.eql [1]
+    expected = fs.readFileSync('test/fixtures/cli/all-ng-types.txt', encoding: 'utf8')
+    err.toString().should.be.eql expected
+
   describe 'Options', ->
     it '--packageMethods', () ->
       cli(cmd.concat([
