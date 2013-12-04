@@ -1,0 +1,27 @@
+File: test/fixtures/cli/all-ng-types.js
+
+Provided:
+- goog.provide.dup
+- goog.provide.dup
+- goog.provide.no
+- goog.require.no
+
+Required:
+- goog.require.dup
+- goog.require.dup
+
+Duplicated Provide:
+- goog.provide.dup
+
+Missing Provide:
+- goog.provide.missing
+
+Duplicated Require:
+- goog.require.dup
+
+Missing Require:
+- goog.require.missing
+
+FAIL!
+
+1 of 1 files failed

@@ -26,7 +26,8 @@
     "grunt-mocha-cov": "0.0.7",
     "mocha": "~1.14.0",
     "mocha-lcov-reporter": "0.0.1",
-    "sinon": "~1.7.3"
+    "sinon": "~1.7.3",
+    "fs-extra": "~0.8.1"
   },
   "dependencies": {
     "cli-color": "~0.2.3",
