@@ -1,0 +1,13 @@
+goog.provide('goog.provide.dup');
+goog.provide('goog.provide.missing');
+
+goog.require('goog.require.dup');
+goog.require('goog.require.missing');
+
+goog.provide.dup.foo = function() {
+    goog.require.dup.foo();
+};
+
+goog.provide.missing.foo = function() {
+    goog.require.missing.foo();
+};
