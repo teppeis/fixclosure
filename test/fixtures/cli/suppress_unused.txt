@@ -1,0 +1,14 @@
+File: test/fixtures/cli/suppress_unused.js
+
+Provided:
+- (none)
+
+Required:
+- goog.foo
+
+Suppressed:
+- goog.foo
+
+GREEN!
+
+1 files completed

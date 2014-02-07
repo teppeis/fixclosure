@@ -21,6 +21,10 @@ exports.assertFile = (file) ->
   toRequire = while (matches = regex.exec src) != null
     matches[1]
 
+  regex = /^\/\/ suppressed: (.*)/gm
+  suppressed = while (matches = regex.exec src) != null
+    matches[1]
+
   parser = new Parser()
   info = parser.parse(src)
   #info.should.have.keys ['provided', 'required', 'toProvide', 'toRequire']
@@ -28,3 +32,4 @@ exports.assertFile = (file) ->
   info.required.should.be.eql required
   info.toProvide.should.be.eql toProvide
   info.toRequire.should.be.eql toRequire
+  info.suppressed.should.be.eql suppressed
