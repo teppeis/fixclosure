@@ -58,6 +58,13 @@ describe 'Command line', ->
     expected = fs.readFileSync('test/fixtures/cli/all-ng-types.fixed.txt', encoding: 'utf8')
     fixedSrc.should.be.eql expected
 
+  it 'success if a package required with "suppress unused" is not used', () ->
+    cli(cmd.concat(['test/fixtures/cli/suppress_unused.js', '--showSuccess']), out, err, exit)
+    exit.calledOnce.should.be.false
+
+    expected = fs.readFileSync('test/fixtures/cli/suppress_unused.txt', encoding: 'utf8')
+    out.toString().should.be.eql expected
+
   describe 'Options', ->
     it '--packageMethods', () ->
       cli(cmd.concat([
