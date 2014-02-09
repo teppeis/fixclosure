@@ -51,7 +51,7 @@ module.exports = function(grunt) {
   grunt.registerTask('coveralls', ['mochacov:coveralls']);
   var testTasks = ['jshint', 'mochacov:test'];
   if (process.env.TRAVIS_JOB_ID) {
-    testTasks.push('coveralls');
+    // testTasks.push('coveralls');
   }
   grunt.registerTask('test', testTasks);
   grunt.registerTask('default', ['test']);

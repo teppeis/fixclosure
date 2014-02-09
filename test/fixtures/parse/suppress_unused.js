@@ -1,4 +1,8 @@
-goog.require('goog.foo'); // fixclosure: suppress unused
+goog.require('goog.foo');
+goog.require('goog.bar'); // fixclosure: suppressUnused
+goog.require('goog.baz');
 
+// required: goog.bar
+// required: goog.baz
 // required: goog.foo
-// suppressed: goog.foo
+// suppressed: goog.bar
