@@ -3,12 +3,13 @@ File: test/fixtures/cli/all-ng-types.js
 Provided:
 - goog.provide.dup
 - goog.provide.dup
-- goog.provide.no
-- goog.require.no
+- goog.provide.unnecessary
 
 Required:
 - goog.require.dup
 - goog.require.dup
+- goog.require.suppress
+- goog.require.unnecessary
 
 Duplicated Provide:
 - goog.provide.dup
@@ -16,11 +17,20 @@ Duplicated Provide:
 Missing Provide:
 - goog.provide.missing
 
+Unnecessary Provide:
+- goog.provide.unnecessary
+
 Duplicated Require:
 - goog.require.dup
 
 Missing Require:
 - goog.require.missing
+
+Unnecessary Require:
+- goog.require.unnecessary
+
+Unnecessary Require (Suppressed):
+- goog.require.suppress
 
 FAIL!
 
