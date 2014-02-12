@@ -34,6 +34,6 @@
     "commander": "~2.1.0",
     "doctrine": "~0.3.0",
     "esprima": "~1.0.4",
-    "underscore": "~1.5.2"
+    "underscore": "~1.6.0"
   }
 }
