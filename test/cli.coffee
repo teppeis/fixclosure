@@ -50,7 +50,7 @@ describe 'Command line', ->
     err.toString().should.be.eql expected
 
   it 'fix in place all error types', () ->
-    fs.copySync('test/fixtures/cli/fix-all-ng-types.js', 'test/tmp/all-ng-types.js')
+    fs.copySync('test/fixtures/cli/all-ng-types.js', 'test/tmp/all-ng-types.js')
     cli(cmd.concat(['test/tmp/all-ng-types.js', '--fix-in-place']), out, err, exit)
     exit.calledOnce.should.be.false
 
