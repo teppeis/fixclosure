@@ -1,5 +1,5 @@
-goog.require('goog.foo.packagemethod1');
+goog.require('goog.foo.namespacemethod1');
 goog.require('foo.foo');
 
-goog.foo.packagemethod1(hoge);
+goog.foo.namespacemethod1(hoge);
 foo.foo.method(hoge);
