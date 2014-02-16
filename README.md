@@ -1,7 +1,8 @@
 fixclosure [![Build Status](https://secure.travis-ci.org/teppeis/fixclosure.png?branch=master)](https://travis-ci.org/teppeis/fixclosure) [![Dependency Status](https://david-dm.org/teppeis/fixclosure.png)](https://david-dm.org/teppeis/fixclosure) [![Coverage Status](https://coveralls.io/repos/teppeis/fixclosure/badge.png?branch=master)](https://coveralls.io/r/teppeis/fixclosure)
 ====
-fixclosure is JavaScirpt linter/fixer based on Esprima for Google Closure Library.
-now alpha version...
+
+fixclosure is JavaScript dependency checker/fixer for Closure Library based on Esprima.  
+It finds namespaces used in a JavaScript file and insert/remove `goog.provide` / `goog.require` automatically. 
 
 ## Install
 
@@ -11,44 +12,143 @@ $ npm install -g fixclosure
 
 ## Usage
 
-```bash
-# Just lint
-$ fixclosure foo.js
+foo.js requires an unused namespace(`goog.unused`). The `goog.missing` is used but not required.
 
-# Lint & Fix in place
-$ fixclosure -f foo.js
+```javascript
+// foo.js (before)
+goog.provide('goog.foo.Bar');
 
-# Specify roots of target packages in addition to "goog"
-$ fixclosure --roots foo,bar foo.js
+goog.require('goog.foo');
+goog.require('goog.unused');
 
-# Specify methods exported as a package itself like "goog.dispose"
-$ fixclosure --packageMethods foo.foo1,bar.bar1 foo.js
-
-# Replace method name that doesn't belong to the prefix package like "goog.disposeAll:goog.dispose"
-$ fixclosure --replaceMap foo.foobar:foo.foo foo.js
+goog.foo.Bar = function() {
+  goog.foo.baz();
+  goog.missing.require();
+};
 ```
 
-You can load these options with `.fixclosurerc` config file.
-
-```
---roots foo,bar foo.js
---packageMethods foo.foo1,bar.bar1 foo.js
---replaceMap foo.foobar:foo.foo foo.js
-```
-
-Also specify the config file.
+Fix it!
 
 ```bash
-$ fixclosure --config path/to/.fixclosurerc
+$ fixclosure --fix-in-place foo.js
+File: foo.js
+
+Provided:
+- goog.foo.Bar
+
+Required:
+- goog.foo
+- goog.unused
+
+Missing Require:
+- goog.missing
+
+Unnecessary Require:
+- goog.unused
+
+FIXED!
+
+1 files fixed
 ```
+
+Fixed! `goog.require('goog.unused');` is removed and `goog.require('goog.missing');` is inserted.
+
+```javascript
+// foo.js (fixed!)
+goog.provide('goog.foo.Bar');
+
+goog.require('goog.foo');
+goog.require('goog.missing');
+
+goog.foo.Bar = function() {
+  goog.foo.baz();
+  goog.missing.require();
+};
+```
+
+## Use with Grunt
+
+Use [grunt-fixclosure](https://github.com/teppeis/grunt-fixclosure "grunt-fixclosure") plugin.
+
+## Configuration file
+
+You can load options from `.fixclosurerc` config file like:
+```
+--roots foo,bar
+--namespaceMethods foo.foo1,bar.bar1
+--replaceMap foo.foobar:foo.foo
+```
+fixclosure will find the file in the current directory and, if not found, will move one level up the directory tree all the way up to the filesystem root. 
+
+## Options
+
+### `-f` or `--fix-in-place`
+
+If an invalid file is found, fixclosure fixes the file in place.
+
+### `--config`
+
+`.fixclosurerc` file path.  
+Specify if your file is not in the search path.
+
+### `--roots`
+
+Specify your root namespaces in addition to default roots `goog,proto2,soy,soydata,svgpan`.  
+Comma separated list.
+
+### `--namespaceMethods`
+
+Specify method or property exported as a namespace itself like `goog.dispose`.  
+Comma separated list.
+
+### `--replaceMap`
+
+Replace method or property to namespace mapping like `goog.disposeAll:goog.dispose`.  
+Comma separated list of colon separated pairs like `foo.bar1:foo.bar2,foo.bar3:foo.bar4`.
+
+### `--showSuccess`
+
+Show not only failed files but also passed files.
+
+### `--no-color`
+
+Disable color output.
+
+## Inline hint
+
+fixclosure reads "hint" for lint from special comments in your code.
+
+### `suppressUnused`
+
+Suppress `goog.require` auto removing.
+
+```javascript
+goog.require('goog.foo');
+goog.require('goog.unused.in.this.file'); // fixclosure: suppressUnused
+goog.require('goog.bar');
+```
+
+In the above, `goog.require('goog.unused.in.this.file')` will not removed by fixclosure even if it isn't used in the file.
+The hint affects only *same* line.
+Useful in module declaration.
+
+### `suppressRequire`
+
+Suppress `goog.require` auto insertion.
+
+```javascript
+// fixclosure: suppressRequire
+goog.foo.bar();
+```
+
+In the above, `goog.require('foo')` will not inserted by fixclosure.
+The hint affects only *next* line.
+This is useful to workaround cyclic reference.
 
 ## Changelog
 
-* 0.3.0 (dev)
-  * Doesn't ouput success log and add --showSuccess option
-  * Fix output messages
-  * Use JSHint and "use strict" internally 
-  * Fix CLI module and the test
+* 1.0.0
+  * Some features, bug fixes and breaking changes. See [release note ](https://github.com/teppeis/fixclosure/releases/tag/1.0.0 "Release Release 1.0.0! · teppeis/fixclosure").
 * 0.2.1 (2013/11/21)
   * Fix --replaceMap
 * 0.2.0 (2013/11/15)
@@ -75,7 +175,7 @@ $ fixclosure --config path/to/.fixclosurerc
 * 0.1.0 Add some options
   * Changes "fix in place" option to "-f" from "-i"
   * Implements root package filter (default: "goog")
-  * Adds options --roots, --packageMethods and --replaceMap
+  * Adds options --roots, --namespaceMethods and --replaceMap
 * 0.0.2 Bugfix
 * 0.0.1 Initial release
 
