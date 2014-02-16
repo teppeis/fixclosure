@@ -58,6 +58,15 @@ describe 'Command line', ->
     expected = fs.readFileSync('test/fixtures/cli/all-ng-types.fixed.txt', encoding: 'utf8')
     fixedSrc.should.be.eql expected
 
+  it 'fix no provide lines file', () ->
+    fs.copySync('test/fixtures/cli/fix-no-provide.js', 'test/tmp/fix-no-provide.js')
+    cli(cmd.concat(['test/tmp/fix-no-provide.js', '--fix-in-place']), out, err, exit)
+    exit.calledOnce.should.be.false
+
+    fixedSrc = fs.readFileSync('test/tmp/fix-no-provide.js', encoding: 'utf8')
+    expected = fs.readFileSync('test/fixtures/cli/fix-no-provide.js.fixed.txt', encoding: 'utf8')
+    fixedSrc.should.be.eql expected
+
   it 'success if a package required with "suppress unused" is not used', () ->
     cli(cmd.concat(['test/fixtures/cli/suppress_unused.js', '--showSuccess']), out, err, exit)
     exit.calledOnce.should.be.false
