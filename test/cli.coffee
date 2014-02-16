@@ -75,10 +75,10 @@ describe 'Command line', ->
     out.toString().should.be.eql expected
 
   describe 'Options', ->
-    it '--packageMethods', () ->
+    it '--namespaceMethods', () ->
       cli(cmd.concat([
         'test/fixtures/cli/package_method.js',
-        '--packageMethods=goog.foo.packagemethod1,goog.foo.packagemethod2'
+        '--namespaceMethods=goog.foo.namespacemethod1,goog.foo.namespacemethod2'
       ]), out, err, exit)
       exit.called.should.be.false
 

@@ -1,2 +1,2 @@
 --roots=foo,bar
---packageMethods=goog.foo.packagemethod1
+--namespaceMethods=goog.foo.namespacemethod1
