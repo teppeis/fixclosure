@@ -3,7 +3,7 @@ Parser = require('../../').Parser
 fs = require 'fs'
 
 exports.assertFile = (file) ->
-  src = fs.readFileSync(__dirname + '/../fixtures' + file, 'utf-8')
+  src = fs.readFileSync(__dirname + '/../fixtures' + file, 'utf8')
 
   regex = /^\/\/ provided: (.*)/gm
   provided = while ((matches = regex.exec src) != null)

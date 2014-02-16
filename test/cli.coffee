@@ -161,18 +161,22 @@ describe 'Command line', ->
         '''
 
   describe '.fixclosurerc', ->
+    cwd = null
+
+    beforeEach ->
+      cwd = process.cwd()
+
+    afterEach ->
+      process.chdir(cwd)
+
     it 'loaded in the current dir by default', () ->
       # change cwd to ./test to load ./test/.fixclosurerc
-      cwd = process.cwd()
-      process.chdir(__dirname)
+      process.chdir(__dirname + '/fixtures/findconfig')
 
       cli(cmd.concat([
         __dirname + '/fixtures/cli/config.js',
       ]), out, err, exit)
       exit.called.should.be.false
-
-      # restore cwd
-      process.chdir(cwd)
 
     it 'loaded by "--config" option', () ->
       cli(cmd.concat([
