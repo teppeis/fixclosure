@@ -12,7 +12,8 @@ $ npm install -g fixclosure
 
 ## Usage
 
-foo.js requires an unused namespace(`goog.unused`). The `goog.missing` is used but not required.
+Following `foo.js` requires an unused namespace `goog.unused`.
+Also `goog.missing` is used but not required.
 
 ```javascript
 // foo.js (before)
@@ -27,7 +28,7 @@ goog.foo.Bar = function() {
 };
 ```
 
-Fix it!
+Fix it !
 
 ```bash
 $ fixclosure --fix-in-place foo.js
@@ -51,7 +52,8 @@ FIXED!
 1 files fixed
 ```
 
-Fixed! `goog.require('goog.unused');` is removed and `goog.require('goog.missing');` is inserted.
+Fixed !  
+`goog.require('goog.unused')` is removed and `goog.require('goog.missing')` is inserted.
 
 ```javascript
 // foo.js (fixed!)
@@ -66,13 +68,26 @@ goog.foo.Bar = function() {
 };
 ```
 
-## Use with Grunt
+### Rules fixclosure checked
+
+fixclosure checks and fixes:
+
+* Duplicated require/provide
+* Missing require/provide
+* Unnecessary require/provide
+
+### gjslint beforehand
+
+Run [Closure Linter (gjslint)](https://developers.google.com/closure/utilities/) before fixclosure.
+fixclosure is based on the assumption that target files are linted by it.
+
+### Use with Grunt
 
 Use [grunt-fixclosure](https://github.com/teppeis/grunt-fixclosure "grunt-fixclosure") plugin.
 
 ## Configuration file
 
-You can load options from `.fixclosurerc` config file like:
+fixclosure loads options from `.fixclosurerc` config file like:
 ```
 --roots foo,bar
 --namespaceMethods foo.foo1,bar.bar1
