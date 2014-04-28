@@ -162,11 +162,11 @@ This is useful to workaround cyclic reference.
 
 ## Changelog
 
-* 1.1.0
+* 1.1.0 (2014/04/28)
   * Update dependencies [#39](https://github.com/teppeis/fixclosure/pull/39)
-* 1.0.1
+* 1.0.1 (2014/04/01)
   * Fix --no-color [#37](https://github.com/teppeis/fixclosure/pull/37)
-* 1.0.0
+* 1.0.0 (2014/02/17)
   * Some features, bug fixes and breaking changes. See [release note ](https://github.com/teppeis/fixclosure/releases/tag/1.0.0 "Release Release 1.0.0! · teppeis/fixclosure").
 * 0.2.1 (2013/11/21)
   * Fix --replaceMap
