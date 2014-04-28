@@ -162,6 +162,8 @@ This is useful to workaround cyclic reference.
 
 ## Changelog
 
+* 1.1.0
+  * Update dependencies [#39](https://github.com/teppeis/fixclosure/pull/39)
 * 1.0.1
   * Fix --no-color [#37](https://github.com/teppeis/fixclosure/pull/37)
 * 1.0.0
