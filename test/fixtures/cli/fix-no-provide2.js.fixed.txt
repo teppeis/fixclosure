@@ -1,0 +1,8 @@
+/**
+ * @fileoverview sample.
+ */
+goog.require('goog.bar');
+goog.require('goog.foo');
+
+goog.foo.bar();
+goog.bar.baz();
