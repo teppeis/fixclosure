@@ -104,32 +104,23 @@ describe 'Command line', ->
       err.toString().should.be.eql expectedErr
 
     describe '--fix-in-place', () ->
+      testFixInPlace = (filename) ->
+        tmppath = 'test/tmp/' + filename
+        fs.copySync('test/fixtures/cli/' + filename, tmppath)
+        cli(cmd.concat([tmppath, '--fix-in-place']), out, err, exit)
+        exit.calledOnce.should.be.false
+        fixedSrc = fs.readFileSync(tmppath, encoding: 'utf8')
+        expected = fs.readFileSync('test/fixtures/cli/' + filename.replace(/\.js$/, '.fixed.txt'), encoding: 'utf8')
+        fixedSrc.should.be.eql expected
+
       it 'fix in place all error types', () ->
-        fs.copySync('test/fixtures/cli/all-ng-types.js', 'test/tmp/all-ng-types.js')
-        cli(cmd.concat(['test/tmp/all-ng-types.js', '--fix-in-place']), out, err, exit)
-        exit.calledOnce.should.be.false
+        testFixInPlace 'all-ng-types.js'
 
-        fixedSrc = fs.readFileSync('test/tmp/all-ng-types.js', encoding: 'utf8')
-        expected = fs.readFileSync('test/fixtures/cli/all-ng-types.fixed.txt', encoding: 'utf8')
-        fixedSrc.should.be.eql expected
+      it 'fix a file without provide', () ->
+        testFixInPlace 'fix-no-provide.js'
 
-      it 'fix no provide lines file', () ->
-        fs.copySync('test/fixtures/cli/fix-no-provide.js', 'test/tmp/fix-no-provide.js')
-        cli(cmd.concat(['test/tmp/fix-no-provide.js', '--fix-in-place']), out, err, exit)
-        exit.calledOnce.should.be.false
-
-        fixedSrc = fs.readFileSync('test/tmp/fix-no-provide.js', encoding: 'utf8')
-        expected = fs.readFileSync('test/fixtures/cli/fix-no-provide.js.fixed.txt', encoding: 'utf8')
-        fixedSrc.should.be.eql expected
-
-      it 'fix require-only but not enough requirements file', () ->
-        fs.copySync('test/fixtures/cli/fix-comment-and-no-provide.js', 'test/tmp/fix-comment-and-no-provide.js')
-        cli(cmd.concat(['test/tmp/fix-comment-and-no-provide.js', '--fix-in-place']), out, err, exit)
-        exit.calledOnce.should.be.false
-
-        fixedSrc = fs.readFileSync('test/tmp/fix-comment-and-no-provide.js', encoding: 'utf8')
-        expected = fs.readFileSync('test/fixtures/cli/fix-comment-and-no-provide.js.fixed.txt', encoding: 'utf8')
-        fixedSrc.should.be.eql expected
+      it 'fix a file with header comment and no provide', () ->
+        testFixInPlace 'fix-comment-and-no-provide.js'
 
   describe '.fixclosurerc', ->
     cwd = null
