@@ -33,7 +33,7 @@
     "cli-color": "~0.3.2",
     "commander": "~2.2.0",
     "doctrine": "~0.5.1",
-    "esprima": "~1.1.1",
+    "esprima": "~1.2.0",
     "underscore": "~1.6.0"
   }
 }
