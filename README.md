@@ -162,6 +162,9 @@ This is useful to workaround cyclic reference.
 
 ## Changelog
 
+* 1.2.0 (2014/05/02)
+  * Don't insert a blank line with --fix-in-place [#38](https://github.com/teppeis/fixclosure/pull/38)
+  * Update esprima 1.2.0
 * 1.1.0 (2014/04/28)
   * Update dependencies [#39](https://github.com/teppeis/fixclosure/pull/39)
 * 1.0.1 (2014/04/01)
