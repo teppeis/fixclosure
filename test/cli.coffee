@@ -49,39 +49,13 @@ describe 'Command line', ->
     expected = fs.readFileSync('test/fixtures/cli/all-ng-types.error.txt', encoding: 'utf8')
     err.toString().should.be.eql expected
 
-  it 'fix in place all error types', () ->
-    fs.copySync('test/fixtures/cli/all-ng-types.js', 'test/tmp/all-ng-types.js')
-    cli(cmd.concat(['test/tmp/all-ng-types.js', '--fix-in-place']), out, err, exit)
-    exit.calledOnce.should.be.false
+  describe 'suppressUnused', ->
+    it 'success if a package required with "suppress unused" is not used', () ->
+      cli(cmd.concat(['test/fixtures/cli/suppress_unused.js', '--showSuccess']), out, err, exit)
+      exit.calledOnce.should.be.false
 
-    fixedSrc = fs.readFileSync('test/tmp/all-ng-types.js', encoding: 'utf8')
-    expected = fs.readFileSync('test/fixtures/cli/all-ng-types.fixed.txt', encoding: 'utf8')
-    fixedSrc.should.be.eql expected
-
-  it 'fix no provide lines file', () ->
-    fs.copySync('test/fixtures/cli/fix-no-provide.js', 'test/tmp/fix-no-provide.js')
-    cli(cmd.concat(['test/tmp/fix-no-provide.js', '--fix-in-place']), out, err, exit)
-    exit.calledOnce.should.be.false
-
-    fixedSrc = fs.readFileSync('test/tmp/fix-no-provide.js', encoding: 'utf8')
-    expected = fs.readFileSync('test/fixtures/cli/fix-no-provide.js.fixed.txt', encoding: 'utf8')
-    fixedSrc.should.be.eql expected
-
-  it 'fix require-only but not enough requirements file', () ->
-    fs.copySync('test/fixtures/cli/fix-comment-and-no-provide.js', 'test/tmp/fix-comment-and-no-provide.js')
-    cli(cmd.concat(['test/tmp/fix-comment-and-no-provide.js', '--fix-in-place']), out, err, exit)
-    exit.calledOnce.should.be.false
-
-    fixedSrc = fs.readFileSync('test/tmp/fix-comment-and-no-provide.js', encoding: 'utf8')
-    expected = fs.readFileSync('test/fixtures/cli/fix-comment-and-no-provide.js.fixed.txt', encoding: 'utf8')
-    fixedSrc.should.be.eql expected
-
-  it 'success if a package required with "suppress unused" is not used', () ->
-    cli(cmd.concat(['test/fixtures/cli/suppress_unused.js', '--showSuccess']), out, err, exit)
-    exit.calledOnce.should.be.false
-
-    expected = fs.readFileSync('test/fixtures/cli/suppress_unused.txt', encoding: 'utf8')
-    out.toString().should.be.eql expected
+      expected = fs.readFileSync('test/fixtures/cli/suppress_unused.txt', encoding: 'utf8')
+      out.toString().should.be.eql expected
 
   describe 'Options', ->
     it '--namespaceMethods', () ->
@@ -112,24 +86,9 @@ describe 'Command line', ->
       ]), out, err, exit)
       exit.calledOnce.should.be.true
       exit.firstCall.args.should.eql [1]
+      expectedErr = fs.readFileSync('test/fixtures/cli/ng.js.txt', encoding: 'utf8')
       out.toString().should.be.eql ''
-      err.toString().should.be.eql '''
-        File: test/fixtures/cli/ng.js
-
-        Provided:
-        - goog.bar
-        
-        Required:
-        - (none)
-        
-        Missing Require:
-        - goog.baz
-        
-        FAIL!
-
-        1 of 2 files failed
-
-        '''
+      err.toString().should.be.eql expectedErr
 
     it '--showSuccess', () ->
       cli(cmd.concat([
@@ -139,35 +98,38 @@ describe 'Command line', ->
       ]), out, err, exit)
       exit.calledOnce.should.be.true
       exit.firstCall.args.should.eql [1]
-      out.toString().should.be.eql '''
-        File: test/fixtures/cli/ok.js
+      expectedOk = fs.readFileSync('test/fixtures/cli/ok.js.txt', encoding: 'utf8')
+      expectedErr = fs.readFileSync('test/fixtures/cli/ng.js.txt', encoding: 'utf8')
+      out.toString().should.be.eql expectedOk
+      err.toString().should.be.eql expectedErr
 
-        Provided:
-        - goog.bar
+    describe '--fix-in-place', () ->
+      it 'fix in place all error types', () ->
+        fs.copySync('test/fixtures/cli/all-ng-types.js', 'test/tmp/all-ng-types.js')
+        cli(cmd.concat(['test/tmp/all-ng-types.js', '--fix-in-place']), out, err, exit)
+        exit.calledOnce.should.be.false
 
-        Required:
-        - goog.baz
+        fixedSrc = fs.readFileSync('test/tmp/all-ng-types.js', encoding: 'utf8')
+        expected = fs.readFileSync('test/fixtures/cli/all-ng-types.fixed.txt', encoding: 'utf8')
+        fixedSrc.should.be.eql expected
 
-        GREEN!
+      it 'fix no provide lines file', () ->
+        fs.copySync('test/fixtures/cli/fix-no-provide.js', 'test/tmp/fix-no-provide.js')
+        cli(cmd.concat(['test/tmp/fix-no-provide.js', '--fix-in-place']), out, err, exit)
+        exit.calledOnce.should.be.false
 
-      '''
-      err.toString().should.be.eql '''
-        File: test/fixtures/cli/ng.js
+        fixedSrc = fs.readFileSync('test/tmp/fix-no-provide.js', encoding: 'utf8')
+        expected = fs.readFileSync('test/fixtures/cli/fix-no-provide.js.fixed.txt', encoding: 'utf8')
+        fixedSrc.should.be.eql expected
 
-        Provided:
-        - goog.bar
+      it 'fix require-only but not enough requirements file', () ->
+        fs.copySync('test/fixtures/cli/fix-comment-and-no-provide.js', 'test/tmp/fix-comment-and-no-provide.js')
+        cli(cmd.concat(['test/tmp/fix-comment-and-no-provide.js', '--fix-in-place']), out, err, exit)
+        exit.calledOnce.should.be.false
 
-        Required:
-        - (none)
-
-        Missing Require:
-        - goog.baz
-
-        FAIL!
-
-        1 of 2 files failed
-
-        '''
+        fixedSrc = fs.readFileSync('test/tmp/fix-comment-and-no-provide.js', encoding: 'utf8')
+        expected = fs.readFileSync('test/fixtures/cli/fix-comment-and-no-provide.js.fixed.txt', encoding: 'utf8')
+        fixedSrc.should.be.eql expected
 
   describe '.fixclosurerc', ->
     cwd = null

@@ -1,0 +1,14 @@
+File: test/fixtures/cli/ng.js
+
+Provided:
+- goog.bar
+
+Required:
+- (none)
+
+Missing Require:
+- goog.baz
+
+FAIL!
+
+1 of 2 files failed

@@ -1,0 +1,9 @@
+File: test/fixtures/cli/ok.js
+
+Provided:
+- goog.bar
+
+Required:
+- goog.baz
+
+GREEN!
