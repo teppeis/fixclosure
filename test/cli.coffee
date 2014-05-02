@@ -46,7 +46,7 @@ describe 'Command line', ->
     cli(cmd.concat(['test/fixtures/cli/all-ng-types.js']), out, err, exit)
     exit.calledOnce.should.be.true
     exit.firstCall.args.should.eql [1]
-    expected = fs.readFileSync('test/fixtures/cli/all-ng-types.error.txt', encoding: 'utf8')
+    expected = fs.readFileSync('test/fixtures/cli/all-ng-types.js.error.txt', encoding: 'utf8')
     err.toString().should.be.eql expected
 
   describe 'suppressUnused', ->
@@ -54,7 +54,7 @@ describe 'Command line', ->
       cli(cmd.concat(['test/fixtures/cli/suppress_unused.js', '--showSuccess']), out, err, exit)
       exit.calledOnce.should.be.false
 
-      expected = fs.readFileSync('test/fixtures/cli/suppress_unused.txt', encoding: 'utf8')
+      expected = fs.readFileSync('test/fixtures/cli/suppress_unused.js.txt', encoding: 'utf8')
       out.toString().should.be.eql expected
 
   describe 'Options', ->
@@ -110,7 +110,7 @@ describe 'Command line', ->
         cli(cmd.concat([tmppath, '--fix-in-place']), out, err, exit)
         exit.calledOnce.should.be.false
         fixedSrc = fs.readFileSync(tmppath, encoding: 'utf8')
-        expected = fs.readFileSync('test/fixtures/cli/' + filename.replace(/\.js$/, '.fixed.txt'), encoding: 'utf8')
+        expected = fs.readFileSync('test/fixtures/cli/' + filename + '.fixed.txt', encoding: 'utf8')
         fixedSrc.should.be.eql expected
 
       it 'fix in place all error types', () ->
