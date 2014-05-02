@@ -68,12 +68,12 @@ describe 'Command line', ->
     fixedSrc.should.be.eql expected
 
   it 'fix require-only but not enough requirements file', () ->
-    fs.copySync('test/fixtures/cli/fix-no-provide2.js', 'test/tmp/fix-no-provide2.js')
-    cli(cmd.concat(['test/tmp/fix-no-provide2.js', '--fix-in-place']), out, err, exit)
+    fs.copySync('test/fixtures/cli/fix-comment-and-no-provide.js', 'test/tmp/fix-comment-and-no-provide.js')
+    cli(cmd.concat(['test/tmp/fix-comment-and-no-provide.js', '--fix-in-place']), out, err, exit)
     exit.calledOnce.should.be.false
 
-    fixedSrc = fs.readFileSync('test/tmp/fix-no-provide2.js', encoding: 'utf8')
-    expected = fs.readFileSync('test/fixtures/cli/fix-no-provide2.js.fixed.txt', encoding: 'utf8')
+    fixedSrc = fs.readFileSync('test/tmp/fix-comment-and-no-provide.js', encoding: 'utf8')
+    expected = fs.readFileSync('test/fixtures/cli/fix-comment-and-no-provide.js.fixed.txt', encoding: 'utf8')
     fixedSrc.should.be.eql expected
 
   it 'success if a package required with "suppress unused" is not used', () ->
