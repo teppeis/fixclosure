@@ -7,6 +7,8 @@ goog.foo.BarType;
  * @typedef {Element} .
  * @private
  */
-goog.foo.BazType_;
+goog.foo.PrivateType;
+
+goog.foo.NoJsDoc;
 
 // toProvide: goog.foo.BarType
