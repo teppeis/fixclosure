@@ -162,6 +162,9 @@ This is useful to workaround cyclic reference.
 
 ## Changelog
 
+* 1.2.1 (2014/05/30)
+  * Allow comment after an inline hint [#41](https://github.com/teppeis/fixclosure/pull/41)
+  * Use attachComment of Esprima 1.2 internaly [#40](https://github.com/teppeis/fixclosure/pull/40)
 * 1.2.0 (2014/05/02)
   * Don't insert a blank line with --fix-in-place [#38](https://github.com/teppeis/fixclosure/pull/38)
   * Update esprima 1.2.0
