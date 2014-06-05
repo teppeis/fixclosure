@@ -162,6 +162,8 @@ This is useful to workaround cyclic reference.
 
 ## Changelog
 
+* 1.2.2 (2014/06/05)
+  * Improve default namespace methods [#45](https://github.com/teppeis/fixclosure/pull/45)
 * 1.2.1 (2014/05/30)
   * Allow comment after an inline hint [#41](https://github.com/teppeis/fixclosure/pull/41)
   * Use attachComment of Esprima 1.2 internaly [#40](https://github.com/teppeis/fixclosure/pull/40)
