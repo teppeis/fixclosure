@@ -1,2 +1,2 @@
---roots=foo,bar
+--provideRoots=foo,bar
 --namespaceMethods=goog.foo.namespacemethod1

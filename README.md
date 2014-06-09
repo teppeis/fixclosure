@@ -89,7 +89,7 @@ Use [grunt-fixclosure](https://github.com/teppeis/grunt-fixclosure "grunt-fixclo
 
 fixclosure loads options from `.fixclosurerc` config file like:
 ```
---roots foo,bar
+--provideRoots foo,bar
 --namespaceMethods foo.foo1,bar.bar1
 --replaceMap foo.foobar:foo.foo
 ```
@@ -106,9 +106,15 @@ If an invalid file is found, fixclosure fixes the file in place.
 `.fixclosurerc` file path.  
 Specify if your file is not in the search path.
 
-### `--roots`
+### `--provideRoots`
 
-Specify your root namespaces in addition to default roots `goog,proto2,soy,soydata,svgpan`.  
+Specify your root namespaces to provide. Default is `goog`.
+Comma separated list.
+
+### `--requireRoots`
+
+Specify root namespaces to require.
+Default require roots are `--provideRoots` value and `goog,proto2,soy,soydata,svgpan`.
 Comma separated list.
 
 ### `--namespaceMethods`
@@ -129,6 +135,13 @@ Show not only failed files but also passed files.
 
 Disable color output.
 
+### `--roots`
+
+*Deprecated by `--provideRoots` and `--requireRoots`. This will be removed next update.*
+
+Specify your root namespaces in addition to default roots `goog,proto2,soy,soydata,svgpan`.
+Comma separated list.
+
 ## Inline hint
 
 fixclosure reads "hint" for lint from special comments in your code.
@@ -148,7 +161,7 @@ Also `goog.require('goog.bar')` will not removed if it isn't used.
 The hint affects only *same* line.
 Useful in module declaration.
 
-*`fixclosure: suppressUnused` is deprecated since v1.3.0.*
+*`fixclosure: suppressUnused` is deprecated and will be removed next update.*
 
 ### `suppressRequire`
 
@@ -177,8 +190,9 @@ The hint affects only *next* line.
 
 ## Changelog
 
-* 1.3.0 (2014/06/09)
-  * Add "fixclosure: ignore" and make "suppressUnused" deprecated [#44](https://github.com/teppeis/fixclosure/pull/44)
+* 1.4.0 (2014/06/XX)
+  * Add `--provideRoots` and `--requireRoots` and make `--roots` deprecated.
+  * Add "fixclosure: ignore" and make "fixclosure: suppressUnused" deprecated [#44](https://github.com/teppeis/fixclosure/pull/44)
   * Add "fixclosure: suppressProvide" [#43](https://github.com/teppeis/fixclosure/pull/43)
 * 1.2.2 (2014/06/05)
   * Improve default namespace methods [#45](https://github.com/teppeis/fixclosure/pull/45)

@@ -72,7 +72,62 @@ describe 'Command line', ->
       ]), out, err, exit)
       exit.called.should.be.false
 
-    it '--roots', () ->
+    describe '--provideRoots', () ->
+      it 'includes "goog,proto2,soy,soydata,svgpan" by default', () ->
+        cli(cmd.concat([
+          'test/fixtures/cli/provideRootsDefault.js'
+        ]), out, err, exit)
+        sinon.assert.notCalled exit
+
+      it 'does not include "foo,bar" by default', () ->
+        cli(cmd.concat([
+          'test/fixtures/cli/provideRoots.js',
+        ]), out, err, exit)
+        sinon.assert.called exit
+
+      it 'includes specified roots', () ->
+        cli(cmd.concat([
+          'test/fixtures/cli/provideRoots.js',
+          '--provideRoots=foo,bar'
+        ]), out, err, exit)
+        sinon.assert.notCalled exit
+
+      it 'does not include default roots if a value is specified', () ->
+        cli(cmd.concat([
+          'test/fixtures/cli/provideRootsDefault.js',
+          '--provideRoots=foo,bar'
+        ]), out, err, exit)
+        sinon.assert.called exit
+
+    describe '--requireRoots', () ->
+      it 'includes "goog,proto2,soy,soydata,svgpan" by default', () ->
+        cli(cmd.concat([
+          'test/fixtures/cli/requireRootsDefault.js'
+        ]), out, err, exit)
+        sinon.assert.notCalled exit
+
+      it 'does not include "foo,bar"', () ->
+        cli(cmd.concat([
+          'test/fixtures/cli/requireRoots.js',
+          '--requireRoots=foo,bar'
+        ]), out, err, exit)
+        sinon.assert.notCalled exit
+
+      it 'includes specified roots', () ->
+        cli(cmd.concat([
+          'test/fixtures/cli/requireRoots.js',
+          '--requireRoots=foo,bar'
+        ]), out, err, exit)
+        sinon.assert.notCalled exit
+
+      it 'does not include default roots if specified', () ->
+        cli(cmd.concat([
+          'test/fixtures/cli/requireRootsDefault.js',
+          '--requireRoots=foo,bar'
+        ]), out, err, exit)
+        sinon.assert.called exit
+
+    it '--roots (deprecated)', () ->
       cli(cmd.concat([
         'test/fixtures/cli/roots.js',
         '--roots=foo,bar'
