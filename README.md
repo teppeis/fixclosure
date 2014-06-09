@@ -133,17 +133,18 @@ Disable color output.
 
 fixclosure reads "hint" for lint from special comments in your code.
 
-### `suppressUnused`
+### `ignore`
 
-Suppress `goog.require` auto removing.
+fixclosure doesn't remove any `goog.provide` and `goog.require` with this hint.
 
 ```javascript
-goog.require('goog.foo');
-goog.require('goog.unused.in.this.file'); // fixclosure: suppressUnused
-goog.require('goog.bar');
+goog.provide('goog.foo'); // fixclosure: ignore
+
+goog.require('goog.bar'); // fixclosure: ignore
 ```
 
-In the above, `goog.require('goog.unused.in.this.file')` will not removed by fixclosure even if it isn't used in the file.
+In the above, `goog.provide('goog.foo')` will not removed by fixclosure even if it isn't provided in the file.
+Also `goog.require('goog.bar')` will not removed if it isn't used.
 The hint affects only *same* line.
 Useful in module declaration.
 
