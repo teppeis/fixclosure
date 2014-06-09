@@ -1,4 +1,4 @@
-File: test/fixtures/cli/suppress_unused.js
+File: test/fixtures/cli/ignore_require.js
 
 Provided:
 - (none)

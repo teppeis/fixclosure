@@ -7,5 +7,5 @@ goog.require('goog.bao'); // fixclosure: suppressUnused with comment
 // required: goog.bar
 // required: goog.baz
 // required: goog.foo
-// suppressedRequire: goog.bao
-// suppressedRequire: goog.bar
+// ignoredRequire: goog.bao
+// ignoredRequire: goog.bar

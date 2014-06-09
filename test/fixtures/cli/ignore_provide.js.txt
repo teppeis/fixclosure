@@ -1,0 +1,11 @@
+File: test/fixtures/cli/ignore_provide.js
+
+Provided:
+- goog.foo (ignored)
+
+Required:
+- (none)
+
+GREEN!
+
+1 files completed

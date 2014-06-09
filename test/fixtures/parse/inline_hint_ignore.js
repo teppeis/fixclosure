@@ -12,6 +12,6 @@ goog.require('goog.bao'); // fixclosure: ignore with comment
 // required: goog.bar
 // required: goog.baz
 // required: goog.foo
-// suppressedProvide: goog.p2
-// suppressedRequire: goog.bao
-// suppressedRequire: goog.bar
+// ignoredProvide: goog.p2
+// ignoredRequire: goog.bao
+// ignoredRequire: goog.bar
