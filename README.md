@@ -106,7 +106,20 @@ If an invalid file is found, fixclosure fixes the file in place.
 `.fixclosurerc` file path.  
 Specify if your file is not in the search path.
 
+### `--provideRoots`
+
+Specify your root namespaces to provide. Default is an empty list.
+Comma separated list.
+
+### `--requireRoots`
+
+Specify root namespaces to require.
+Default require roots are `--provideRoots` and `goog,proto2,soy,soydata,svgpan`.
+Comma separated list.
+
 ### `--roots`
+
+*Deprecated by `--provideRoots` and `--requireRoots`. This will be removed next update.*
 
 Specify your root namespaces in addition to default roots `goog,proto2,soy,soydata,svgpan`.  
 Comma separated list.
@@ -148,7 +161,7 @@ Also `goog.require('goog.bar')` will not removed if it isn't used.
 The hint affects only *same* line.
 Useful in module declaration.
 
-*`fixclosure: suppressUnused` is deprecated since v1.3.0.*
+*`fixclosure: suppressUnused` is deprecated and will be removed next update.*
 
 ### `suppressRequire`
 
