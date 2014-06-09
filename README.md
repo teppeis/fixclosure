@@ -89,7 +89,7 @@ Use [grunt-fixclosure](https://github.com/teppeis/grunt-fixclosure "grunt-fixclo
 
 fixclosure loads options from `.fixclosurerc` config file like:
 ```
---roots foo,bar
+--provideRoots foo,bar
 --namespaceMethods foo.foo1,bar.bar1
 --replaceMap foo.foobar:foo.foo
 ```
@@ -108,20 +108,13 @@ Specify if your file is not in the search path.
 
 ### `--provideRoots`
 
-Specify your root namespaces to provide. Default is an empty list.
+Specify your root namespaces to provide. Default is `goog`.
 Comma separated list.
 
 ### `--requireRoots`
 
 Specify root namespaces to require.
-Default require roots are `--provideRoots` and `goog,proto2,soy,soydata,svgpan`.
-Comma separated list.
-
-### `--roots`
-
-*Deprecated by `--provideRoots` and `--requireRoots`. This will be removed next update.*
-
-Specify your root namespaces in addition to default roots `goog,proto2,soy,soydata,svgpan`.  
+Default require roots are `--provideRoots` value and `goog,proto2,soy,soydata,svgpan`.
 Comma separated list.
 
 ### `--namespaceMethods`
@@ -141,6 +134,13 @@ Show not only failed files but also passed files.
 ### `--no-color`
 
 Disable color output.
+
+### `--roots`
+
+*Deprecated by `--provideRoots` and `--requireRoots`. This will be removed next update.*
+
+Specify your root namespaces in addition to default roots `goog,proto2,soy,soydata,svgpan`.
+Comma separated list.
 
 ## Inline hint
 
@@ -190,8 +190,9 @@ The hint affects only *next* line.
 
 ## Changelog
 
-* 1.3.0 (2014/06/09)
-  * Add "fixclosure: ignore" and make "suppressUnused" deprecated [#44](https://github.com/teppeis/fixclosure/pull/44)
+* 1.4.0 (2014/06/XX)
+  * Add `--provideRoots` and `--requireRoots` and make `--roots` deprecated.
+  * Add "fixclosure: ignore" and make "fixclosure: suppressUnused" deprecated [#44](https://github.com/teppeis/fixclosure/pull/44)
   * Add "fixclosure: suppressProvide" [#43](https://github.com/teppeis/fixclosure/pull/43)
 * 1.2.2 (2014/06/05)
   * Improve default namespace methods [#45](https://github.com/teppeis/fixclosure/pull/45)
