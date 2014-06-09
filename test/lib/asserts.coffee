@@ -21,6 +21,10 @@ exports.assertFile = (file) ->
   toRequire = while (matches = regex.exec src) != null
     matches[1]
 
+  regex = /^\/\/ suppressedProvide: (.*)/gm
+  suppressedProvide = while (matches = regex.exec src) != null
+    matches[1]
+
   regex = /^\/\/ suppressedRequire: (.*)/gm
   suppressedRequire = while (matches = regex.exec src) != null
     matches[1]
@@ -32,4 +36,5 @@ exports.assertFile = (file) ->
   info.required.should.be.eql required
   info.toProvide.should.be.eql toProvide
   info.toRequire.should.be.eql toRequire
+  info.suppressedProvide.should.be.eql suppressedProvide
   info.suppressedRequire.should.be.eql suppressedRequire
