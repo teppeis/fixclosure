@@ -8,7 +8,7 @@ Provided:
 Required:
 - goog.require.dup
 - goog.require.dup
-- goog.require.suppress
+- goog.require.suppress (ignored)
 - goog.require.unnecessary
 
 Duplicated Provide:
@@ -28,9 +28,6 @@ Missing Require:
 
 Unnecessary Require:
 - goog.require.unnecessary
-
-Unnecessary Require (Suppressed):
-- goog.require.suppress
 
 FAIL!
 

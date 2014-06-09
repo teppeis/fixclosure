@@ -4,10 +4,7 @@ Provided:
 - (none)
 
 Required:
-- goog.foo
-
-Unnecessary Require (Suppressed):
-- goog.foo
+- goog.foo (ignored)
 
 GREEN!
 
