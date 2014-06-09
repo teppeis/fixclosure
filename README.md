@@ -148,6 +148,8 @@ Also `goog.require('goog.bar')` will not removed if it isn't used.
 The hint affects only *same* line.
 Useful in module declaration.
 
+*`fixclosure: suppressUnused` is deprecated since v1.3.0.*
+
 ### `suppressRequire`
 
 Suppress `goog.require` auto insertion.
@@ -157,12 +159,27 @@ Suppress `goog.require` auto insertion.
 goog.foo.bar();
 ```
 
-In the above, `goog.require('foo')` will not inserted by fixclosure.
+In the above, `goog.require('goog.foo')` will not inserted.
 The hint affects only *next* line.
 This is useful to workaround cyclic reference.
 
+### `suppressProvide`
+
+Suppress `goog.provide` auto insertion.
+
+```javascript
+// fixclosure: suppressProvide
+goog.Foo = function() {};
+```
+
+In the above, `goog.provide('goog.Foo')` will not inserted.
+The hint affects only *next* line.
+
 ## Changelog
 
+* 1.3.0 (2014/06/09)
+  * Add "fixclosure: ignore" and make "suppressUnused" deprecated [#44](https://github.com/teppeis/fixclosure/pull/44)
+  * Add "fixclosure: suppressProvide" [#43](https://github.com/teppeis/fixclosure/pull/43)
 * 1.2.2 (2014/06/05)
   * Improve default namespace methods [#45](https://github.com/teppeis/fixclosure/pull/45)
 * 1.2.1 (2014/05/30)
