@@ -1,1 +1,1 @@
-goog.require('goog.foo'); // fixclosure: suppressUnused
+goog.require('goog.foo'); // fixclosure: ignore

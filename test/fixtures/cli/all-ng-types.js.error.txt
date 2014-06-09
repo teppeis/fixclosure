@@ -3,12 +3,13 @@ File: test/fixtures/cli/all-ng-types.js
 Provided:
 - goog.provide.dup
 - goog.provide.dup
+- goog.provide.ignore (ignored)
 - goog.provide.unnecessary
 
 Required:
 - goog.require.dup
 - goog.require.dup
-- goog.require.suppress (ignored)
+- goog.require.ignore (ignored)
 - goog.require.unnecessary
 
 Duplicated Provide:

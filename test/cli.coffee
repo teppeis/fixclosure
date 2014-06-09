@@ -49,8 +49,8 @@ describe 'Command line', ->
     expected = fs.readFileSync('test/fixtures/cli/all-ng-types.js.error.txt', encoding: 'utf8')
     err.toString().should.be.eql expected
 
-  describe 'suppressUnused', ->
-    it 'success if a package required with "suppress unused" is not used', () ->
+  describe 'ignore', ->
+    it 'ignores goog.require with "fixclosre: ignore" even if it is not used', () ->
       cli(cmd.concat(['test/fixtures/cli/suppress_unused.js', '--showSuccess']), out, err, exit)
       exit.calledOnce.should.be.false
 
