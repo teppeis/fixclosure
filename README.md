@@ -190,7 +190,7 @@ The hint affects only *next* line.
 
 ## Changelog
 
-* 1.4.0 (2014/06/XX)
+* 1.3.0 (2014/06/10)
   * Add `--provideRoots` and `--requireRoots` and make `--roots` deprecated.
   * Add "fixclosure: ignore" and make "fixclosure: suppressUnused" deprecated [#44](https://github.com/teppeis/fixclosure/pull/44)
   * Add "fixclosure: suppressProvide" [#43](https://github.com/teppeis/fixclosure/pull/43)
