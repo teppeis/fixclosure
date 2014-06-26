@@ -190,6 +190,8 @@ The hint affects only *next* line.
 
 ## Changelog
 
+* 1.3.2 (2014/06/25)
+  * Bugfix: Add goog.dom.BufferedViewportSizeMonitor.EventType to default replace map [#47](https://github.com/teppeis/fixclosure/pull/47)
 * 1.3.1 (2014/06/18)
   * Bugfix: Don't remove ignored provides [#46](https://github.com/teppeis/fixclosure/pull/46)
 * 1.3.0 (2014/06/10)
