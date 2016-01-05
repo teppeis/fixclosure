@@ -2,7 +2,7 @@ fixclosure [![Build Status](https://secure.travis-ci.org/teppeis/fixclosure.png?
 ====
 
 fixclosure is JavaScript dependency checker/fixer for Closure Library based on Esprima.  
-It finds namespaces used in a JavaScript file and insert/remove `goog.provide` / `goog.require` automatically. 
+It finds namespaces used in a JavaScript file and insert/remove `goog.provide` / `goog.require` automatically.
 
 ## Install
 
@@ -93,7 +93,7 @@ fixclosure loads options from `.fixclosurerc` config file like:
 --namespaceMethods foo.foo1,bar.bar1
 --replaceMap foo.foobar:foo.foo
 ```
-fixclosure will find the file in the current directory and, if not found, will move one level up the directory tree all the way up to the filesystem root. 
+fixclosure will find the file in the current directory and, if not found, will move one level up the directory tree all the way up to the filesystem root.
 
 ## Options
 
@@ -190,6 +190,8 @@ The hint affects only *next* line.
 
 ## Changelog
 
+* 1.3.3 (2016/01/05)
+  * Add check for @extends using with @interface [#49](https://github.com/teppeis/fixclosure/pull/49)
 * 1.3.2 (2014/06/25)
   * Bugfix: Add goog.dom.BufferedViewportSizeMonitor.EventType to default replace map [#47](https://github.com/teppeis/fixclosure/pull/47)
 * 1.3.1 (2014/06/18)
