@@ -7,7 +7,8 @@
     "fixclosure": "./bin/fixclosure.js"
   },
   "scripts": {
-    "test": "node_modules/grunt-cli/bin/grunt",
+    "lint": "eslint lib",
+    "test": "grunt",
     "blanket": {
       "pattern": "/fixclosure/lib/"
     }
@@ -19,6 +20,7 @@
     "chai": "^1.9.1",
     "coffee-script": "^1.7.1",
     "coveralls": "^2.10.0",
+    "eslint": "^2.3.0",
     "fs-extra": "^0.8.1",
     "grunt": "^0.4.4",
     "grunt-cli": "^0.1.13",
@@ -30,6 +32,7 @@
     "sinon": "^1.9.1"
   },
   "dependencies": {
+    "chai": "^3.5.0",
     "cli-color": "^1.1.0",
     "commander": "^2.2.0",
     "doctrine": "^1.2.0",
