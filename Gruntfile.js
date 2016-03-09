@@ -2,17 +2,6 @@
 
 module.exports = function(grunt) {
   grunt.initConfig({
-    jshint: {
-      all: [
-        'Gruntfile.js',
-        'index.js',
-        'lib/*.js',
-        'bin/*.js'
-      ],
-      options: {
-        jshintrc: '.jshintrc',
-      },
-    },
     mochacov: {
       options: {
         files: ['test/*.coffee']
@@ -33,7 +22,6 @@ module.exports = function(grunt) {
     watch: {
       test: {
         files: [
-          '.jshintrc',
           'Gruntfile.js',
           'index.js',
           'bin/**/*',
@@ -44,12 +32,11 @@ module.exports = function(grunt) {
       }
     }
   });
-  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-cov');
 
   grunt.registerTask('coveralls', ['mochacov:coveralls']);
-  var testTasks = ['jshint', 'mochacov:test'];
+  var testTasks = ['mochacov:test'];
   if (process.env.TRAVIS_JOB_ID) {
     testTasks.push('coveralls');
   }
