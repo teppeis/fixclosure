@@ -16,24 +16,24 @@
   "author": "Teppei Sato <teppeis@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "chai": "~1.9.1",
-    "coffee-script": "~1.7.1",
-    "coveralls": "~2.10.0",
-    "fs-extra": "~0.8.1",
-    "grunt": "~0.4.4",
-    "grunt-cli": "~0.1.13",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-contrib-watch": "~0.6.1",
+    "chai": "^1.9.1",
+    "coffee-script": "^1.7.1",
+    "coveralls": "^2.10.0",
+    "fs-extra": "^0.8.1",
+    "grunt": "^0.4.4",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
     "grunt-mocha-cov": "0.2.1",
-    "mocha": "~1.18.2",
+    "mocha": "^1.18.2",
     "mocha-lcov-reporter": "0.0.1",
-    "sinon": "~1.9.1"
+    "sinon": "^1.9.1"
   },
   "dependencies": {
-    "cli-color": "~0.3.2",
-    "commander": "~2.2.0",
-    "doctrine": "~0.5.1",
-    "esprima": "~1.2.0",
-    "underscore": "~1.6.0"
+    "cli-color": "^0.3.2",
+    "commander": "^2.2.0",
+    "doctrine": "^0.5.1",
+    "esprima": "^1.2.0",
+    "underscore": "^1.6.0"
   }
 }
