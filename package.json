@@ -30,10 +30,10 @@
     "sinon": "^1.9.1"
   },
   "dependencies": {
-    "cli-color": "^0.3.2",
+    "cli-color": "^1.1.0",
     "commander": "^2.2.0",
-    "doctrine": "^0.5.1",
-    "esprima": "^1.2.0",
+    "doctrine": "^1.2.0",
+    "esprima": "^2.7.2",
     "underscore": "^1.6.0"
   }
 }
