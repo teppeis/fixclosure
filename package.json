@@ -8,7 +8,7 @@
   },
   "scripts": {
     "lint": "eslint lib",
-    "test": "grunt",
+    "test": "npm run lint && grunt",
     "blanket": {
       "pattern": "/fixclosure/lib/"
     }
@@ -24,7 +24,6 @@
     "fs-extra": "^0.8.1",
     "grunt": "^0.4.4",
     "grunt-cli": "^0.1.13",
-    "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-mocha-cov": "0.2.1",
     "mocha": "^1.18.2",
