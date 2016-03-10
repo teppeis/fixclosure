@@ -1,11 +1,6 @@
-var dir = './lib/';
-if (process.env.COVERAGE) {
-  dir = './lib-cov/';
-}
-
-var Parser = require(dir + 'parser');
-var cli = require(dir + 'cli');
-var fix = require(dir + 'fix');
+var Parser = require('./lib/parser');
+var cli = require('./lib/cli');
+var fix = require('./lib/fix');
 
 module.exports.Parser = Parser;
 module.exports.fix = fix;
