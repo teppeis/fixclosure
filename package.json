@@ -8,7 +8,9 @@
   },
   "scripts": {
     "lint": "eslint lib",
-    "test": "npm run lint && grunt",
+    "test": "npm run lint && mocha test",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha --report text-lcov --print none -- -R base | coveralls",
+    "ci": "npm run lint && npm run coverage",
     "blanket": {
       "pattern": "/fixclosure/lib/"
     }
@@ -19,15 +21,11 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "coffee-script": "^1.7.1",
-    "coveralls": "^2.10.0",
+    "coveralls": "^2.11.8",
     "eslint": "^2.3.0",
     "fs-extra": "^0.26.5",
-    "grunt": "^0.4.4",
-    "grunt-cli": "^0.1.13",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-mocha-cov": "^0.4.0",
+    "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
-    "mocha-lcov-reporter": "^1.2.0",
     "sinon": "^1.9.1"
   },
   "dependencies": {
