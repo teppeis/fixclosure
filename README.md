@@ -190,6 +190,8 @@ The hint affects only *next* line.
 
 ## Changelog
 
+* 1.3.4 (2016/03/10)
+  * Update dependencies [#50](https://github.com/teppeis/fixclosure/pull/50), [#51](https://github.com/teppeis/fixclosure/pull/51), [#52](https://github.com/teppeis/fixclosure/pull/52)
 * 1.3.3 (2016/01/05)
   * Add check for @extends using with @interface [#49](https://github.com/teppeis/fixclosure/pull/49)
 * 1.3.2 (2014/06/25)
