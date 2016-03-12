@@ -1,15 +1,15 @@
-/**
- * @param {Element} e A click event.
- */
-goog.Foo1.prototype.handleClick = function(e) {
-  var obj = {
-    property1: {
-      property2: 'yeah'
-    }
-  };
+function foo() {
+  var goog = {};
+  // should not be required
+  new goog.Foo();
+}
 
-  e.target.id;
-  obj.property1.property2;
-};
+function bar(goog) {
+  // should not be required
+  new goog.Bar();
+}
 
-// toProvide: goog.Foo1
+(function(goog) {
+  // should not be required
+  new goog.Baz();
+});

@@ -22,6 +22,7 @@
     "coffee-script": "^1.7.1",
     "coveralls": "^2.11.8",
     "eslint": "^2.3.0",
+    "estraverse": "^4.2.0",
     "fs-extra": "^0.26.5",
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
