@@ -2,7 +2,7 @@ require('chai').should()
 Parser = require('../../').Parser
 fs = require 'fs'
 
-exports.assertFile = (file) ->
+exports.assertFile = (file, options) ->
   src = fs.readFileSync(__dirname + '/../fixtures' + file, 'utf8')
 
   regex = /^\/\/ provided: (.*)/gm
@@ -29,7 +29,7 @@ exports.assertFile = (file) ->
   ignoredRequire = while (matches = regex.exec src) != null
     matches[1]
 
-  parser = new Parser()
+  parser = new Parser(options)
   info = parser.parse(src)
   #info.should.have.keys ['provided', 'required', 'toProvide', 'toRequire']
   info.provided.should.be.eql provided
