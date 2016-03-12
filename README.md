@@ -190,6 +190,9 @@ The hint affects only *next* line.
 
 ## Changelog
 
+* 1.3.5 (2016/03/12)
+  * Use estraverse [#56](https://github.com/teppeis/fixclosure/pull/56)
+  * Use istanbul for test coverage
 * 1.3.4 (2016/03/10)
   * Update dependencies [#50](https://github.com/teppeis/fixclosure/pull/50), [#51](https://github.com/teppeis/fixclosure/pull/51), [#52](https://github.com/teppeis/fixclosure/pull/52)
 * 1.3.3 (2016/01/05)
