@@ -9,11 +9,10 @@
   "scripts": {
     "lint": "eslint lib",
     "test": "npm run lint && mocha test",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha --report text-lcov --print none -- -R base | coveralls",
-    "ci": "npm run lint && npm run coverage",
-    "blanket": {
-      "pattern": "/fixclosure/lib/"
-    }
+    "coverage:test": "rm -rf ./coverage && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly",
+    "coverage:report": "cat ./coverage/lcov.info | coveralls",
+    "coverage": "npm run coverage:test && npm run coverage:report",
+    "ci": "npm run lint && npm run coverage"
   },
   "repository": "https://github.com/teppeis/fixclosure",
   "author": "Teppei Sato <teppeis@gmail.com>",
