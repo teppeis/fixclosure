@@ -1,7 +1,7 @@
 {
   "name": "fixclosure",
   "version": "1.4.0",
-  "description": "JavaScript dependency checker/fixer for Closure Library based on Esprima",
+  "description": "JavaScript dependency checker/fixer for Closure Library based on ECMAScript AST",
   "main": "index.js",
   "bin": {
     "fixclosure": "./bin/fixclosure.js"
