@@ -1,7 +1,7 @@
 fixclosure [![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][deps-image]][deps-url] [![Coverage Status][coverage-image]][coverage-url]
 ====
 
-fixclosure is JavaScript dependency checker/fixer for Closure Library based on Esprima.  
+fixclosure is JavaScript dependency checker/fixer for Closure Library based on ECMAScript AST.
 It finds namespaces used in a JavaScript file and insert/remove `goog.provide` / `goog.require` automatically.
 
 ## Install
@@ -190,6 +190,9 @@ The hint affects only *next* line.
 
 ## Changelog
 
+* 1.5.0 (2016/03/13)
+  * Feat: Support JSX [#60](https://github.com/teppeis/fixclosure/pull/60)
+  * Internal: Use espree instead of esprima [#59](https://github.com/teppeis/fixclosure/pull/59)
 * 1.4.0 (2016/03/13)
   * Feat: Support ES6 syntax [#58](https://github.com/teppeis/fixclosure/pull/58)
 * 1.3.5 (2016/03/12)
