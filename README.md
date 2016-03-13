@@ -1,4 +1,4 @@
-fixclosure [![Build Status](https://secure.travis-ci.org/teppeis/fixclosure.png?branch=master)](https://travis-ci.org/teppeis/fixclosure) [![Dependency Status](https://david-dm.org/teppeis/fixclosure.png)](https://david-dm.org/teppeis/fixclosure) [![Coverage Status](https://coveralls.io/repos/teppeis/fixclosure/badge.png?branch=master&1)](https://coveralls.io/r/teppeis/fixclosure)
+fixclosure [![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][deps-image]][deps-url] [![Coverage Status][coverage-image]][coverage-url]
 ====
 
 fixclosure is JavaScript dependency checker/fixer for Closure Library based on Esprima.  
@@ -254,3 +254,13 @@ The hint affects only *next* line.
 ### License
 
 MIT License: Teppei Sato <teppeis@gmail.com>
+
+[npm-image]: https://img.shields.io/npm/v/fixclosure.svg
+[npm-url]: https://npmjs.org/package/fixclosure
+[npm-downloads-image]: https://img.shields.io/npm/dm/fixclosure.svg
+[travis-image]: https://travis-ci.org/teppeis/fixclosure.svg?branch=master
+[travis-url]: https://travis-ci.org/teppeis/fixclosure
+[deps-image]: https://david-dm.org/teppeis/fixclosure.svg
+[deps-url]: https://david-dm.org/teppeis/fixclosure
+[coverage-image]: https://coveralls.io/repos/github/teppeis/fixclosure/badge.svg?branch=master
+[coverage-url]: https://coveralls.io/github/teppeis/fixclosure?branch=master
