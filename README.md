@@ -190,6 +190,8 @@ The hint affects only *next* line.
 
 ## Changelog
 
+* 1.5.1 (2016/03/14)
+  * Bugfix: change estraverse(-fb) to dependencies [#61](https://github.com/teppeis/fixclosure/pull/61)
 * 1.5.0 (2016/03/13)
   * Feat: Support JSX [#60](https://github.com/teppeis/fixclosure/pull/60)
   * Internal: Use espree instead of esprima [#59](https://github.com/teppeis/fixclosure/pull/59)
