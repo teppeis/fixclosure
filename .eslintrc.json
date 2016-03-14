@@ -3,7 +3,17 @@
     "node": true
   },
   "extends": "eslint:recommended",
+  "plugins": ["node"],
   "rules": {
+    // eslint-plugin-node
+    "node/no-missing-import": 2,
+    "node/no-missing-require": 2,
+    "node/no-unpublished-import": 2,
+    "node/no-unpublished-require": 2,
+    "node/no-unsupported-features": [2, {"version": 0.10}],
+    "node/shebang": 2,
+
+    // builtin rules
     "accessor-pairs": "error",
     "array-bracket-spacing": "off",
     "array-callback-return": "off",
