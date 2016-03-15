@@ -190,6 +190,8 @@ The hint affects only *next* line.
 
 ## Changelog
 
+* 1.5.2 (2016/03/15)
+  * Build: use eslint-plugin-node and exclude test directory from npm package [#62](https://github.com/teppeis/fixclosure/pull/62)
 * 1.5.1 (2016/03/14)
   * Bugfix: change estraverse(-fb) to dependencies [#61](https://github.com/teppeis/fixclosure/pull/61)
 * 1.5.0 (2016/03/13)
