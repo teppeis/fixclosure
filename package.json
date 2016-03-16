@@ -1,6 +1,6 @@
 {
   "name": "fixclosure",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "JavaScript dependency checker/fixer for Closure Library based on ECMAScript AST",
   "main": "index.js",
   "bin": {
