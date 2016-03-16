@@ -190,6 +190,8 @@ The hint affects only *next* line.
 
 ## Changelog
 
+* 1.5.3 (2016/03/16)
+  * Bugfix: missing index.js in published package [#63](https://github.com/teppeis/fixclosure/pull/63)
 * 1.5.2 (2016/03/15)
   * Build: use eslint-plugin-node and exclude test directory from npm package [#62](https://github.com/teppeis/fixclosure/pull/62)
 * 1.5.1 (2016/03/14)
