@@ -25,7 +25,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "coffee-script": "^1.7.1",
-    "coveralls": "^2.11.8",
+    "coveralls": "^2.11.9",
     "eslint": "^2.3.0",
     "eslint-plugin-node": "^1.0.0",
     "fs-extra": "^0.26.5",
