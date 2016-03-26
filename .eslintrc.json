@@ -1,10 +1,6 @@
 {
   "extends": "teppeis/node",
   "rules": {
-    "newline-per-chained-call": 0,
-    "no-magic-numbers": [1, {"ignoreArrayIndexes": true, "ignore": [0, 1]}],
-    "no-use-before-define": 0,
-
     "dot-location": [2, "object"],
     "no-sync": 0
   }
