@@ -1,37 +1,24 @@
 {
   "name": "fixclosure",
-  "version": "1.5.3",
   "description": "JavaScript dependency checker/fixer for Closure Library based on ECMAScript AST",
+  "version": "1.5.3",
+  "author": "Teppei Sato <teppeis@gmail.com>",
   "main": "index.js",
   "bin": {
     "fixclosure": "./bin/fixclosure.js"
-  },
-  "scripts": {
-    "lint": "eslint lib",
-    "test": "npm run lint && mocha test",
-    "coverage:test": "rm -rf ./coverage && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly",
-    "coverage:report": "cat ./coverage/lcov.info | coveralls",
-    "coverage": "npm run coverage:test && npm run coverage:report",
-    "ci": "npm run lint && npm run coverage"
   },
   "files": [
     "index.js",
     "bin",
     "lib"
   ],
-  "repository": "https://github.com/teppeis/fixclosure",
-  "author": "Teppei Sato <teppeis@gmail.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "coffee-script": "^1.7.1",
-    "coveralls": "^2.11.9",
-    "eslint": "^2.5.1",
-    "eslint-plugin-node": "^1.0.0",
-    "fs-extra": "^0.26.5",
-    "istanbul": "^0.4.2",
-    "mocha": "^2.4.5",
-    "sinon": "^1.9.1"
+  "scripts": {
+    "ci": "npm run lint && npm run coverage",
+    "coverage": "npm run coverage:test && npm run coverage:report",
+    "coverage:report": "cat ./coverage/lcov.info | coveralls",
+    "coverage:test": "rm -rf ./coverage && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly",
+    "lint": "eslint lib",
+    "test": "npm run lint && mocha test"
   },
   "dependencies": {
     "cli-color": "^1.1.0",
@@ -41,5 +28,19 @@
     "estraverse": "^4.2.0",
     "estraverse-fb": "^1.3.1",
     "underscore": "^1.6.0"
-  }
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coffee-script": "^1.7.1",
+    "coveralls": "^2.11.9",
+    "eslint": "^2.5.1",
+    "eslint-config-teppeis": "^1.0.1",
+    "eslint-plugin-node": "^1.0.0",
+    "fs-extra": "^0.26.5",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "sinon": "^1.9.1"
+  },
+  "repository": "https://github.com/teppeis/fixclosure",
+  "license": "MIT"
 }
