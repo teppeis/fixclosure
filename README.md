@@ -1,8 +1,15 @@
-fixclosure [![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][deps-image]][deps-url] [![Coverage Status][coverage-image]][coverage-url]
+fixclosure
 ====
 
 fixclosure is JavaScript dependency checker/fixer for Closure Library based on ECMAScript AST.
 It finds namespaces used in a JavaScript file and insert/remove `goog.provide` / `goog.require` automatically.
+
+[![npm version][npm-image]][npm-url]
+![Node.js Version Support][node-version]
+[![Build Status][travis-image]][travis-url]
+[![Dependency Status][deps-image]][deps-url]
+[![Coverage Status][coverage-image]][coverage-url]
+![License][license]
 
 ## Install
 
@@ -271,5 +278,7 @@ MIT License: Teppei Sato <teppeis@gmail.com>
 [travis-url]: https://travis-ci.org/teppeis/fixclosure
 [deps-image]: https://david-dm.org/teppeis/fixclosure.svg
 [deps-url]: https://david-dm.org/teppeis/fixclosure
+[node-version]: https://img.shields.io/badge/Node.js%20support-v0.12–v6-brightgreen.svg
 [coverage-image]: https://coveralls.io/repos/github/teppeis/fixclosure/badge.svg?branch=master
 [coverage-url]: https://coveralls.io/github/teppeis/fixclosure?branch=master
+[license]: https://img.shields.io/npm/l/eslint-config-teppeis.svg
