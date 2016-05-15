@@ -37,7 +37,7 @@
     "coffee-script": "^1.7.1",
     "coveralls": "^2.11.9",
     "eslint": "^2.5.1",
-    "eslint-config-teppeis": "^2.3.0",
+    "eslint-config-teppeis": "^2.4.0",
     "eslint-plugin-node": "^1.0.0",
     "fs-extra": "^0.30.0",
     "istanbul": "^0.4.3",
