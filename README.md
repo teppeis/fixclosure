@@ -197,6 +197,10 @@ The hint affects only *next* line.
 
 ## Changelog
 
+* 1.5.4 (2016/05/29)
+  * Internal: Update dependencies
+  * Internal: Use ESLint and [eslint-config-teppeis](https://github.com/teppeis/eslint-config-teppeis)
+  * Internal: Testing in Node v0.12, v4 and v6 on Travis.CI (v0.10 and v5 are removed)
 * 1.5.3 (2016/03/16)
   * Bugfix: missing index.js in published package [#63](https://github.com/teppeis/fixclosure/pull/63)
 * 1.5.2 (2016/03/15)
