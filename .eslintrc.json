@@ -1,5 +1,5 @@
 {
-  "extends": "teppeis/node",
+  "extends": "teppeis/node-v4",
   "rules": {
     "dot-location": [2, "object"],
     "no-sync": 0
