@@ -4,7 +4,7 @@
   "version": "1.5.4",
   "author": "Teppei Sato <teppeis@gmail.com>",
   "engines": {
-    "node": ">=0.12"
+    "node": ">=4"
   },
   "main": "index.js",
   "bin": {
