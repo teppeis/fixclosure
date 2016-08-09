@@ -2,7 +2,7 @@
   "extends": "teppeis/node-v4",
   "rules": {
     "dot-location": [2, "object"],
-    "prefer-arrow-callback": 0,
+    "prefer-arrow-callback": 1,
     "no-sync": 0
   }
 }
