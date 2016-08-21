@@ -40,7 +40,7 @@
     "eslint-config-teppeis": "^3.3.0",
     "eslint-plugin-node": "^2.0.0",
     "fs-extra": "^0.30.0",
-    "istanbul": "^0.4.3",
+    "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "sinon": "^1.9.1"
   },
