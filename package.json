@@ -36,7 +36,7 @@
     "chai": "^3.5.0",
     "coffee-script": "^1.7.1",
     "coveralls": "^2.11.9",
-    "eslint": "^3.2.2",
+    "eslint": "^3.19.0",
     "eslint-config-teppeis": "^3.3.0",
     "eslint-plugin-node": "^2.0.0",
     "fs-extra": "^0.30.0",
