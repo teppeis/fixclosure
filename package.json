@@ -42,7 +42,7 @@
     "fs-extra": "^0.30.0",
     "istanbul": "^0.4.3",
     "mocha": "^3.0.2",
-    "sinon": "^1.9.1"
+    "sinon": "^2.3.0"
   },
   "repository": "https://github.com/teppeis/fixclosure",
   "license": "MIT"
