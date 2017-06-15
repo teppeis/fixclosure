@@ -1,6 +1,8 @@
 fixclosure
 ====
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/teppeis/fixclosure.svg)](https://greenkeeper.io/)
+
 fixclosure is JavaScript dependency checker/fixer for Closure Library based on ECMAScript AST.
 It finds namespaces used in a JavaScript file and insert/remove `goog.provide` / `goog.require` automatically.
 
