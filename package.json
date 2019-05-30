@@ -33,15 +33,15 @@
     "underscore": "^1.6.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "coveralls": "^2.11.9",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-teppeis": "^9.6.0",
     "fs-extra": "^0.30.0",
     "istanbul": "^0.4.3",
-    "mocha": "^3.0.2",
+    "mocha": "^6.1.4",
     "prettier": "^1.17.1",
-    "sinon": "^1.9.1"
+    "sinon": "^7.3.2"
   },
   "repository": "https://github.com/teppeis/fixclosure",
   "license": "MIT"
