@@ -1,6 +1,20 @@
 {
-  "extends": ["teppeis/node-v8", "teppeis/+prettier", "teppeis/+mocha"],
+  "extends": [
+    "teppeis/node-v8",
+    "teppeis/+prettier",
+    "teppeis/+mocha"
+  ],
   "rules": {
     "no-sync": 0
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "test/**/*.js"
+      ],
+      "rules": {
+        "no-unused-expressions": "off"
+      }
+    }
+  ]
 }

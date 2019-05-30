@@ -20,7 +20,7 @@
     "coverage": "npm run coverage:test && npm run coverage:report",
     "coverage:report": "cat ./coverage/lcov.info | coveralls",
     "coverage:test": "rm -rf ./coverage && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly",
-    "lint": "eslint lib",
+    "lint": "eslint lib test",
     "test": "npm run lint && mocha test"
   },
   "dependencies": {
@@ -34,7 +34,6 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "coffee-script": "^1.7.1",
     "coveralls": "^2.11.9",
     "eslint": "^5.16.0",
     "eslint-config-teppeis": "^9.6.0",
