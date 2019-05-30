@@ -4,7 +4,7 @@
   "version": "1.5.4",
   "author": "Teppei Sato <teppeis@gmail.com>",
   "engines": {
-    "node": ">=4"
+    "node": ">=8"
   },
   "main": "index.js",
   "bin": {
@@ -36,12 +36,12 @@
     "chai": "^3.5.0",
     "coffee-script": "^1.7.1",
     "coveralls": "^2.11.9",
-    "eslint": "^3.2.2",
-    "eslint-config-teppeis": "^3.3.0",
-    "eslint-plugin-node": "^2.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-teppeis": "^9.6.0",
     "fs-extra": "^0.30.0",
     "istanbul": "^0.4.3",
     "mocha": "^3.0.2",
+    "prettier": "^1.17.1",
     "sinon": "^1.9.1"
   },
   "repository": "https://github.com/teppeis/fixclosure",
