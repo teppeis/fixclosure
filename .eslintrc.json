@@ -1,8 +1,6 @@
 {
-  "extends": "teppeis/node-v4",
+  "extends": ["teppeis/node-v8", "teppeis/+prettier", "teppeis/+mocha"],
   "rules": {
-    "dot-location": [2, "object"],
-    "prefer-arrow-callback": 1,
     "no-sync": 0
   }
 }
