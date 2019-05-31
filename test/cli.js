@@ -6,7 +6,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 require('chai').should();
-const fs = require('fs-extra');
+const fs = require('fs');
 const cli = require('../lib/cli');
 const sinon = require('sinon');
 
@@ -215,7 +215,7 @@ describe('Command line', function() {
     return describe('--fix-in-place', function() {
       const testFixInPlace = function(filename) {
         const tmppath = `test/tmp/${filename}`;
-        fs.copySync(`test/fixtures/cli/${filename}`, tmppath);
+        fs.copyFileSync(`test/fixtures/cli/${filename}`, tmppath);
         cli(cmd.concat([tmppath, '--fix-in-place']), out, err, exit);
         exit.calledOnce.should.be.false;
         const fixedSrc = fs.readFileSync(tmppath, {encoding: 'utf8'});

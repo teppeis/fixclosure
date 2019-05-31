@@ -37,7 +37,6 @@
     "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-teppeis": "^9.6.0",
-    "fs-extra": "^0.30.0",
     "istanbul": "^0.4.3",
     "mocha": "^6.1.4",
     "prettier": "^1.17.1",
