@@ -1,10 +1,10 @@
 /**
- * @typedef {Element} .
+ * @typedef {Element}
  */
 goog.foo.BarType;
 
 /**
- * @typedef {Element} .
+ * @typedef {Element}
  * @private
  */
 goog.foo.PrivateType;
