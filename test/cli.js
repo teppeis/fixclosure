@@ -65,6 +65,16 @@ describe('Command line', function() {
     return err.toString().should.be.eql(expected);
   });
 
+  it('duplicated provide', function() {
+    cli(cmd.concat(['test/fixtures/cli/duplicated_provide.js']), out, err, exit);
+    exit.calledOnce.should.be.true;
+    exit.firstCall.args.should.eql([1]);
+    const expected = fs.readFileSync('test/fixtures/cli/duplicated_provide.js.txt', {
+      encoding: 'utf8',
+    });
+    return err.toString().should.be.eql(expected);
+  });
+
   describe('fixclosure: ignore', function() {
     it('ignores goog.require with "fixclosre: ignore" even if it is not used', function() {
       cli(cmd.concat(['test/fixtures/cli/ignore_require.js', '--showSuccess']), out, err, exit);
