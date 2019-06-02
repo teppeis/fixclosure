@@ -12,6 +12,12 @@ Required:
 - goog.require.ignore (ignored)
 - goog.require.unnecessary
 
+RequireTyped:
+- goog.requireType.dup
+- goog.requireType.dup
+- goog.requireType.ignore (ignored)
+- goog.requireType.unnecessary
+
 Duplicated Provide:
 - goog.provide.dup
 
