@@ -6,6 +6,10 @@ goog.require('goog.require.dup');
 goog.require('goog.require.ignore'); // fixclosure: ignore
 goog.require('goog.require.missing');
 
+goog.requireType('goog.requireType.dup');
+goog.requireType('goog.requireType.ignore'); // fixclosure: ignore
+goog.requireType('goog.requireType.missing');
+
 /**
  * @param {goog.requireType.dup} a
  */
