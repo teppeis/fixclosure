@@ -30,6 +30,15 @@ Missing Require:
 Unnecessary Require:
 - goog.require.unnecessary
 
+Duplicated RequireType:
+- goog.requireType.dup
+
+Missing RequireType:
+- goog.requireType.missing
+
+Unnecessary RequireType:
+- goog.requireType.unnecessary
+
 FAIL!
 
 1 of 1 files failed
