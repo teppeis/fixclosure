@@ -1,6 +1,6 @@
 /**
  * @constructor
- * @implements {goog.Disposable}
+ * @implements {goog.disposable.IDisposable}
  */
 var Foo = function() {
 };
@@ -10,9 +10,9 @@ var Foo = function() {
  * @implements {goog.fx.Transition}
  * @constructor
  */
-var Foo = function() {
+var Bar = function() {
 };
 
-// toRequire: goog.Disposable
+// toRequire: goog.disposable.IDisposable
 // toRequire: goog.fx.Transition
 // toRequire: goog.fx.anim.Animated
