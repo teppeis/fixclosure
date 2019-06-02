@@ -32,6 +32,12 @@ exports.assertFile = (file, options) => {
     toRequire.push(matches[1]);
   }
 
+  regex = /^\/\/ toRequireType: (.*)/gm;
+  const toRequireType = [];
+  while ((matches = regex.exec(src)) !== null) {
+    toRequireType.push(matches[1]);
+  }
+
   regex = /^\/\/ ignoredProvide: (.*)/gm;
   const ignoredProvide = [];
   while ((matches = regex.exec(src)) !== null) {
@@ -51,6 +57,7 @@ exports.assertFile = (file, options) => {
   info.required.should.be.eql(required);
   info.toProvide.should.be.eql(toProvide);
   info.toRequire.should.be.eql(toRequire);
+  info.toRequireType.should.be.eql(toRequireType);
   info.ignoredProvide.should.be.eql(ignoredProvide);
   info.ignoredRequire.should.be.eql(ignoredRequire);
 };
