@@ -16,11 +16,10 @@
     "lib"
   ],
   "scripts": {
-    "coverage": "npm run coverage:test && npm run coverage:report",
-    "coverage:report": "cat ./coverage/lcov.info | coveralls",
-    "coverage:test": "rm -rf ./coverage && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint *.js lib test",
-    "test": "npm run lint && mocha test"
+    "test": "npm run lint && npm run unit",
+    "unit": "nyc mocha test"
   },
   "dependencies": {
     "@babel/parser": "^7.4.5",
@@ -36,8 +35,8 @@
     "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-teppeis": "^9.6.0",
-    "istanbul": "^0.4.3",
     "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "prettier": "^1.17.1",
     "sinon": "^7.3.2",
     "tempy": "^0.3.0"
