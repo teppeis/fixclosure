@@ -1,5 +1,4 @@
 node_modules
-/test/tmp/*
 /coverage
 /fixclosure-*.tgz
 .vscode

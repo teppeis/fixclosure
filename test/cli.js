@@ -4,6 +4,7 @@ require('chai').should();
 const fs = require('fs');
 const cli = require('../lib/cli');
 const sinon = require('sinon');
+const tempy = require('tempy');
 
 const cmd = ['node', 'fixclosure', '--no-color'];
 
@@ -219,7 +220,7 @@ describe('Command line', () => {
 
     describe('--fix-in-place', () => {
       const testFixInPlace = function(filename) {
-        const tmppath = `test/tmp/${filename}`;
+        const tmppath = tempy.file(`test/tmp/${filename}`);
         fs.copyFileSync(`test/fixtures/cli/${filename}`, tmppath);
         cli(cmd.concat([tmppath, '--fix-in-place']), out, err, exit);
         exit.calledOnce.should.be.false;

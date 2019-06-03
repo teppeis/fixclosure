@@ -40,7 +40,8 @@
     "istanbul": "^0.4.3",
     "mocha": "^6.1.4",
     "prettier": "^1.17.1",
-    "sinon": "^7.3.2"
+    "sinon": "^7.3.2",
+    "tempy": "^0.3.0"
   },
   "repository": "https://github.com/teppeis/fixclosure",
   "license": "MIT"
