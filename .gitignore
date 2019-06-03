@@ -2,3 +2,4 @@ node_modules
 /coverage
 /fixclosure-*.tgz
 .vscode
+.nyc_output

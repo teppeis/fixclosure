@@ -19,7 +19,7 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint *.js lib test",
     "test": "npm run lint && npm run unit",
-    "unit": "nyc mocha test"
+    "unit": "nyc --reporter=html --reporter=text mocha test"
   },
   "dependencies": {
     "@babel/parser": "^7.4.5",
