@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+'use strict';
 
-var cli = require('../lib/cli');
-cli(process.argv, process.stdout, process.stderr, process.exit);
+(async () => {
+  const cli = require('../lib/cli');
+  await cli(process.argv, process.stdout, process.stderr, process.exit);
+})();
