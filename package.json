@@ -16,7 +16,6 @@
     "lib"
   ],
   "scripts": {
-    "ci": "npm run lint && npm run coverage",
     "coverage": "npm run coverage:test && npm run coverage:report",
     "coverage:report": "cat ./coverage/lcov.info | coveralls",
     "coverage:test": "rm -rf ./coverage && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly",
