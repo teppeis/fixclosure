@@ -1,0 +1,19 @@
+File: test/fixtures/cli/duplicated_provide.js
+
+Provided:
+- goog.foo
+- goog.foo
+- goog.foo
+
+Required:
+- (none)
+
+Duplicated Provide:
+- goog.foo
+
+Unnecessary Provide:
+- goog.foo
+
+FAIL!
+
+1 of 1 files failed

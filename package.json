@@ -4,7 +4,7 @@
   "version": "1.5.4",
   "author": "Teppei Sato <teppeis@gmail.com>",
   "engines": {
-    "node": ">=4"
+    "node": ">=10"
   },
   "main": "index.js",
   "bin": {
@@ -20,29 +20,28 @@
     "coverage": "npm run coverage:test && npm run coverage:report",
     "coverage:report": "cat ./coverage/lcov.info | coveralls",
     "coverage:test": "rm -rf ./coverage && istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly",
-    "lint": "eslint lib",
+    "lint": "eslint *.js lib test",
     "test": "npm run lint && mocha test"
   },
   "dependencies": {
+    "@babel/parser": "^7.4.5",
     "cli-color": "^1.1.0",
     "commander": "^2.2.0",
-    "doctrine": "^1.2.1",
-    "espree": "^3.1.1",
+    "doctrine": "^3.0.0",
     "estraverse": "^4.2.0",
     "estraverse-fb": "^1.3.1",
-    "underscore": "^1.6.0"
+    "lodash.difference": "^4.5.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "coffee-script": "^1.7.1",
-    "coveralls": "^2.11.9",
-    "eslint": "^3.2.2",
-    "eslint-config-teppeis": "^3.3.0",
-    "eslint-plugin-node": "^2.0.0",
-    "fs-extra": "^0.30.0",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.3",
+    "eslint": "^5.16.0",
+    "eslint-config-teppeis": "^9.6.0",
     "istanbul": "^0.4.3",
-    "mocha": "^3.0.2",
-    "sinon": "^1.9.1"
+    "mocha": "^6.1.4",
+    "prettier": "^1.17.1",
+    "sinon": "^7.3.2",
+    "tempy": "^0.3.0"
   },
   "repository": "https://github.com/teppeis/fixclosure",
   "license": "MIT"

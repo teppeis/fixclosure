@@ -282,7 +282,7 @@ MIT License: Teppei Sato <teppeis@gmail.com>
 [travis-url]: https://travis-ci.org/teppeis/fixclosure
 [deps-image]: https://david-dm.org/teppeis/fixclosure.svg
 [deps-url]: https://david-dm.org/teppeis/fixclosure
-[node-version]: https://img.shields.io/badge/Node.js%20support-v4,v6-brightgreen.svg
+[node-version]: https://img.shields.io/badge/Node.js%20support-v10+-brightgreen.svg
 [coverage-image]: https://coveralls.io/repos/github/teppeis/fixclosure/badge.svg?branch=master
 [coverage-url]: https://coveralls.io/github/teppeis/fixclosure?branch=master
 [license]: https://img.shields.io/npm/l/eslint-config-teppeis.svg
