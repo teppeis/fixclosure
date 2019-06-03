@@ -1,22 +1,18 @@
 goog.provide('goog.provide.dup');
-goog.provide('goog.provide.dup');
 goog.provide('goog.provide.ignore'); // fixclosure: ignore
-goog.provide('goog.provide.unnecessary');
+goog.provide('goog.provide.missing');
 
-goog.require('goog.require.dup');
 goog.require('goog.require.dup');
 goog.require('goog.require.ignore'); // fixclosure: ignore
-goog.require('goog.require.unnecessary');
+goog.require('goog.require.missing');
 
-goog.requireType('goog.requireType.dup');
-goog.requireType('goog.requireType.dup');
 goog.requireType('goog.requireType.ignore'); // fixclosure: ignore
-goog.requireType('goog.requireType.unnecessary');
 
-goog.forwardDeclare('goog.forwardDeclare.dup');
 goog.forwardDeclare('goog.forwardDeclare.dup');
 goog.forwardDeclare('goog.forwardDeclare.ignore'); // fixclosure: ignore
-goog.forwardDeclare('goog.forwardDeclare.unnecessary');
+goog.forwardDeclare('goog.forwardDeclare.missing');
+goog.forwardDeclare('goog.requireType.dup');
+goog.forwardDeclare('goog.requireType.missing');
 
 /**
  * @param {goog.requireType.dup} a

@@ -6,10 +6,27 @@ goog.require('goog.require.dup');
 goog.require('goog.require.ignore'); // fixclosure: ignore
 goog.require('goog.require.missing');
 
-goog.provide.dup.foo = function() {
+goog.requireType('goog.forwardDeclare.dup');
+goog.requireType('goog.forwardDeclare.missing');
+goog.requireType('goog.requireType.dup');
+goog.requireType('goog.requireType.ignore'); // fixclosure: ignore
+goog.requireType('goog.requireType.missing');
+
+goog.forwardDeclare('goog.forwardDeclare.ignore'); // fixclosure: ignore
+
+/**
+ * @param {goog.requireType.dup} a
+ * @param {goog.forwardDeclare.dup} b
+ * @param {goog.require.dup} c
+ */
+goog.provide.dup.foo = function(a, b, c) {
     goog.require.dup.foo();
 };
 
-goog.provide.missing.foo = function() {
+/**
+ * @param {goog.requireType.missing} a
+ * @param {goog.forwardDeclare.missing} b
+ */
+goog.provide.missing.foo = function(a, b) {
     goog.require.missing.foo();
 };

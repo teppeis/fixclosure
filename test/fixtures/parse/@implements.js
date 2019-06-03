@@ -13,6 +13,6 @@ var Foo = function() {
 var Bar = function() {
 };
 
-// toRequire: goog.disposable.IDisposable
-// toRequire: goog.fx.Transition
-// toRequire: goog.fx.anim.Animated
+// toRequireType: goog.disposable.IDisposable
+// toRequireType: goog.fx.Transition
+// toRequireType: goog.fx.anim.Animated

@@ -45,15 +45,15 @@ Unnecessary Require:
 Duplicated RequireType:
 - goog.requireType.dup
 
-Missing RequireType:
-- goog.forwardDeclare.missing
-- goog.requireType.missing
-
 Unnecessary RequireType:
 - goog.requireType.unnecessary
 
 Duplicated ForwardDeclare:
 - goog.forwardDeclare.dup
+
+Missing ForwardDeclare:
+- goog.forwardDeclare.missing
+- goog.requireType.missing
 
 Unnecessary ForwardDeclare:
 - goog.forwardDeclare.unnecessary

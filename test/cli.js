@@ -55,9 +55,18 @@ describe('Command line', () => {
     cli(cmd.concat(['test/fixtures/cli/all-ng-types.js']), out, err, exit);
     exit.calledOnce.should.be.true;
     exit.firstCall.args.should.eql([1]);
-    const expected = fs.readFileSync('test/fixtures/cli/all-ng-types.js.error.txt', {
-      encoding: 'utf8',
-    });
+    const expected = fs.readFileSync('test/fixtures/cli/all-ng-types.js.error.txt', 'utf8');
+    err.toString().should.be.eql(expected);
+  });
+
+  it('output all error types with --useForwardDeclare', () => {
+    cli(cmd.concat(['test/fixtures/cli/all-ng-types.js', '--useForwardDeclare']), out, err, exit);
+    exit.calledOnce.should.be.true;
+    exit.firstCall.args.should.eql([1]);
+    const expected = fs.readFileSync(
+      'test/fixtures/cli/all-ng-types.js.forwarddeclare.error.txt',
+      'utf8'
+    );
     err.toString().should.be.eql(expected);
   });
 
@@ -219,10 +228,10 @@ describe('Command line', () => {
     });
 
     describe('--fix-in-place', () => {
-      const testFixInPlace = function(filename) {
+      const testFixInPlace = (filename, options = []) => {
         const tmppath = tempy.file(`test/tmp/${filename}`);
         fs.copyFileSync(`test/fixtures/cli/${filename}`, tmppath);
-        cli(cmd.concat([tmppath, '--fix-in-place']), out, err, exit);
+        cli(cmd.concat([tmppath, '--fix-in-place']).concat(options), out, err, exit);
         exit.calledOnce.should.be.false;
         const fixedSrc = fs.readFileSync(tmppath, {encoding: 'utf8'});
         const expected = fs.readFileSync(`test/fixtures/cli/${filename}.fixed.txt`, {
@@ -232,6 +241,9 @@ describe('Command line', () => {
       };
 
       it('fix in place all error types', () => testFixInPlace('all-ng-types.js'));
+
+      it('fix in place all error types with --useForwardDeclare', () =>
+        testFixInPlace('all-ng-types.js.forwarddeclare', ['--useForwardDeclare']));
 
       it('fix a file without provide', () => testFixInPlace('fix-no-provide.js'));
 

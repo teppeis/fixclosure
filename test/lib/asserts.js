@@ -20,6 +20,18 @@ exports.assertFile = (file, options) => {
     required.push(matches[1]);
   }
 
+  regex = /^\/\/ requireTyped: (.*)/gm;
+  const requireTyped = [];
+  while ((matches = regex.exec(src)) !== null) {
+    requireTyped.push(matches[1]);
+  }
+
+  regex = /^\/\/ forwardDeclared: (.*)/gm;
+  const forwardDeclared = [];
+  while ((matches = regex.exec(src)) !== null) {
+    forwardDeclared.push(matches[1]);
+  }
+
   regex = /^\/\/ toProvide: (.*)/gm;
   const toProvide = [];
   while ((matches = regex.exec(src)) !== null) {
@@ -30,6 +42,12 @@ exports.assertFile = (file, options) => {
   const toRequire = [];
   while ((matches = regex.exec(src)) !== null) {
     toRequire.push(matches[1]);
+  }
+
+  regex = /^\/\/ toRequireType: (.*)/gm;
+  const toRequireType = [];
+  while ((matches = regex.exec(src)) !== null) {
+    toRequireType.push(matches[1]);
   }
 
   regex = /^\/\/ ignoredProvide: (.*)/gm;
@@ -49,8 +67,11 @@ exports.assertFile = (file, options) => {
   // info.should.have.keys ['provided', 'required', 'toProvide', 'toRequire']
   info.provided.should.be.eql(provided);
   info.required.should.be.eql(required);
+  info.requireTyped.should.be.eql(requireTyped);
+  info.forwardDeclared.should.be.eql(forwardDeclared);
   info.toProvide.should.be.eql(toProvide);
   info.toRequire.should.be.eql(toRequire);
+  info.toRequireType.should.be.eql(toRequireType);
   info.ignoredProvide.should.be.eql(ignoredProvide);
   info.ignoredRequire.should.be.eql(ignoredRequire);
 };

@@ -134,6 +134,11 @@ Comma separated list.
 Replace method or property to namespace mapping like `goog.disposeAll:goog.dispose`.  
 Comma separated list of colon separated pairs like `foo.bar1:foo.bar2,foo.bar3:foo.bar4`.
 
+###  `--useForwardDeclare`
+
+Use `goog.forwardDeclare()` instead of `goog.requireType()` for types used only in JSDoc.
+Default: `false`
+
 ### `--showSuccess`
 
 Show not only failed files but also passed files.
