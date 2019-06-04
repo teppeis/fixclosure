@@ -204,11 +204,6 @@ describe('Command line', () => {
       });
     });
 
-    it('--roots (deprecated)', async () => {
-      await cli(cmd.concat(['test/fixtures/cli/roots.js', '--roots=foo,bar']), out, err, exit);
-      exit.called.should.be.false;
-    });
-
     it('--replaceMap', async () => {
       await cli(
         cmd.concat([
