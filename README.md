@@ -2,7 +2,7 @@ fixclosure
 ====
 
 fixclosure is JavaScript dependency checker/fixer for Closure Library based on ECMAScript AST.
-It finds namespaces used in a JavaScript file and insert/remove `goog.provide` / `goog.require` automatically.
+It finds namespaces used in a JavaScript file and insert/remove `goog.provide`, `goog.require`, `goog.requireType` and `goog.forwardDeclare` automatically.
 
 [![npm version][npm-image]][npm-url]
 ![Node.js Version Support][node-version]
@@ -79,9 +79,9 @@ goog.foo.Bar = function() {
 
 fixclosure checks and fixes:
 
-* Duplicated require/provide
-* Missing require/provide
-* Unnecessary require/provide
+* Duplicated provide/require/requireType/forwardDeclare
+* Missing provide/require/requireType/forwardDeclare
+* Unnecessary provide/require/requireType/forwardDeclare
 
 ### gjslint beforehand
 
@@ -153,13 +153,6 @@ Show not only failed files but also passed files.
 
 Disable color output.
 
-### `--roots <roots>`
-
-*Deprecated by `--provideRoots` and `--requireRoots`. This will be removed next update.*
-
-Specify your root namespaces in addition to default roots `goog,proto2,soy,soydata,svgpan`.
-Comma separated list.
-
 ## Inline hint
 
 fixclosure reads "hint" for lint from special comments in your code.
@@ -208,6 +201,7 @@ The hint affects only *next* line.
 
 ## Changelog
 
+* 2.0.0+: See [GitHub releases](https://github.com/teppeis/fixclosure/releases)
 * 1.5.4 (2016/05/29)
   * Internal: Update dependencies
   * Internal: Use ESLint and [eslint-config-teppeis](https://github.com/teppeis/eslint-config-teppeis)
