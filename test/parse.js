@@ -135,6 +135,27 @@ describe('Parser', () => {
       });
       assert.deepEqual(actual.sort(), ['number', 'string']);
     });
+    it('RecordType: null', () => {
+      // Support for `@type {{foo, bar}}`
+      // The properties named `foo` and `bar` have a value of ANY type.
+      // See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#record-type
+      const actual = parser.extractType({
+        type: 'RecordType',
+        fields: [
+          {
+            type: 'FieldType',
+            key: 'foo',
+            value: null,
+          },
+          {
+            type: 'FieldType',
+            key: 'bar',
+            value: null,
+          },
+        ],
+      });
+      assert.deepEqual(actual.sort(), []);
+    });
     it('RestType', () => {
       const actual = parser.extractType({
         type: 'RestType',
