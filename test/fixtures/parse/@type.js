@@ -1,13 +1,13 @@
 /**
- * @type {goog.ui.Component}
+ * @type {goog.Foo}
  */
 var foo;
 
 /**
  * Uniqued
  *
- * @type {goog.ui.Component}
+ * @type {goog.Foo}
  */
-var bar;
+var foo2;
 
-// toRequireType: goog.ui.Component
+// toRequireType: goog.Foo

@@ -1,4 +1,4 @@
-goog.foo.baz = goog.events.EventType.FOCUS;
+goog.foo.focus = goog.Foo.FOCUS;
 
 // toProvide: goog.foo
-// toRequire: goog.events.EventType
+// toRequire: goog.Foo

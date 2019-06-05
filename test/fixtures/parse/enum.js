@@ -1,4 +1,3 @@
-goog.events.listen(target, goog.events.EventType.CLICK, handler);
+listen(target, goog.Foo.CLICK, handler);
 
-// toRequire: goog.events
-// toRequire: goog.events.EventType
+// toRequire: goog.Foo

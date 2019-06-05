@@ -3,7 +3,7 @@ goog.foo.foo();
 goog.bar.bar();
 goog.baz.baz();
 // fixclosure: suppressRequire with comment
-goog.bao.bao();
+goog.qux.qux();
 
 // toRequire: goog.baz
 // toRequire: goog.foo

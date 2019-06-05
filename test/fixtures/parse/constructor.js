@@ -1,15 +1,9 @@
 /**
  * @constructor
- * @extends {goog.ui.Component}
+ * @extends {goog.Foo}
  */
-goog.ui.Bubble = function() {
+goog.aaa.Foo = function() {
   goog.base(this);
-
-  /**
-   * @type {goog.ui.Popup}
-   * @private
-   */
-  this.popup_ = new goog.ui.Popup();
 
   /**
    * @type {string}
@@ -17,13 +11,12 @@ goog.ui.Bubble = function() {
    */
   this.closeButtonId_ = this.makeId('cb');
 };
-goog.inherits(goog.ui.Bubble, goog.ui.Component);
+goog.inherits(goog.aaa.Foo, goog.Foo);
 
 /**
  */
-goog.ui.Bubble.prototype.hello = function() {
+goog.aaa.Foo.prototype.hello = function() {
 };
 
-// toProvide: goog.ui.Bubble
-// toRequire: goog.ui.Component
-// toRequire: goog.ui.Popup
+// toProvide: goog.aaa.Foo
+// toRequire: goog.Foo

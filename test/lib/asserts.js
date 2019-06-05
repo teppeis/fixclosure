@@ -62,6 +62,23 @@ exports.assertFile = (file, options) => {
     ignoredRequire.push(matches[1]);
   }
 
+  options = {
+    providedNamespace: [
+      'goog.foo',
+      'goog.bar',
+      'goog.baz',
+      'goog.qux',
+      'goog.Foo',
+      'goog.Bar',
+      'goog.Baz',
+      'goog.Foo1',
+      'goog.Foo2',
+      'goog.Foo3',
+      'goog.Foo4',
+      'goog.Foo5',
+    ],
+    ...options,
+  };
   const parser = new Parser(options);
   const info = parser.parse(src);
   // info.should.have.keys ['provided', 'required', 'toProvide', 'toRequire']

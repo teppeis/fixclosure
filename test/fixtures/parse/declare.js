@@ -1,3 +1,3 @@
-var foo = goog.events.EventType.CLICK;
+var foo = goog.Foo.CLICK;
 
-// toRequire: goog.events.EventType
+// toRequire: goog.Foo

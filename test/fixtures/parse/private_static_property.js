@@ -36,15 +36,13 @@ goog.p3.privateProp_ = goog.debug.Logger.getLogger('aaa');
  * Private static method should not be require or provide.
  * @private
  */
-goog.p3.privateMethod_ = function() {
+goog.p4.privateMethod_ = function() {
 };
 
 /**
+ * To be provided
  */
-goog.p4.hello = function() {
-  goog.p3.privateProp_.info('bbb');
-  goog.p3.privateMethod_();
+goog.p5.hello = function() {
 };
 
-// toRequire: goog.debug.Logger
-// toProvide: goog.p4
+// toProvide: goog.p5

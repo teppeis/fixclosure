@@ -1,3 +1,3 @@
-var scheme = parts[goog.uri.utils.ComponentIndex.SCHEME];
+var scheme = parts[goog.Foo.SCHEME];
 
-// toRequire: goog.uri.utils.ComponentIndex
+// toRequire: goog.Foo

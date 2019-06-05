@@ -1,10 +1,10 @@
 /**
- * @typedef {Element}
+ * @typedef {goog.Foo}
  */
 goog.foo.BarType;
 
 /**
- * @typedef {Element}
+ * @typedef {goog.Bar}
  * @private
  */
 goog.foo.PrivateType;
@@ -12,3 +12,5 @@ goog.foo.PrivateType;
 goog.foo.NoJsDoc;
 
 // toProvide: goog.foo.BarType
+// toRequireType: goog.Bar
+// toRequireType: goog.Foo
