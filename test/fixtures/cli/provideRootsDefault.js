@@ -5,10 +5,6 @@ goog.provide('soydata.Foo');
 goog.provide('svgpan.Foo');
 
 goog.require('goog.foo');
-goog.require('proto2.foo');
-goog.require('soy.foo');
-goog.require('soydata.foo');
-goog.require('svgpan.foo');
 
 goog.Foo = function() {};
 proto2.Foo = function() {};
