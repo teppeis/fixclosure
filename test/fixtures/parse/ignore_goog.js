@@ -1,1 +1,1 @@
-goog.aaa();
+goog.isDef();
