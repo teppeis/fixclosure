@@ -11,4 +11,6 @@ Missing Require:
 
 FAIL!
 
-1 of 2 files failed
+Total: 2 files
+Passed: 1 files
+Failed: 1 files

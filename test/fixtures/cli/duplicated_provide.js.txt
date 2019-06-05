@@ -16,4 +16,6 @@ Unnecessary Provide:
 
 FAIL!
 
-1 of 1 files failed
+Total: 1 files
+Passed: 0 files
+Failed: 1 files

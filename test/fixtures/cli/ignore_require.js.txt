@@ -8,4 +8,5 @@ Required:
 
 GREEN!
 
-1 files completed
+Total: 1 files
+Passed: 1 files
