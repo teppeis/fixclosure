@@ -1,4 +1,4 @@
-/** @define {goog.ui.Component} */
+/** @define {goog.Foo} */
 var foo;
 
-// toRequireType: goog.ui.Component
+// toRequireType: goog.Foo

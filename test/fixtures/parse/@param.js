@@ -1,7 +1,7 @@
 /**
- * @param {goog.ui.Component} component
+ * @param {goog.Foo} component
  */
 function foo(component) {
 };
 
-// toRequireType: goog.ui.Component
+// toRequireType: goog.Foo

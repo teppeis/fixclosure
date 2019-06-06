@@ -1,9 +1,9 @@
 /**
  * @constructor
- * @extends {goog.Disposable}
+ * @extends {goog.Foo}
  */
 var Bar = function() {
 };
-goog.inherits(Bar, goog.Disposable);
+goog.inherits(Bar, goog.Foo);
 
-// toRequire: goog.Disposable
+// toRequire: goog.Foo

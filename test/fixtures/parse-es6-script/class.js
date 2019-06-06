@@ -1,13 +1,13 @@
 // ClassDeclaration
-class C1 extends goog.Foo1 {
+class C1 extends goog.Foo {
   constructor() {
     goog.foo.bar();
   }
 }
 
 // ClassExpression
-var C2 = class extends goog.Foo2 {};
+var C2 = class extends goog.Bar {};
 
-// toRequire: goog.Foo1
-// toRequire: goog.Foo2
+// toRequire: goog.Bar
+// toRequire: goog.Foo
 // toRequire: goog.foo

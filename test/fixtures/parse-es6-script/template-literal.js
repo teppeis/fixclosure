@@ -1,6 +1,6 @@
-var a = `foo${goog.foo.bar}bar`;
-var b = goog.tagged1.foo`foo${goog.tagged2.foo}bar`;
+var a = `foo${goog.foo.aaa}bar`;
+var b = goog.bar.aaa`foo${goog.baz.aaa}bar`;
 
+// toRequire: goog.bar
+// toRequire: goog.baz
 // toRequire: goog.foo
-// toRequire: goog.tagged1
-// toRequire: goog.tagged2

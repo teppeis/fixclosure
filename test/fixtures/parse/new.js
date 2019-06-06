@@ -1,4 +1,4 @@
-new goog.positioning.AnchoredPosition(goog.positioning.Corner.BOTTOM_START);
+new goog.Foo(goog.Bar.BOTTOM_START);
 
-// toRequire: goog.positioning.AnchoredPosition
-// toRequire: goog.positioning.Corner
+// toRequire: goog.Bar
+// toRequire: goog.Foo

@@ -1,10 +1,10 @@
-<goog.foo.Element attr={goog.foo.Attribute}>
-  <goog.foo.SelfClosing {...goog.foo.Spread}/>
-  {goog.foo.Content}
-</goog.foo.Element>
+<goog.Foo1 attr={goog.Foo2}>
+  <goog.Foo3 {...goog.Foo4}/>
+  {goog.Foo5}
+</goog.Foo1>
 
-// toRequire: goog.foo.Attribute
-// toRequire: goog.foo.Content
-// toRequire: goog.foo.Element
-// toRequire: goog.foo.SelfClosing
-// toRequire: goog.foo.Spread
+// toRequire: goog.Foo1
+// toRequire: goog.Foo2
+// toRequire: goog.Foo3
+// toRequire: goog.Foo4
+// toRequire: goog.Foo5

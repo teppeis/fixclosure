@@ -1,3 +1,3 @@
-goog.date.Date.prototype.add.call(this, interval)
+goog.Foo.prototype.add.call(this, interval)
 
-// toRequire: goog.date.Date
+// toRequire: goog.Foo

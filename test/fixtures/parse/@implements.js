@@ -1,18 +1,18 @@
 /**
  * @constructor
- * @implements {goog.disposable.IDisposable}
+ * @implements {goog.Foo}
  */
 var Foo = function() {
 };
 
 /**
- * @implements {goog.fx.anim.Animated}
- * @implements {goog.fx.Transition}
+ * @implements {goog.Bar}
+ * @implements {goog.Baz}
  * @constructor
  */
 var Bar = function() {
 };
 
-// toRequireType: goog.disposable.IDisposable
-// toRequireType: goog.fx.Transition
-// toRequireType: goog.fx.anim.Animated
+// toRequire: goog.Bar
+// toRequire: goog.Baz
+// toRequire: goog.Foo

@@ -1,16 +1,16 @@
 /**
  * @interface
- * @extends {goog.disposable.IDisposable}
+ * @extends {goog.Foo}
  */
 var Foo = function() {
 };
 
 /**
  * @constructor
- * @extends {goog.Disposable}
+ * @extends {goog.Bar}
  */
 var Bar = function() {
 };
 
-// toRequireType: goog.Disposable
-// toRequireType: goog.disposable.IDisposable
+// toRequireType: goog.Bar
+// toRequireType: goog.Foo

@@ -1,6 +1,6 @@
 /**
- * @enum {goog.ui.Component}
+ * @enum {goog.Foo}
  */
 var Foo = {};
 
-// toRequireType: goog.ui.Component
+// toRequireType: goog.Foo

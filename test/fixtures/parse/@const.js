@@ -1,6 +1,6 @@
 /**
- * @const {goog.ui.Component}
+ * @const {goog.Foo}
  */
 var foo;
 
-// toRequireType: goog.ui.Component
+// toRequireType: goog.Foo

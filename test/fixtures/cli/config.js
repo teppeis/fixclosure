@@ -1,5 +1,3 @@
-goog.require('goog.foo.namespacemethod1');
-goog.require('foo.foo');
+goog.provide('foo.bar');
 
-goog.foo.namespacemethod1(hoge);
-foo.foo.method(hoge);
+foo.bar.baz = function() {};

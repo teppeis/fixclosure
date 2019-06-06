@@ -1,3 +1,3 @@
-var NONE = goog.ui.KeyboardShortcutHandler.Modifiers.NONE;
+var NONE = goog.Foo.Modifiers.NONE;
 
-// toRequire: goog.ui.KeyboardShortcutHandler
+// toRequire: goog.Foo

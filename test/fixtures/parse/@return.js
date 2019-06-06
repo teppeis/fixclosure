@@ -1,7 +1,7 @@
 /**
- * @return {goog.ui.Component}
+ * @return {goog.Foo}
  */
 var foo = function() {
 };
 
-// toRequireType: goog.ui.Component
+// toRequireType: goog.Foo
