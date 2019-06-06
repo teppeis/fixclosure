@@ -13,6 +13,6 @@ var Foo = function() {
 var Bar = function() {
 };
 
-// toRequireType: goog.Bar
-// toRequireType: goog.Baz
-// toRequireType: goog.Foo
+// toRequire: goog.Bar
+// toRequire: goog.Baz
+// toRequire: goog.Foo

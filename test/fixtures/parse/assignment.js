@@ -1,4 +1,4 @@
-goog.foo.focus = goog.Foo.FOCUS;
+goog.aaa.focus = goog.Foo.FOCUS;
 
-// toProvide: goog.foo
+// toProvide: goog.aaa
 // toRequire: goog.Foo

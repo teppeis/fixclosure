@@ -1,4 +1,4 @@
 goog.foo = function() {};
-goog.aaa = function() {};
+goog.shouldNotBeProvided = function() {};
 
 // toProvide: goog.foo
