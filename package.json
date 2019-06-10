@@ -25,7 +25,7 @@
   "dependencies": {
     "@babel/parser": "^7.4.5",
     "array.prototype.flat": "^1.2.1",
-    "cli-color": "^1.1.0",
+    "cli-color": "^1.4.0",
     "commander": "^2.2.0",
     "doctrine": "^3.0.0",
     "estraverse": "^4.2.0",
