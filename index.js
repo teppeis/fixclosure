@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const Parser = require('./lib/parser');
-const cli = require('./lib/cli');
-const fix = require('./lib/fix');
+const Parser = require("./lib/parser");
+const cli = require("./lib/cli");
+const fix = require("./lib/fix");
 
 module.exports.Parser = Parser;
 module.exports.fix = fix;

@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-require('chai').should();
-const {Parser} = require('../../');
-const fs = require('fs');
+require("chai").should();
+const { Parser } = require("../../");
+const fs = require("fs");
 
 exports.assertFile = (file, options) => {
   let matches;
-  const src = fs.readFileSync(`${__dirname}/../fixtures${file}`, 'utf8');
+  const src = fs.readFileSync(`${__dirname}/../fixtures${file}`, "utf8");
 
   let regex = /^\/\/ provided: (.*)/gm;
   const provided = [];
@@ -65,19 +65,19 @@ exports.assertFile = (file, options) => {
   options = {
     providedNamespace: [
       // 'goog' is included in deps.js of Closure Library
-      'goog',
-      'goog.foo',
-      'goog.bar',
-      'goog.baz',
-      'goog.qux',
-      'goog.Foo',
-      'goog.Bar',
-      'goog.Baz',
-      'goog.Foo1',
-      'goog.Foo2',
-      'goog.Foo3',
-      'goog.Foo4',
-      'goog.Foo5',
+      "goog",
+      "goog.foo",
+      "goog.bar",
+      "goog.baz",
+      "goog.qux",
+      "goog.Foo",
+      "goog.Bar",
+      "goog.Baz",
+      "goog.Foo1",
+      "goog.Foo2",
+      "goog.Foo3",
+      "goog.Foo4",
+      "goog.Foo5",
     ],
     ...options,
   };
