@@ -1,218 +1,218 @@
-'use strict';
+"use strict";
 
-require('chai').should();
-const fs = require('fs');
-const {assertFile} = require('./lib/asserts');
-const assert = require('assert').strict;
-const {Parser} = require('../');
+require("chai").should();
+const fs = require("fs");
+const { assertFile } = require("./lib/asserts");
+const assert = require("assert").strict;
+const { Parser } = require("../");
 
-describe('Parser', () => {
-  context('ES5', () => {
+describe("Parser", () => {
+  context("ES5", () => {
     const files = fs.readdirSync(`${__dirname}/fixtures/parse/`);
     files.forEach(file => it(file, () => assertFile(`/parse/${file}`)));
   });
 
-  context('ES6 script', () => {
+  context("ES6 script", () => {
     const files = fs.readdirSync(`${__dirname}/fixtures/parse-es6-script/`);
     files.forEach(file =>
-      it(file, () => assertFile(`/parse-es6-script/${file}`, {parserOptions: {}}))
+      it(file, () => assertFile(`/parse-es6-script/${file}`, { parserOptions: {} }))
     );
   });
 
-  context('ES6 module', () => {
+  context("ES6 module", () => {
     const files = fs.readdirSync(`${__dirname}/fixtures/parse-es6-module/`);
     files.forEach(file =>
       it(file, () =>
         assertFile(`/parse-es6-module/${file}`, {
           parserOptions: {
-            sourceType: 'module',
+            sourceType: "module",
           },
         })
       )
     );
   });
-  describe('extractType', () => {
+  describe("extractType", () => {
     let parser;
     beforeEach(() => {
       parser = new Parser();
     });
-    it('NameExpression', () => {
+    it("NameExpression", () => {
       const actual = parser.extractType({
-        type: 'NameExpression',
-        name: 'string',
+        type: "NameExpression",
+        name: "string",
       });
-      assert.deepEqual(actual, ['string']);
+      assert.deepEqual(actual, ["string"]);
     });
-    it('NullableType', () => {
+    it("NullableType", () => {
       const actual = parser.extractType({
-        type: 'NullableType',
+        type: "NullableType",
         expression: {
-          type: 'NameExpression',
-          name: 'string',
+          type: "NameExpression",
+          name: "string",
         },
         prefix: true,
       });
-      assert.deepEqual(actual, ['string']);
+      assert.deepEqual(actual, ["string"]);
     });
-    it('NonNullableType', () => {
+    it("NonNullableType", () => {
       const actual = parser.extractType({
-        type: 'NonNullableType',
+        type: "NonNullableType",
         expression: {
-          type: 'NameExpression',
-          name: 'string',
+          type: "NameExpression",
+          name: "string",
         },
         prefix: true,
       });
-      assert.deepEqual(actual, ['string']);
+      assert.deepEqual(actual, ["string"]);
     });
-    it('OptionalType', () => {
+    it("OptionalType", () => {
       const actual = parser.extractType({
-        type: 'OptionalType',
+        type: "OptionalType",
         expression: {
-          type: 'NameExpression',
-          name: 'string',
+          type: "NameExpression",
+          name: "string",
         },
       });
-      assert.deepEqual(actual, ['string']);
+      assert.deepEqual(actual, ["string"]);
     });
-    it('TypeApplication', () => {
+    it("TypeApplication", () => {
       const actual = parser.extractType({
-        type: 'TypeApplication',
+        type: "TypeApplication",
         expression: {
-          type: 'NameExpression',
-          name: 'Foo',
+          type: "NameExpression",
+          name: "Foo",
         },
         applications: [
           {
-            type: 'NameExpression',
-            name: 'Bar',
+            type: "NameExpression",
+            name: "Bar",
           },
           {
-            type: 'NameExpression',
-            name: 'Baz',
+            type: "NameExpression",
+            name: "Baz",
           },
         ],
       });
-      assert.deepEqual(actual.sort(), ['Bar', 'Baz', 'Foo']);
+      assert.deepEqual(actual.sort(), ["Bar", "Baz", "Foo"]);
     });
-    it('UnionType', () => {
+    it("UnionType", () => {
       const actual = parser.extractType({
-        type: 'UnionType',
+        type: "UnionType",
         elements: [
           {
-            type: 'NameExpression',
-            name: 'string',
+            type: "NameExpression",
+            name: "string",
           },
           {
-            type: 'NameExpression',
-            name: 'number',
+            type: "NameExpression",
+            name: "number",
           },
         ],
       });
-      assert.deepEqual(actual.sort(), ['number', 'string']);
+      assert.deepEqual(actual.sort(), ["number", "string"]);
     });
-    it('RecordType', () => {
+    it("RecordType", () => {
       const actual = parser.extractType({
-        type: 'RecordType',
+        type: "RecordType",
         fields: [
           {
-            type: 'FieldType',
-            key: 'foo',
+            type: "FieldType",
+            key: "foo",
             value: {
-              type: 'NameExpression',
-              name: 'string',
+              type: "NameExpression",
+              name: "string",
             },
           },
           {
-            type: 'FieldType',
-            key: 'bar',
+            type: "FieldType",
+            key: "bar",
             value: {
-              type: 'NameExpression',
-              name: 'number',
+              type: "NameExpression",
+              name: "number",
             },
           },
         ],
       });
-      assert.deepEqual(actual.sort(), ['number', 'string']);
+      assert.deepEqual(actual.sort(), ["number", "string"]);
     });
-    it('RecordType: null', () => {
+    it("RecordType: null", () => {
       // Support for `@type {{foo, bar}}`
       // The properties named `foo` and `bar` have a value of ANY type.
       // See https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler#record-type
       const actual = parser.extractType({
-        type: 'RecordType',
+        type: "RecordType",
         fields: [
           {
-            type: 'FieldType',
-            key: 'foo',
+            type: "FieldType",
+            key: "foo",
             value: null,
           },
           {
-            type: 'FieldType',
-            key: 'bar',
+            type: "FieldType",
+            key: "bar",
             value: null,
           },
         ],
       });
       assert.deepEqual(actual.sort(), []);
     });
-    it('RestType', () => {
+    it("RestType", () => {
       const actual = parser.extractType({
-        type: 'RestType',
+        type: "RestType",
         expression: {
-          type: 'NameExpression',
-          name: 'string',
+          type: "NameExpression",
+          name: "string",
         },
       });
-      assert.deepEqual(actual.sort(), ['string']);
+      assert.deepEqual(actual.sort(), ["string"]);
     });
-    it('FunctionType', () => {
+    it("FunctionType", () => {
       const actual = parser.extractType({
-        type: 'FunctionType',
+        type: "FunctionType",
         params: [
           {
-            type: 'NameExpression',
-            name: 'boolean',
+            type: "NameExpression",
+            name: "boolean",
           },
           {
-            type: 'RestType',
+            type: "RestType",
             expression: {
-              type: 'NameExpression',
-              name: 'string',
+              type: "NameExpression",
+              name: "string",
             },
           },
         ],
         result: {
-          type: 'NameExpression',
-          name: 'number',
+          type: "NameExpression",
+          name: "number",
         },
       });
-      assert.deepEqual(actual.sort(), ['boolean', 'number', 'string']);
+      assert.deepEqual(actual.sort(), ["boolean", "number", "string"]);
     });
-    it('FunctionType: this', () => {
+    it("FunctionType: this", () => {
       const actual = parser.extractType({
-        type: 'FunctionType',
+        type: "FunctionType",
         params: [],
         result: null,
         this: {
-          type: 'NameExpression',
-          name: 'Date',
+          type: "NameExpression",
+          name: "Date",
         },
       });
-      assert.deepEqual(actual.sort(), ['Date']);
+      assert.deepEqual(actual.sort(), ["Date"]);
     });
-    it('FunctionType: new', () => {
+    it("FunctionType: new", () => {
       const actual = parser.extractType({
-        type: 'FunctionType',
+        type: "FunctionType",
         params: [],
         result: null,
         this: {
-          type: 'NameExpression',
-          name: 'Date',
+          type: "NameExpression",
+          name: "Date",
         },
         new: true,
       });
-      assert.deepEqual(actual.sort(), ['Date']);
+      assert.deepEqual(actual.sort(), ["Date"]);
     });
   });
 });
