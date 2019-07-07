@@ -1,12 +1,13 @@
 "use strict";
 
 const Parser = require("./lib/parser");
-const cli = require("./lib/cli");
+const { cli, resolveConfig } = require("./lib/cli");
 const { fixInPlace, getFixedSource } = require("./lib/fix");
 
 module.exports = {
   Parser,
   cli,
+  resolveConfig,
   fixInPlace,
   getFixedSource,
   // for backward compatibility

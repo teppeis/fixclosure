@@ -2,7 +2,7 @@
 
 require("chai").should();
 const fs = require("fs");
-const cli = require("../lib/cli");
+const { cli } = require("../lib/cli");
 const sinon = require("sinon");
 const tempy = require("tempy");
 
