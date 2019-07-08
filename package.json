@@ -37,7 +37,7 @@
     "chai": "^4.2.0",
     "coveralls": "^3.0.4",
     "eslint": "^6.0.1",
-    "eslint-config-teppeis": "^10.1.0",
+    "eslint-config-teppeis": "^10.1.1",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
