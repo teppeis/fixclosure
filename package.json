@@ -16,8 +16,9 @@
     "lib"
   ],
   "scripts": {
+    "build": "tsc",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint *.js lib test",
+    "lint": "eslint --ext js,ts *.js src test",
     "test": "npm run lint && npm run unit:coverage",
     "unit": "mocha",
     "unit:coverage": "nyc --reporter=html --reporter=text mocha"
@@ -34,6 +35,7 @@
     "lodash.difference": "^4.5.0"
   },
   "devDependencies": {
+    "@types/node": "^10.14.12",
     "chai": "^4.2.0",
     "coveralls": "^3.0.5",
     "eslint": "^6.0.1",
@@ -42,7 +44,8 @@
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
     "sinon": "^7.3.2",
-    "tempy": "^0.3.0"
+    "tempy": "^0.3.0",
+    "typescript": "^3.5.2"
   },
   "repository": "https://github.com/teppeis/fixclosure",
   "license": "MIT"
