@@ -6,19 +6,18 @@
   "engines": {
     "node": ">=10"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
   "bin": {
     "fixclosure": "./bin/fixclosure.js"
   },
   "files": [
-    "index.js",
     "bin",
     "lib"
   ],
   "scripts": {
     "build": "tsc",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint --ext js,ts *.js src test",
+    "lint": "eslint --ext js,ts src test",
     "test": "npm run lint && npm run unit:coverage",
     "unit": "mocha",
     "unit:coverage": "nyc --reporter=html --reporter=text mocha"
@@ -35,6 +34,8 @@
     "lodash.difference": "^4.5.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^10.14.12",
     "chai": "^4.2.0",
     "coveralls": "^3.0.5",
@@ -45,6 +46,8 @@
     "prettier": "^1.18.2",
     "sinon": "^7.3.2",
     "tempy": "^0.3.0",
+    "ts-node": "^8.3.0",
+    "ts-node-test-register": "^8.0.1",
     "typescript": "^3.5.2"
   },
   "repository": "https://github.com/teppeis/fixclosure",

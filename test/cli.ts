@@ -1,14 +1,15 @@
-"use strict";
-
+/* eslint-disable no-unused-expressions */
 require("chai").should();
-const fs = require("fs");
-const { cli } = require("../lib/cli");
-const sinon = require("sinon");
-const tempy = require("tempy");
+
+import fs from "fs";
+import { cli } from "../lib/cli";
+import sinon from "sinon";
+import tempy from "tempy";
 
 const cmd = ["node", "fixclosure", "--no-color"];
 
 class MockStdOut {
+  buffer: string[];
   constructor() {
     this.buffer = [];
   }
@@ -233,7 +234,7 @@ describe("Command line", () => {
 
     describe("--fix-in-place", () => {
       const testFixInPlace = async (filename, options = []) => {
-        const tmppath = tempy.file(`test/tmp/${filename}`);
+        const tmppath = tempy.file();
         fs.copyFileSync(`test/fixtures/cli/${filename}`, tmppath);
         await cli(cmd.concat([tmppath, "--fix-in-place", ns]).concat(options), out, err, exit);
         exit.calledOnce.should.be.false;

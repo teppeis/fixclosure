@@ -1,6 +1,4 @@
-"use strict";
-
-const clc = require("cli-color");
+import clc from "cli-color";
 
 /**
  * @param {boolean} enableColor
@@ -86,4 +84,4 @@ Logger.prototype.empty = function() {
   this.messages_ = [];
 };
 
-module.exports = Logger;
+export default Logger;

@@ -1,6 +1,4 @@
-"use strict";
-
-const { Syntax } = require("estraverse-fb");
+import { Syntax } from "estraverse-fb";
 
 /**
  * Visitor for estraverse.
@@ -10,7 +8,7 @@ const { Syntax } = require("estraverse-fb");
  * @param {Array<string>} uses .
  * @this {estravarse.Controller} this
  */
-function leave(node, parent, uses) {
+export function leave(node, parent, uses) {
   switch (node.type) {
     case Syntax.MemberExpression:
     case Syntax.JSXMemberExpression:
@@ -132,7 +130,3 @@ function createMemberObject_(namespace, node, parentKey) {
     key: parentKey,
   };
 }
-
-module.exports = {
-  leave,
-};

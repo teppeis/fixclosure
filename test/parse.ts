@@ -1,10 +1,9 @@
-"use strict";
-
 require("chai").should();
-const fs = require("fs");
-const { assertFile } = require("./lib/asserts");
-const assert = require("assert").strict;
-const { Parser } = require("../");
+
+import fs from "fs";
+import { assertFile } from "./lib/asserts";
+import { Parser } from "../lib/parser";
+import assert = require("assert");
 
 describe("Parser", () => {
   context("ES5", () => {

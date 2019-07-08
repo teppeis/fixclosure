@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * @type {Array<string>}
  */
@@ -62,19 +60,19 @@ const providedNamespaces = [
 /**
  * @return {Map<string, string>}
  */
-exports.getReplaceMap = () => new Map(Object.entries(replaceMap));
+export const getReplaceMap = () => new Map(Object.entries(replaceMap));
 
 /**
  * @return {Set<string>}
  */
-exports.getProvidedNamespaces = () => new Set(providedNamespaces);
+export const getProvidedNamespaces = () => new Set(providedNamespaces);
 
 /**
  * @return {Set<string>}
  */
-exports.getRoots = () => new Set(roots);
+export const getRoots = () => new Set(roots);
 
 /**
  * @return {Set<string>}
  */
-exports.getIgnorePackages = () => new Set(ignorePackages);
+export const getIgnorePackages = () => new Set(ignorePackages);

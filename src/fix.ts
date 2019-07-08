@@ -1,7 +1,5 @@
-"use strict";
-
-const fs = require("fs");
-const { promisify } = require("util");
+import fs from "fs";
+import { promisify } from "util";
 
 /**
  * @param {string} file
@@ -9,7 +7,7 @@ const { promisify } = require("util");
  * @param {Object} info
  * @return {Promise<void>}
  */
-function fixInPlace(file, src, info) {
+export function fixInPlace(file, src, info) {
   const fixedSrc = getFixedSource(src, info);
   return promisify(fs.writeFile)(file, fixedSrc, "utf8");
 }
@@ -19,7 +17,7 @@ function fixInPlace(file, src, info) {
  * @param {Object} info
  * @return {string}
  */
-function getFixedSource(src, info) {
+export function getFixedSource(src, info) {
   const buf = [];
   let bodyStarted = false;
   if (info.provideEnd === 0) {
@@ -118,8 +116,3 @@ function getDeclarationSrc(to, ignored, method) {
   const ignores = ignored.map(namespace => `${method}('${namespace}'); // fixclosure: ignore`);
   return declarations.concat(ignores).sort();
 }
-
-module.exports = {
-  fixInPlace,
-  getFixedSource,
-};

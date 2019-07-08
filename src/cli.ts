@@ -1,17 +1,18 @@
-"use strict";
+import fs from "fs";
+import { promisify } from "util";
+import path from "path";
+import clc from "cli-color";
+import commander from "commander";
+import difference from "lodash.difference";
+import { fixInPlace } from "./fix";
+import { Parser } from "./parser";
+import Logger from "./clilogger";
+import { parser as depsJsParser } from "google-closure-deps";
+import flat from "array.prototype.flat";
 
-const fs = require("fs");
-const { promisify } = require("util");
-const path = require("path");
-const clc = require("cli-color");
-const commander = require("commander");
-const difference = require("lodash.difference");
-const { fixInPlace } = require("./fix");
-const Parser = require("./parser");
-const Logger = require("./clilogger");
-const pkg = require("../package.json");
-const { parser: depsJsParser } = require("google-closure-deps");
-const flat = require("array.prototype.flat");
+// To avoid enabling resolveJsonModule option and rootDir: "."
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { version } = require("../package.json");
 
 function list(val) {
   return val.split(",");
@@ -28,7 +29,7 @@ function map(val) {
 
 function setCommandOptions(command) {
   return command
-    .version(pkg.version, "-v, --version")
+    .version(version, "-v, --version")
     .usage("[options] files...")
     .option("-f, --fix-in-place", "Fix the file in-place.")
     .option("--provideRoots <roots>", "Root namespaces to provide separated by comma.", list)
@@ -110,11 +111,16 @@ function parseArgs(argv) {
   return program;
 }
 
+interface ResolveConfigOptions {
+  config?: string;
+  cwd?: string;
+}
+
 /**
  * @param {{config: string=, cwd: string=}} options
  * @return {Object|null}
  */
-function resolveConfig({ config, cwd }) {
+export function resolveConfig({ config, cwd }: ResolveConfigOptions) {
   const configPath = config || findConfig(cwd);
   if (!configPath) {
     return null;
@@ -314,7 +320,4 @@ function memoize(func) {
   };
 }
 
-module.exports = {
-  cli: main,
-  resolveConfig,
-};
+export { main as cli };

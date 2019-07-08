@@ -1,7 +1,7 @@
 "use strict";
 
 require("chai").should();
-const { Parser } = require("../../");
+const { Parser } = require("../../lib/parser");
 const fs = require("fs");
 
 exports.assertFile = (file, options) => {
