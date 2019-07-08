@@ -1,17 +1,17 @@
-import { Syntax } from "estraverse-fb";
+type Identifier = import("estree").Identifier;
+type MemberExpression = import("estree").MemberExpression;
+type Node = import("estree-jsx").Node;
+type JSXMemberExpression = import("estree-jsx").JSXMemberExpression;
 
 /**
  * Visitor for estraverse.
  *
- * @param {Object} node .
- * @param {Object} parent .
- * @param {Array<string>} uses .
- * @this {estravarse.Controller} this
+ * @this {estraverse.Controller} this
  */
-export function leave(node, parent, uses) {
+export function leave(this: any, node: Node, parent: Node, uses: UsedNamespace[]) {
   switch (node.type) {
-    case Syntax.MemberExpression:
-    case Syntax.JSXMemberExpression:
+    case "MemberExpression":
+    case "JSXMemberExpression":
       if (hasObjectIdentifier_(node) && !hasScope_(node, this.parents())) {
         const parents = this.parents()
           .concat(node)
@@ -19,7 +19,7 @@ export function leave(node, parent, uses) {
         const path = this.path()
           .concat("object")
           .reverse();
-        const use = registerIdentifier_(node.object, parents, path);
+        const use = registerIdentifier_(node.object as Identifier, parents, path);
         if (use) {
           uses.push(use);
         }
@@ -31,50 +31,46 @@ export function leave(node, parent, uses) {
 }
 
 /**
- * @param {Object} node .
  * @return {boolean} True if the node is not computed (accessed by dot operator)
  * and the "object" property is an identifier node.
- * @private
  */
-function hasObjectIdentifier_(node) {
-  return !node.computed && isIdentifierType_(node.object.type);
+function hasObjectIdentifier_(node: MemberExpression | JSXMemberExpression): boolean {
+  return !(node as any).computed && isIdentifierType_(node.object.type);
 }
 
 /**
- * @param {string} type .
  * @return {boolean} True if the type is Syntax.Identifier or
  * Syntax.JSXIdentifier.
  */
-function isIdentifierType_(type) {
-  return type === Syntax.Identifier || type === Syntax.JSXIdentifier;
+function isIdentifierType_(type: string): boolean {
+  return type === "Identifier" || type === "JSXIdentifier";
 }
 
 /**
- * @param {Object} node .
- * @param {Array<Object>} parents .
  * @return {boolean} True if the node has a local or a lexical scope.
- * @private
  */
-function hasScope_(node, parents) {
-  const nodeName = node.object.name;
+function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[]) {
+  const nodeName = (start.object as any).name;
+  let node: Node = start;
   parents = parents.slice();
   while ((node = parents.pop())) {
     switch (node.type) {
-      case Syntax.FunctionExpression:
-      case Syntax.FunctionDeclaration:
-        if (node.params && node.params.some(param => param.name === nodeName)) {
+      case "FunctionExpression":
+      case "FunctionDeclaration":
+        if (node.params && node.params.some(param => (param as Identifier).name === nodeName)) {
           return true;
         }
         break;
-      case Syntax.BlockStatement:
+      case "BlockStatement":
         if (
           node.body &&
           node.body.some(
             bodyPart =>
-              bodyPart.type === Syntax.VariableDeclaration &&
+              bodyPart.type === "VariableDeclaration" &&
               bodyPart.declarations.some(
                 declaration =>
-                  declaration.type === Syntax.VariableDeclarator && declaration.id.name === nodeName
+                  declaration.type === "VariableDeclarator" &&
+                  (declaration.id as Identifier).name === nodeName
               )
           )
         ) {
@@ -95,16 +91,16 @@ function hasScope_(node, parents) {
  * @return {Object} .
  * @private
  */
-function registerIdentifier_(node, parents, path) {
+function registerIdentifier_(node: Identifier, parents: Node[], path: string[]): UsedNamespace {
   const namespace = [node.name];
   for (let i = 0; i < parents.length; i++) {
     const current = parents[i];
     const parentKey = path[i];
     switch (current.type) {
-      case Syntax.MemberExpression:
-      case Syntax.JSXMemberExpression:
-        if (!current.computed && isIdentifierType_(current.property.type)) {
-          namespace.push(current.property.name);
+      case "MemberExpression":
+      case "JSXMemberExpression":
+        if (!(current as MemberExpression).computed && isIdentifierType_(current.property.type)) {
+          namespace.push((current.property as Identifier).name);
         } else {
           return createMemberObject_(namespace, current, parentKey);
         }
@@ -116,14 +112,13 @@ function registerIdentifier_(node, parents, path) {
   return null;
 }
 
-/**
- * @param {Array<string>} namespace .
- * @param {Object} node .
- * @param {string} parentKey .
- * @return {!Object} .
- * @private
- */
-function createMemberObject_(namespace, node, parentKey) {
+interface UsedNamespace {
+  name: string[];
+  node: Node;
+  key: string;
+}
+
+function createMemberObject_(namespace: string[], node: Node, parentKey: string): UsedNamespace {
   return {
     name: namespace,
     node,

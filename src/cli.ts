@@ -9,6 +9,7 @@ import { Parser } from "./parser";
 import Logger from "./clilogger";
 import { parser as depsJsParser } from "google-closure-deps";
 import flat from "array.prototype.flat";
+import { Writable } from "stream";
 
 // To avoid enabling resolveJsonModule option and rootDir: "."
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -133,17 +134,15 @@ export function resolveConfig({ config, cwd }: ResolveConfigOptions) {
   return parseArgs(argv);
 }
 
-/**
- * @param {Array} argv
- * @param {Stream} stdout
- * @param {Stream} stderr
- * @param {function(number?)} exit
- * @return {Promise<void>}
- */
-async function main(argv, stdout, stderr, exit) {
+async function main(
+  argv: string[],
+  stdout: Writable,
+  stderr: Writable,
+  exit: (exitCode: number) => void
+): Promise<void> {
   const argsOptions = parseArgs(argv);
   const rcOptions = resolveConfig({ config: argsOptions.config });
-  const options = { ...rcOptions, ...argsOptions };
+  const options: any = { ...rcOptions, ...argsOptions };
 
   if (options.args.length < 1) {
     argsOptions.outputHelp();

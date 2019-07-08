@@ -12,13 +12,8 @@ export function fixInPlace(file, src, info) {
   return promisify(fs.writeFile)(file, fixedSrc, "utf8");
 }
 
-/**
- * @param {string} src
- * @param {Object} info
- * @return {string}
- */
-export function getFixedSource(src, info) {
-  const buf = [];
+export function getFixedSource(src: string, info: any): string {
+  const buf: string[] = [];
   let bodyStarted = false;
   if (info.provideEnd === 0) {
     writeDeclarationHeader(buf, info);

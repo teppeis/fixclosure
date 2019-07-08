@@ -35,6 +35,8 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
+    "@types/estraverse": "0.0.6",
+    "@types/estree": "0.0.39",
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.14.12",
     "chai": "^4.2.0",

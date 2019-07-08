@@ -1,10 +1,10 @@
 import * as parser from "@babel/parser";
-import doctrine from "doctrine";
-import difference from "lodash.difference";
 import flat from "array.prototype.flat";
-import { traverse, Syntax } from "estraverse-fb";
-import { leave } from "./visitor";
+import doctrine from "doctrine";
+import { traverse } from "estraverse-fb";
+import difference from "lodash.difference";
 import * as def from "./default";
+import { leave } from "./visitor";
 
 const tagsHavingType = new Set([
   "const",
@@ -186,8 +186,8 @@ export class Parser {
    * @private
    */
   extractToRequireTypeFromJsDoc_(comments) {
-    const toRequire = [];
-    const toRequireType = [];
+    const toRequire: string[] = [];
+    const toRequireType: string[] = [];
     comments
       .filter(
         comment =>
@@ -198,13 +198,13 @@ export class Parser {
         const { tags } = doctrine.parse(`/* ${comment.value}*/`, { unwrap: true });
         tags
           .filter(tag => tagsHavingType.has(tag.title) && tag.type)
-          .map(tag => this.extractType(tag.type))
+          .map(tag => this.extractType(tag.type!))
           .forEach(names => {
             toRequireType.push(...names);
           });
         tags
           .filter(tag => tag.title === "implements" && tag.type)
-          .map(tag => this.extractType(tag.type))
+          .map(tag => this.extractType(tag.type!))
           .forEach(names => {
             toRequire.push(...names);
           });
@@ -221,8 +221,11 @@ export class Parser {
     };
   }
 
-  extractType(type) {
-    let result;
+  extractType(type: doctrine.Type | null): string[] {
+    if (!type) {
+      return [];
+    }
+    let result: string[];
     switch (type.type) {
       case "NameExpression":
         return [type.name];
@@ -409,12 +412,12 @@ export class Parser {
     const name = use.name.join(".");
     let typeDefComments;
     switch (use.node.type) {
-      case Syntax.AssignmentExpression:
+      case "AssignmentExpression":
         if (use.key === "left" && use.node.loc.start.column === 0) {
           return this.getProvidedPackageName_(name);
         }
         break;
-      case Syntax.ExpressionStatement:
+      case "ExpressionStatement":
         if (!use.node.leadingComments) {
           return null;
         }
@@ -447,15 +450,15 @@ export class Parser {
    */
   toRequireFilter_(use) {
     switch (use.node.type) {
-      case Syntax.ExpressionStatement:
+      case "ExpressionStatement":
         return false;
 
-      case Syntax.AssignmentExpression:
+      case "AssignmentExpression":
         if (use.key === "left" && use.node.loc.start.column === 0) {
           return false;
         }
         break;
-      case Syntax.VariableDeclarator:
+      case "VariableDeclarator":
         if (use.key === "id") {
           return false;
         }
@@ -594,7 +597,7 @@ export class Parser {
   callExpFilter_(method, use) {
     const name = use.name.join(".");
     switch (use.node.type) {
-      case Syntax.CallExpression:
+      case "CallExpression":
         if (method === name) {
           const start = use.node.loc.start.line;
           const end = use.node.loc.end.line;
