@@ -4,7 +4,13 @@ import doctrine from "doctrine";
 import { traverse } from "estraverse-fb";
 import difference from "lodash.difference";
 import * as def from "./default";
-import { leave } from "./visitor";
+import { leave, UsedNamespace } from "./visitor";
+
+type ParserOptions = any;
+type Program = import("estree").Program;
+type Comment = import("estree").Comment;
+type SimpleCallExpression = import("estree").SimpleCallExpression;
+type SimpleLiteral = import("estree").SimpleLiteral;
 
 const tagsHavingType = new Set([
   "const",
@@ -19,6 +25,23 @@ const tagsHavingType = new Set([
   "typedef",
 ]);
 
+export interface FixClosureInfo {
+  provided: string[];
+  required: string[];
+  requireTyped: string[];
+  forwardDeclared: string[];
+  toProvide: string[];
+  toRequire: string[];
+  toRequireType: string[];
+  toForwardDeclare: string[];
+  ignoredProvide: string[];
+  ignoredRequire: string[];
+  ignoredRequireType: string[];
+  ignoredForwardDeclare: string[];
+  provideStart: number;
+  provideEnd: number;
+}
+
 /**
  * @param {Object=} opt_options .
  * @constructor
@@ -32,7 +55,7 @@ export class Parser {
   private min_ = Number.MAX_VALUE;
   private max_ = 0;
 
-  constructor(opt_options) {
+  constructor(opt_options?: ParserOptions) {
     const options = (this.options = opt_options || {});
     if (options.provideRoots) {
       this.provideRoots_ = new Set(options.provideRoots);
@@ -57,7 +80,7 @@ export class Parser {
     this.ignorePackages_ = def.getIgnorePackages();
   }
 
-  parse(src: string) {
+  parse(src: string): FixClosureInfo {
     const options = {
       comment: true,
       attachComment: true,
@@ -70,10 +93,11 @@ export class Parser {
       ...this.options.parserOptions,
     };
     const { program, comments } = parser.parse(src, options);
-    return this.parseAst(program, comments);
+    // TODO: use espree instead of @babel/parser
+    return this.parseAst(program as any, comments);
   }
 
-  parseAst(program: any, comments: any[]) {
+  parseAst(program: Program, comments: Comment[]): FixClosureInfo {
     const parsed = this.traverseProgram_(program);
     const provided = this.extractProvided_(parsed);
     const required = this.extractRequired_(parsed);
@@ -93,7 +117,7 @@ export class Parser {
       toProvide,
       toRequire,
       toRequireType,
-      toForwardDeclare: [],
+      toForwardDeclare: [] as string[],
       ignoredProvide: ignored.provide,
       ignoredRequire: ignored.require,
       ignoredRequireType: ignored.requireType,
@@ -105,7 +129,7 @@ export class Parser {
     };
   }
 
-  private extractToProvide_(parsed: any[], comments: any[]): any {
+  private extractToProvide_(parsed: UsedNamespace[], comments: Comment[]): string[] {
     const suppressComments = this.getSuppressProvideComments_(comments);
     return parsed
       .filter(this.suppressFilter_.bind(this, suppressComments))
@@ -117,11 +141,9 @@ export class Parser {
   }
 
   /**
-   * @param {Array} comments .
-   * @return {Array} . comments that includes @typedef and not @private
-   * @private
+   * @return comments that includes @typedef and not @private
    */
-  getTypedefComments_(comments) {
+  private getTypedefComments_(comments: Comment[]): Comment[] {
     return comments.filter(comment => {
       if (isCommentBlock(comment) && /^\*/.test(comment.value)) {
         const jsdoc = doctrine.parse(`/* ${comment.value}*/`, { unwrap: true });
@@ -134,39 +156,26 @@ export class Parser {
     });
   }
 
-  /**
-   * @param {Array} comments .
-   * @return {Array} .
-   * @private
-   */
-  getSuppressProvideComments_(comments) {
+  private getSuppressProvideComments_(comments: Comment[]): Comment[] {
     return comments.filter(
       comment =>
         isCommentLine(comment) && /^\s*fixclosure\s*:\s*suppressProvide\b/.test(comment.value)
     );
   }
 
-  /**
-   * @param {Array} comments .
-   * @return {Array} .
-   * @private
-   */
-  getSuppressRequireComments_(comments) {
+  private getSuppressRequireComments_(comments: Comment[]): Comment[] {
     return comments.filter(
       comment =>
         isCommentLine(comment) && /^\s*fixclosure\s*:\s*suppressRequire\b/.test(comment.value)
     );
   }
 
-  /**
-   * @param {Array} parsed .
-   * @param {Array} toProvide .
-   * @param {Array} comments .
-   * @param {Array=} opt_required .
-   * @return {Array} .
-   * @private
-   */
-  extractToRequire_(parsed, toProvide, comments, opt_required) {
+  private extractToRequire_(
+    parsed: UsedNamespace[],
+    toProvide: string[],
+    comments: Comment[],
+    opt_required?: string[]
+  ): string[] {
     const additional = opt_required || [];
     const suppressComments = this.getSuppressRequireComments_(comments);
     const toRequire = parsed
@@ -180,12 +189,9 @@ export class Parser {
     return difference(toRequire, toProvide);
   }
 
-  /**
-   * @param {Array} comments
-   * @return {{toRequire: string[], toRequireType: string[]}}
-   * @private
-   */
-  extractToRequireTypeFromJsDoc_(comments) {
+  private extractToRequireTypeFromJsDoc_(
+    comments: Comment[]
+  ): { toRequire: string[]; toRequireType: string[] } {
     const toRequire: string[] = [];
     const toRequireType: string[] = [];
     comments
@@ -266,13 +272,8 @@ export class Parser {
   /**
    * Extract "goog.require('goog.foo') // fixclosure: ignore".
    * "suppressUnused" is deprecated.
-   *
-   * @param {Array} parsed .
-   * @param {Array} comments .
-   * @return {Array<string>} .
-   * @private
    */
-  extractSuppressUnused_(parsed, comments) {
+  private extractSuppressUnused_(parsed: UsedNamespace[], comments: Comment[]) {
     const suppresses = comments
       .filter(
         comment =>
@@ -281,10 +282,14 @@ export class Parser {
           comment.loc.start.line <= this.max_ &&
           /^\s*fixclosure\s*:\s*(?:suppressUnused|ignore)\b/.test(comment.value)
       )
-      .reduce((prev, item) => {
-        prev[item.loc.start.line] = true;
-        return prev;
-      }, {});
+      .reduce(
+        (prev, item) => {
+          prev[item.loc.start.line] = true;
+          return prev;
+        },
+        // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
+        {} as { [index: number]: boolean }
+      );
 
     if (Object.keys(suppresses).length === 0) {
       return { provide: [], require: [], requireType: [], forwardDeclare: [] };
@@ -306,62 +311,34 @@ export class Parser {
     };
   }
 
-  /**
-   * @param {Array<string>} prev .
-   * @param {string} cur .
-   * @return {Array<string>} .
-   * @private
-   */
-  uniq_(prev, cur) {
+  private uniq_(prev: string[], cur: string): string[] {
     if (prev[prev.length - 1] !== cur) {
       prev.push(cur);
     }
     return prev;
   }
 
-  /**
-   * @param {Array} parsed .
-   * @return {Array} .
-   * @private
-   */
-  extractProvided_(parsed) {
+  private extractProvided_(parsed: UsedNamespace[]): string[] {
     return this.extractGoogDeclaration_(parsed, "goog.provide");
   }
 
-  /**
-   * @param {Array} parsed .
-   * @return {Array} .
-   * @private
-   */
-  extractRequired_(parsed) {
+  private extractRequired_(parsed: UsedNamespace[]): string[] {
     return this.extractGoogDeclaration_(parsed, "goog.require");
   }
 
-  /**
-   * @param {Array} parsed .
-   * @return {Array} .
-   * @private
-   */
-  extractRequireTyped_(parsed) {
+  private extractRequireTyped_(parsed: UsedNamespace[]): string[] {
     return this.extractGoogDeclaration_(parsed, "goog.requireType");
   }
 
-  /**
-   * @param {Array} parsed .
-   * @return {Array} .
-   * @private
-   */
-  extractForwardDeclared_(parsed) {
+  private extractForwardDeclared_(parsed: UsedNamespace[]): string[] {
     return this.extractGoogDeclaration_(parsed, "goog.forwardDeclare");
   }
 
   /**
-   * @param {Array} parsed .
-   * @param {string} method like 'goog.provide' or 'goog.require'
-   * @return {Array} .
-   * @private
+   * @param parsed
+   * @param method like 'goog.provide' or 'goog.require'
    */
-  extractGoogDeclaration_(parsed, method) {
+  private extractGoogDeclaration_(parsed: UsedNamespace[], method: string): string[] {
     return parsed
       .filter(this.callExpFilter_.bind(this, method))
       .map(this.callExpMapper_)
@@ -369,13 +346,8 @@ export class Parser {
       .sort();
   }
 
-  /**
-   * @param {Object} node .
-   * @return {Array<Object>} .
-   * @private
-   */
-  traverseProgram_(node) {
-    const uses = [];
+  private traverseProgram_(node: Program): UsedNamespace[] {
+    const uses: UsedNamespace[] = [];
     traverse(node, {
       leave(currentNode, parent) {
         leave.call(this, currentNode, parent, uses);
@@ -384,31 +356,22 @@ export class Parser {
     return uses;
   }
 
-  /**
-   * @param {*} item .
-   * @return {boolean} True if the item is not null nor undefined.
-   * @private
-   */
-  isDefAndNotNull_(item) {
+  private isDefAndNotNull_<T>(item: T): item is Required<T> {
     return item != null;
   }
 
   /**
-   * @param {string} item .
-   * @return {boolean} True if the item has a root namespace to extract.
-   * @private
+   * @return True if the item has a root namespace to extract.
    */
-  provideRootFilter_(item) {
+  private provideRootFilter_(item: string): boolean {
     const root = item.split(".")[0];
     return this.provideRoots_.has(root);
   }
 
   /**
-   * @param {Object} use .
-   * @return {?string} Used namespace.
-   * @private
+   * @return Provided namespace
    */
-  toProvideMapper_(use) {
+  private toProvideMapper_(use: UsedNamespace): string | null {
     const name = use.name.join(".");
     let typeDefComments;
     switch (use.node.type) {
@@ -434,21 +397,14 @@ export class Parser {
   }
 
   /**
-   * @param {Object} use .
-   * @return {?string} Used namespace.
-   * @private
+   * @return Required namespace
    */
-  toRequireMapper_(use) {
+  private toRequireMapper_(use: UsedNamespace): string | null {
     const name = use.name.join(".");
     return this.getRequiredPackageName_(name);
   }
 
-  /**
-   * @param {Object} use .
-   * @return {?string} Used namespace.
-   * @private
-   */
-  toRequireFilter_(use) {
+  private toRequireFilter_(use: UsedNamespace): boolean {
     switch (use.node.type) {
       case "ExpressionStatement":
         return false;
@@ -473,24 +429,14 @@ export class Parser {
 
   /**
    * Filter toProvide and toRequire if it is suppressed.
-   *
-   * @param {Array} comments .
-   * @param {Object} use .
-   * @return {?string} Used namespace.
-   * @private
    */
-  suppressFilter_(comments, use) {
+  private suppressFilter_(comments: Comment[], use: UsedNamespace): boolean {
     const start = use.node.loc.start.line;
     const suppressComment = comments.some(comment => comment.loc.start.line + 1 === start);
     return !suppressComment;
   }
 
-  /**
-   * @param {string} name .
-   * @return {string|null} .
-   * @private
-   */
-  getRequiredPackageName_(name) {
+  private getRequiredPackageName_(name: string): string | null {
     let names = name.split(".");
     do {
       const name = this.replaceMethod_(names.join("."));
@@ -502,24 +448,22 @@ export class Parser {
     return null;
   }
 
-  /**
-   * @param {string} name .
-   * @return {?string} .
-   * @private
-   */
-  getProvidedPackageName_(name) {
+  private getProvidedPackageName_(name: string): string | null {
     name = this.replaceMethod_(name);
     let names = name.split(".");
     let lastname = names[names.length - 1];
     // Remove prototype or superClass_.
-    names = names.reduceRight((prev, cur) => {
-      if (cur === "prototype") {
-        return [];
-      } else {
-        prev.unshift(cur);
-        return prev;
-      }
-    }, []);
+    names = names.reduceRight(
+      (prev, cur) => {
+        if (cur === "prototype") {
+          return [];
+        } else {
+          prev.unshift(cur);
+          return prev;
+        }
+      },
+      [] as string[]
+    );
 
     if (!this.isProvidedNamespace_(name)) {
       lastname = names[names.length - 1];
@@ -552,49 +496,23 @@ export class Parser {
     }
   }
 
-  /**
-   * @param {string} name .
-   * @return {boolean} .
-   * @private
-   */
-  isIgnorePackage_(name) {
+  private isIgnorePackage_(name: string): boolean {
     return this.ignorePackages_.has(name);
   }
 
-  /**
-   * @param {Array<string>} names .
-   * @return {boolean} .
-   * @private
-   */
-  isPrivateProp_(names) {
+  private isPrivateProp_(names: string[]): boolean {
     return names.some(name => name.endsWith("_"));
   }
 
-  /**
-   * @param {string} method Method name.
-   * @return {string} .
-   * @private
-   */
-  replaceMethod_(method) {
+  private replaceMethod_(method: string): string {
     return this.replaceMap_.has(method) ? this.replaceMap_.get(method) : method;
   }
 
-  /**
-   * @param {string} name
-   * @return {boolean}
-   * @private
-   */
-  isProvidedNamespace_(name) {
+  private isProvidedNamespace_(name: string): boolean {
     return this.providedNamespaces_.has(name);
   }
 
-  /**
-   * @param {string} method Method name.
-   * @param {Object} use .
-   * @return {?string} .
-   * @private
-   */
-  callExpFilter_(method, use) {
+  private callExpFilter_(method: string, use: UsedNamespace): boolean {
     const name = use.name.join(".");
     switch (use.node.type) {
       case "CallExpression":
@@ -612,22 +530,15 @@ export class Parser {
     return false;
   }
 
-  /**
-   * @param {Object} use .
-   * @return {?string} .
-   * @private
-   */
-  callExpMapper_(use) {
-    return use.node.arguments[0].value;
+  callExpMapper_(use: UsedNamespace): string {
+    return ((use.node as SimpleCallExpression).arguments[0] as SimpleLiteral).value as string;
   }
 }
 
 /**
  * Support both ESTree (Line) and @babel/parser (CommentLine)
- * @param {Object} comment
- * @return {boolean}
  */
-function isCommentLine(comment) {
+function isCommentLine(comment): boolean {
   return comment.type === "CommentLine" || comment.type === "Line";
 }
 
@@ -636,6 +547,6 @@ function isCommentLine(comment) {
  * @param {Object} comment
  * @return {boolean}
  */
-function isCommentBlock(comment) {
+function isCommentBlock(comment): boolean {
   return comment.type === "CommentBlock" || comment.type === "Block";
 }

@@ -1,18 +1,13 @@
 import fs from "fs";
 import { promisify } from "util";
+import { FixClosureInfo } from "./parser";
 
-/**
- * @param {string} file
- * @param {string} src
- * @param {Object} info
- * @return {Promise<void>}
- */
-export function fixInPlace(file, src, info) {
+export function fixInPlace(file: string, src: string, info: FixClosureInfo): Promise<void> {
   const fixedSrc = getFixedSource(src, info);
   return promisify(fs.writeFile)(file, fixedSrc, "utf8");
 }
 
-export function getFixedSource(src: string, info: any): string {
+export function getFixedSource(src: string, info: FixClosureInfo): string {
   const buf: string[] = [];
   let bodyStarted = false;
   if (info.provideEnd === 0) {
@@ -36,11 +31,7 @@ export function getFixedSource(src: string, info: any): string {
   return buf.join("\n");
 }
 
-/**
- * @param {Array<string>} buf
- * @param {*} info
- */
-function writeDeclarationHeader(buf, info) {
+function writeDeclarationHeader(buf: string[], info: FixClosureInfo): void {
   const provides = getProvideSrc(info);
   const requires = getRequireSrc(info);
   const requireTypes = getRequireTypeSrc(info);
@@ -64,35 +55,19 @@ function writeDeclarationHeader(buf, info) {
   }
 }
 
-/**
- * @param {*} info
- * @return {Array<string>}
- */
-function getProvideSrc(info) {
+function getProvideSrc(info: FixClosureInfo): string[] {
   return getDeclarationSrc(info.toProvide, info.ignoredProvide, "goog.provide");
 }
 
-/**
- * @param {*} info
- * @return {Array<string>}
- */
-function getRequireSrc(info) {
+function getRequireSrc(info: FixClosureInfo): string[] {
   return getDeclarationSrc(info.toRequire, info.ignoredRequire, "goog.require");
 }
 
-/**
- * @param {*} info
- * @return {Array<string>}
- */
-function getRequireTypeSrc(info) {
+function getRequireTypeSrc(info: FixClosureInfo): string[] {
   return getDeclarationSrc(info.toRequireType, info.ignoredRequireType, "goog.requireType");
 }
 
-/**
- * @param {*} info
- * @return {Array<string>}
- */
-function getForwardDeclareSrc(info) {
+function getForwardDeclareSrc(info: FixClosureInfo): string[] {
   return getDeclarationSrc(
     info.toForwardDeclare,
     info.ignoredForwardDeclare,
@@ -100,13 +75,7 @@ function getForwardDeclareSrc(info) {
   );
 }
 
-/**
- * @param {Array<string>} to
- * @param {Array<string>} ignored
- * @param {string} method like 'goog.require'
- * @return {Array<string>}
- */
-function getDeclarationSrc(to, ignored, method) {
+function getDeclarationSrc(to: string[], ignored: string[], method: string): string[] {
   const declarations = to.map(namespace => `${method}('${namespace}');`);
   const ignores = ignored.map(namespace => `${method}('${namespace}'); // fixclosure: ignore`);
   return declarations.concat(ignores).sort();

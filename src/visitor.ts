@@ -31,7 +31,7 @@ export function leave(this: any, node: Node, parent: Node, uses: UsedNamespace[]
 }
 
 /**
- * @return {boolean} True if the node is not computed (accessed by dot operator)
+ * @return True if the node is not computed (accessed by dot operator)
  * and the "object" property is an identifier node.
  */
 function hasObjectIdentifier_(node: MemberExpression | JSXMemberExpression): boolean {
@@ -39,7 +39,7 @@ function hasObjectIdentifier_(node: MemberExpression | JSXMemberExpression): boo
 }
 
 /**
- * @return {boolean} True if the type is Syntax.Identifier or
+ * @return True if the type is Syntax.Identifier or
  * Syntax.JSXIdentifier.
  */
 function isIdentifierType_(type: string): boolean {
@@ -47,9 +47,9 @@ function isIdentifierType_(type: string): boolean {
 }
 
 /**
- * @return {boolean} True if the node has a local or a lexical scope.
+ * @return True if the node has a local or a lexical scope.
  */
-function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[]) {
+function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[]): boolean {
   const nodeName = (start.object as any).name;
   let node: Node = start;
   parents = parents.slice();
@@ -84,13 +84,6 @@ function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[
   return false;
 }
 
-/**
- * @param {Object} node .
- * @param {Array<Object>} parents .
- * @param {Array<string>} path .
- * @return {Object} .
- * @private
- */
 function registerIdentifier_(node: Identifier, parents: Node[], path: string[]): UsedNamespace {
   const namespace = [node.name];
   for (let i = 0; i < parents.length; i++) {
@@ -112,7 +105,7 @@ function registerIdentifier_(node: Identifier, parents: Node[], path: string[]):
   return null;
 }
 
-interface UsedNamespace {
+export interface UsedNamespace {
   name: string[];
   node: Node;
   key: string;

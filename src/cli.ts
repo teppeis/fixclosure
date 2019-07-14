@@ -15,12 +15,12 @@ import { Writable } from "stream";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version } = require("../package.json");
 
-function list(val) {
+function list(val: string): string[] {
   return val.split(",");
 }
 
-function map(val) {
-  const mapping = new Map();
+function map(val: string): Map<string, string> {
+  const mapping = new Map<string, string>();
   val.split(",").forEach(item => {
     const [key, value] = item.split(":");
     mapping.set(key, value);
@@ -28,7 +28,7 @@ function map(val) {
   return mapping;
 }
 
-function setCommandOptions(command) {
+function setCommandOptions(command: commander.Command) {
   return command
     .version(version, "-v, --version")
     .usage("[options] files...")
@@ -52,8 +52,8 @@ function setCommandOptions(command) {
     .option("--no-color", "Disable color highlight.");
 }
 
-function getDuplicated(namespaces) {
-  const dups = new Set();
+function getDuplicated(namespaces: string[]): string[] {
+  const dups = new Set<string>();
   namespaces.reduce((prev, cur) => {
     if (prev === cur) {
       dups.add(cur);
@@ -65,14 +65,12 @@ function getDuplicated(namespaces) {
 
 /**
  * Find .fixclosurerc up from current working dir
- * @param {string=} opt_dir
- * @return {string|null}
  */
-function findConfig(opt_dir) {
+function findConfig(opt_dir?: string): string | null {
   return findConfig_(opt_dir || process.cwd());
 }
 
-const findConfig_ = memoize(dir => {
+const findConfig_ = memoize((dir: string) => {
   const filename = ".fixclosurerc";
   const filepath = path.normalize(path.join(dir, filename));
   try {
@@ -90,16 +88,11 @@ const findConfig_ = memoize(dir => {
   return findConfig_(parent);
 });
 
-/**
- * @param {Array<string>} argv
- * @return {Object}
- */
-function parseArgs(argv) {
+function parseArgs(argv: string[]): commander.Command {
   const program = new commander.Command();
   setCommandOptions(program).parse(argv);
 
-  /** @type {string[]} */
-  let symbols = [];
+  let symbols: string[] = [];
   if (Array.isArray(program.depsJs) && program.depsJs.length > 0) {
     const results = program.depsJs.map(file => depsJsParser.parseFile(file));
     symbols = flat(results.map(result => result.dependencies.map(dep => dep.closureSymbols)), 2);
@@ -117,11 +110,10 @@ interface ResolveConfigOptions {
   cwd?: string;
 }
 
-/**
- * @param {{config: string=, cwd: string=}} options
- * @return {Object|null}
- */
-export function resolveConfig({ config, cwd }: ResolveConfigOptions) {
+export function resolveConfig({
+  config,
+  cwd,
+}: ResolveConfigOptions = {}): commander.Command | null {
   const configPath = config || findConfig(cwd);
   if (!configPath) {
     return null;
@@ -266,14 +258,14 @@ async function main(
 }
 
 function checkDeclare(
-  log,
-  method,
-  declared,
-  toDeclare,
-  ignoredDeclare,
-  optionalDeclared = [],
-  optionalToDeclare = []
-) {
+  log: Logger,
+  method: string,
+  declared: string[],
+  toDeclare: string[],
+  ignoredDeclare: string[],
+  optionalDeclared: string[] = [],
+  optionalToDeclare: string[] = []
+): boolean {
   let needToFix = false;
   const duplicated = getDuplicated(declared);
   if (duplicated.length > 0) {
@@ -300,18 +292,13 @@ function checkDeclare(
   return needToFix;
 }
 
-/**
- * @param {!Array<T>} array
- * @return {!Array<T>}
- * @template {T}
- */
-function uniqArray(array) {
+function uniqArray<T>(array: T[]): T[] {
   return [...new Set(array)];
 }
 
-function memoize(func) {
-  const cache = new Map();
-  return (key, ...args) => {
+function memoize<K, V>(func: (key: K, ...args: any[]) => V) {
+  const cache = new Map<K, V>();
+  return (key: K, ...args: any[]) => {
     if (!cache.has(key)) {
       cache.set(key, func(key, ...args));
     }
