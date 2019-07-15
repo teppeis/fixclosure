@@ -1,11 +1,9 @@
-"use strict";
-
 require("chai").should();
-const { Parser } = require("../../lib/parser");
-const fs = require("fs");
+import fs from "fs";
+import { Parser, ParserOptions } from "../../src/parser";
 
-exports.assertFile = (file, options) => {
-  let matches;
+export const assertFile = (file: string, options?: ParserOptions) => {
+  let matches: RegExpExecArray;
   const src = fs.readFileSync(`${__dirname}/../fixtures${file}`, "utf8");
 
   let regex = /^\/\/ provided: (.*)/gm;

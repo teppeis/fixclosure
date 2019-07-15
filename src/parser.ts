@@ -6,7 +6,6 @@ import difference from "lodash.difference";
 import * as def from "./default";
 import { leave, UsedNamespace } from "./visitor";
 
-type ParserOptions = any;
 type Program = import("estree").Program;
 type Comment = import("estree").Comment;
 type SimpleCallExpression = import("estree").SimpleCallExpression;
@@ -25,6 +24,7 @@ const tagsHavingType = new Set([
   "typedef",
 ]);
 
+export type ParserOptions = any;
 export interface FixClosureInfo {
   provided: string[];
   required: string[];
@@ -42,10 +42,6 @@ export interface FixClosureInfo {
   provideEnd: number;
 }
 
-/**
- * @param {Object=} opt_options .
- * @constructor
- */
 export class Parser {
   options: any;
   private provideRoots_: Set<string>;

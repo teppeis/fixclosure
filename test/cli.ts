@@ -13,10 +13,10 @@ class MockStdOut {
   constructor() {
     this.buffer = [];
   }
-  write(msg) {
+  write(msg: string) {
     this.buffer.push(msg);
   }
-  toString() {
+  toString(): string {
     return this.buffer.join("");
   }
 }
@@ -42,9 +42,9 @@ const providedNamespaces = [
 const ns = `--namespaces=${providedNamespaces.join(",")}`;
 
 describe("Command line", () => {
-  let out = null;
-  let err = null;
-  let exit = null;
+  let out: MockStdOut = null;
+  let err: MockStdOut = null;
+  let exit: sinon.SinonSpy = null;
 
   beforeEach(() => {
     out = new MockStdOut();
