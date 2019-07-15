@@ -1,12 +1,15 @@
 import clc from "cli-color";
-import { Writable } from "stream";
+
+export interface LogOutput {
+  write(msg: string): void;
+}
 
 class Logger {
   private color_: boolean;
   private messages_: string[];
-  stdout: Writable;
-  stderr: Writable;
-  constructor(enableColor: boolean, stdout: Writable, stderr: Writable) {
+  stdout: LogOutput;
+  stderr: LogOutput;
+  constructor(enableColor: boolean, stdout: LogOutput, stderr: LogOutput) {
     this.color_ = !!enableColor;
     this.messages_ = [];
     this.stdout = stdout;

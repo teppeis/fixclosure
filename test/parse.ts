@@ -2,7 +2,7 @@ require("chai").should();
 
 import fs from "fs";
 import { assertFile } from "./lib/asserts";
-import { Parser } from "../lib/parser";
+import { Parser } from "../src/parser";
 import assert = require("assert");
 
 describe("Parser", () => {
@@ -31,7 +31,7 @@ describe("Parser", () => {
     );
   });
   describe("extractType", () => {
-    let parser;
+    let parser: Parser;
     beforeEach(() => {
       parser = new Parser();
     });

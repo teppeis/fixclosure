@@ -6,10 +6,9 @@ import commander from "commander";
 import difference from "lodash.difference";
 import { fixInPlace } from "./fix";
 import { Parser } from "./parser";
-import Logger from "./clilogger";
+import Logger, { LogOutput } from "./clilogger";
 import { parser as depsJsParser } from "google-closure-deps";
 import flat from "array.prototype.flat";
-import { Writable } from "stream";
 
 // To avoid enabling resolveJsonModule option and rootDir: "."
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -131,8 +130,8 @@ export function resolveConfig({
 
 async function main(
   argv: string[],
-  stdout: Writable,
-  stderr: Writable,
+  stdout: LogOutput,
+  stderr: LogOutput,
   exit: (exitCode: number) => void
 ): Promise<void> {
   const argsOptions = parseArgs(argv);

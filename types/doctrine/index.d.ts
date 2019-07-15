@@ -125,14 +125,14 @@ export namespace type {
   export interface FieldType {
     type: "FieldType";
     key: string;
-    value?: Type;
+    value: Type | null;
   }
   export interface FunctionType {
     type: "FunctionType";
-    this: Type;
-    new: Type;
+    this?: Type;
+    new?: boolean;
     params: Type[];
-    result: Type;
+    result: Type | null;
   }
   export interface NameExpression {
     type: "NameExpression";

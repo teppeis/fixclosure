@@ -2,7 +2,7 @@
 require("chai").should();
 
 import fs from "fs";
-import { cli } from "../lib/cli";
+import { cli } from "../src/cli";
 import sinon from "sinon";
 import tempy from "tempy";
 
