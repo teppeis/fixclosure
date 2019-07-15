@@ -25,7 +25,14 @@ const tagsHavingType = new Set([
   "typedef",
 ]);
 
-export type ParserOptions = any;
+export interface ParserOptions {
+  provideRoots?: string[];
+  replaceMap?: Map<string, string>;
+  providedNamespace?: string[];
+  // TODO: espree options
+  parserOptions?: any;
+}
+
 export interface FixClosureInfo {
   provided: string[];
   required: string[];
@@ -44,7 +51,7 @@ export interface FixClosureInfo {
 }
 
 export class Parser {
-  options: any;
+  options: ParserOptions;
   private provideRoots_: Set<string>;
   private replaceMap_: Map<string, string>;
   private providedNamespaces_: Set<string>;
@@ -62,7 +69,7 @@ export class Parser {
 
     this.replaceMap_ = def.getReplaceMap();
     if (options.replaceMap) {
-      options.replaceMap.forEach((value, key) => {
+      options.replaceMap.forEach((value: string, key: string) => {
         this.replaceMap_.set(key, value);
       });
     }
@@ -292,7 +299,7 @@ export class Parser {
       return { provide: [], require: [], requireType: [], forwardDeclare: [] };
     }
 
-    const getSuppressedNamespaces = method =>
+    const getSuppressedNamespaces = (method: string) =>
       parsed
         .filter(this.callExpFilter_.bind(this, method))
         .filter(req => !!suppresses[getLocation(req.node).start.line])
@@ -535,16 +542,14 @@ export class Parser {
 /**
  * Support both ESTree (Line) and @babel/parser (CommentLine)
  */
-function isCommentLine(comment): boolean {
+function isCommentLine(comment: any): boolean {
   return comment.type === "CommentLine" || comment.type === "Line";
 }
 
 /**
  * Support both ESTree (Block) and @babel/parser (CommentBlock)
- * @param {Object} comment
- * @return {boolean}
  */
-function isCommentBlock(comment): boolean {
+function isCommentBlock(comment: any): boolean {
   return comment.type === "CommentBlock" || comment.type === "Block";
 }
 

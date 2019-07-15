@@ -69,7 +69,7 @@ function findConfig(opt_dir?: string): string | null {
   return findConfig_(opt_dir || process.cwd());
 }
 
-const findConfig_ = memoize((dir: string) => {
+const findConfig_: (dir: string) => string | null = memoize<string, string | null>(dir => {
   const filename = ".fixclosurerc";
   const filepath = path.normalize(path.join(dir, filename));
   try {
@@ -147,7 +147,7 @@ async function main(
   let ng = 0;
   let fixed = 0;
 
-  const promises = options.args.map(async file => {
+  const promises = options.args.map(async (file: string) => {
     const log = new Logger(options.color, stdout, stderr);
     log.warn(`File: ${file}\n`);
     const src = await promisify(fs.readFile)(file, "utf8");
@@ -304,7 +304,7 @@ function memoize<K, V>(func: (key: K, ...args: any[]) => V) {
     if (!cache.has(key)) {
       cache.set(key, func(key, ...args));
     }
-    return cache.get(key);
+    return cache.get(key)!;
   };
 }
 
