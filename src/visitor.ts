@@ -1,3 +1,6 @@
+/* eslint-disable no-invalid-this */
+import { EstraverseController } from "estraverse-fb";
+
 type Identifier = import("estree").Identifier;
 type MemberExpression = import("estree").MemberExpression;
 type Node = import("estree-jsx").Node;
@@ -5,10 +8,8 @@ type JSXMemberExpression = import("estree-jsx").JSXMemberExpression;
 
 /**
  * Visitor for estraverse.
- *
- * @this {estraverse.Controller} this
  */
-export function leave(this: any, node: Node, uses: UsedNamespace[]) {
+export function leave(this: EstraverseController, node: Node, uses: UsedNamespace[]) {
   switch (node.type) {
     case "MemberExpression":
     case "JSXMemberExpression":
@@ -16,7 +17,7 @@ export function leave(this: any, node: Node, uses: UsedNamespace[]) {
         const parents = this.parents()
           .concat(node)
           .reverse();
-        const path = this.path()
+        const path = nonNullable(this.path())
           .concat("object")
           .reverse();
         const use = registerIdentifier_(node.object as Identifier, parents, path);
@@ -28,6 +29,13 @@ export function leave(this: any, node: Node, uses: UsedNamespace[]) {
     default:
       break;
   }
+}
+
+function nonNullable<T>(value: T): NonNullable<T> {
+  if (value == null) {
+    throw new TypeError(`The value must be non-nullable, but actually ${value}`);
+  }
+  return value!;
 }
 
 /**
