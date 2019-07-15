@@ -42,9 +42,9 @@ const providedNamespaces = [
 const ns = `--namespaces=${providedNamespaces.join(",")}`;
 
 describe("Command line", () => {
-  let out: MockStdOut = null;
-  let err: MockStdOut = null;
-  let exit: sinon.SinonSpy = null;
+  let out: MockStdOut;
+  let err: MockStdOut;
+  let exit: sinon.SinonSpy;
 
   beforeEach(() => {
     out = new MockStdOut();
@@ -233,7 +233,7 @@ describe("Command line", () => {
     });
 
     describe("--fix-in-place", () => {
-      const testFixInPlace = async (filename, options = []) => {
+      const testFixInPlace = async (filename: string, options: string[] = []) => {
         const tmppath = tempy.file();
         fs.copyFileSync(`test/fixtures/cli/${filename}`, tmppath);
         await cli(cmd.concat([tmppath, "--fix-in-place", ns]).concat(options), out, err, exit);
@@ -256,7 +256,7 @@ describe("Command line", () => {
   });
 
   describe(".fixclosurerc", () => {
-    let cwd = null;
+    let cwd: string;
 
     beforeEach(() => (cwd = process.cwd()));
 

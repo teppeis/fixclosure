@@ -3,59 +3,59 @@ import fs from "fs";
 import { Parser, ParserOptions } from "../../src/parser";
 
 export const assertFile = (file: string, options?: ParserOptions) => {
-  let matches: RegExpExecArray;
+  let matches: RegExpExecArray | null;
   const src = fs.readFileSync(`${__dirname}/../fixtures${file}`, "utf8");
 
   let regex = /^\/\/ provided: (.*)/gm;
-  const provided = [];
+  const provided: string[] = [];
   while ((matches = regex.exec(src)) !== null) {
     provided.push(matches[1]);
   }
 
   regex = /^\/\/ required: (.*)/gm;
-  const required = [];
+  const required: string[] = [];
   while ((matches = regex.exec(src)) !== null) {
     required.push(matches[1]);
   }
 
   regex = /^\/\/ requireTyped: (.*)/gm;
-  const requireTyped = [];
+  const requireTyped: string[] = [];
   while ((matches = regex.exec(src)) !== null) {
     requireTyped.push(matches[1]);
   }
 
   regex = /^\/\/ forwardDeclared: (.*)/gm;
-  const forwardDeclared = [];
+  const forwardDeclared: string[] = [];
   while ((matches = regex.exec(src)) !== null) {
     forwardDeclared.push(matches[1]);
   }
 
   regex = /^\/\/ toProvide: (.*)/gm;
-  const toProvide = [];
+  const toProvide: string[] = [];
   while ((matches = regex.exec(src)) !== null) {
     toProvide.push(matches[1]);
   }
 
   regex = /^\/\/ toRequire: (.*)/gm;
-  const toRequire = [];
+  const toRequire: string[] = [];
   while ((matches = regex.exec(src)) !== null) {
     toRequire.push(matches[1]);
   }
 
   regex = /^\/\/ toRequireType: (.*)/gm;
-  const toRequireType = [];
+  const toRequireType: string[] = [];
   while ((matches = regex.exec(src)) !== null) {
     toRequireType.push(matches[1]);
   }
 
   regex = /^\/\/ ignoredProvide: (.*)/gm;
-  const ignoredProvide = [];
+  const ignoredProvide: string[] = [];
   while ((matches = regex.exec(src)) !== null) {
     ignoredProvide.push(matches[1]);
   }
 
   regex = /^\/\/ ignoredRequire: (.*)/gm;
-  const ignoredRequire = [];
+  const ignoredRequire: string[] = [];
   while ((matches = regex.exec(src)) !== null) {
     ignoredRequire.push(matches[1]);
   }

@@ -10,6 +10,7 @@ type Program = import("estree").Program;
 type Comment = import("estree").Comment;
 type SimpleCallExpression = import("estree").SimpleCallExpression;
 type SimpleLiteral = import("estree").SimpleLiteral;
+type SourceLocation = import("estree").SourceLocation;
 
 const tagsHavingType = new Set([
   "const",
@@ -274,13 +275,13 @@ export class Parser {
       .filter(
         comment =>
           isCommentLine(comment) &&
-          comment.loc.start.line >= this.min_ &&
-          comment.loc.start.line <= this.max_ &&
+          getLocation(comment).start.line >= this.min_ &&
+          getLocation(comment).start.line <= this.max_ &&
           /^\s*fixclosure\s*:\s*(?:suppressUnused|ignore)\b/.test(comment.value)
       )
       .reduce(
         (prev, item) => {
-          prev[item.loc.start.line] = true;
+          prev[getLocation(item).start.line] = true;
           return prev;
         },
         // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
@@ -294,7 +295,7 @@ export class Parser {
     const getSuppressedNamespaces = method =>
       parsed
         .filter(this.callExpFilter_.bind(this, method))
-        .filter(req => !!suppresses[req.node.loc.start.line])
+        .filter(req => !!suppresses[getLocation(req.node).start.line])
         .map(this.callExpMapper_)
         .filter(this.isDefAndNotNull_)
         .sort();
@@ -346,13 +347,13 @@ export class Parser {
     const uses: UsedNamespace[] = [];
     traverse(node, {
       leave(currentNode, parent) {
-        leave.call(this, currentNode, parent, uses);
+        leave.call(this, currentNode, uses);
       },
     });
     return uses;
   }
 
-  private isDefAndNotNull_<T>(item: T): item is Required<T> {
+  private isDefAndNotNull_<T>(item: T): item is NonNullable<T> {
     return item != null;
   }
 
@@ -372,7 +373,7 @@ export class Parser {
     let typeDefComments;
     switch (use.node.type) {
       case "AssignmentExpression":
-        if (use.key === "left" && use.node.loc.start.column === 0) {
+        if (use.key === "left" && getLocation(use.node).start.column === 0) {
           return this.getProvidedPackageName_(name);
         }
         break;
@@ -406,7 +407,7 @@ export class Parser {
         return false;
 
       case "AssignmentExpression":
-        if (use.key === "left" && use.node.loc.start.column === 0) {
+        if (use.key === "left" && getLocation(use.node).start.column === 0) {
           return false;
         }
         break;
@@ -427,8 +428,8 @@ export class Parser {
    * Filter toProvide and toRequire if it is suppressed.
    */
   private suppressFilter_(comments: Comment[], use: UsedNamespace): boolean {
-    const start = use.node.loc.start.line;
-    const suppressComment = comments.some(comment => comment.loc.start.line + 1 === start);
+    const start = getLocation(use.node).start.line;
+    const suppressComment = comments.some(comment => getLocation(comment).start.line + 1 === start);
     return !suppressComment;
   }
 
@@ -501,7 +502,7 @@ export class Parser {
   }
 
   private replaceMethod_(method: string): string {
-    return this.replaceMap_.has(method) ? this.replaceMap_.get(method) : method;
+    return this.replaceMap_.has(method) ? this.replaceMap_.get(method)! : method;
   }
 
   private isProvidedNamespace_(name: string): boolean {
@@ -513,8 +514,8 @@ export class Parser {
     switch (use.node.type) {
       case "CallExpression":
         if (method === name) {
-          const start = use.node.loc.start.line;
-          const end = use.node.loc.end.line;
+          const start = getLocation(use.node).start.line;
+          const end = getLocation(use.node).end.line;
           this.min_ = Math.min(this.min_, start);
           this.max_ = Math.max(this.max_, end);
           return true;
@@ -545,4 +546,13 @@ function isCommentLine(comment): boolean {
  */
 function isCommentBlock(comment): boolean {
   return comment.type === "CommentBlock" || comment.type === "Block";
+}
+
+function getLocation(node: { loc?: SourceLocation | null }): SourceLocation {
+  if (!node.loc) {
+    throw new TypeError(
+      `Enable "loc" option of your parser. The node doesn't have "loc" property: ${node}`
+    );
+  }
+  return node.loc;
 }

@@ -8,7 +8,7 @@ type JSXMemberExpression = import("estree-jsx").JSXMemberExpression;
  *
  * @this {estraverse.Controller} this
  */
-export function leave(this: any, node: Node, parent: Node, uses: UsedNamespace[]) {
+export function leave(this: any, node: Node, uses: UsedNamespace[]) {
   switch (node.type) {
     case "MemberExpression":
     case "JSXMemberExpression":
@@ -50,8 +50,8 @@ function isIdentifierType_(type: string): boolean {
  * @return True if the node has a local or a lexical scope.
  */
 function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[]): boolean {
-  const nodeName = (start.object as any).name;
-  let node: Node = start;
+  const nodeName: string = (start.object as any).name;
+  let node: Node | undefined;
   parents = parents.slice();
   while ((node = parents.pop())) {
     switch (node.type) {
@@ -84,7 +84,11 @@ function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[
   return false;
 }
 
-function registerIdentifier_(node: Identifier, parents: Node[], path: string[]): UsedNamespace {
+function registerIdentifier_(
+  node: Identifier,
+  parents: Node[],
+  path: string[]
+): UsedNamespace | null {
   const namespace = [node.name];
   for (let i = 0; i < parents.length; i++) {
     const current = parents[i];

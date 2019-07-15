@@ -54,7 +54,7 @@ function setCommandOptions(command: commander.Command) {
 
 function getDuplicated(namespaces: string[]): string[] {
   const dups = new Set<string>();
-  namespaces.reduce((prev, cur) => {
+  namespaces.reduce((prev: string | null, cur) => {
     if (prev === cur) {
       dups.add(cur);
     }
