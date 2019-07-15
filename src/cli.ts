@@ -95,7 +95,10 @@ function parseArgs(argv: string[]): commander.Command {
   let symbols: string[] = [];
   if (Array.isArray(program.depsJs) && program.depsJs.length > 0) {
     const results = program.depsJs.map(file => depsJsParser.parseFile(file));
-    symbols = flat(results.map(result => result.dependencies.map(dep => dep.closureSymbols)), 2);
+    symbols = flat<string>(
+      results.map(result => result.dependencies.map(dep => dep.closureSymbols)),
+      2
+    );
   }
 
   program.providedNamespace = symbols

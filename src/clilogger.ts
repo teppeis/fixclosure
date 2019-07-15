@@ -13,7 +13,7 @@ class Logger {
     this.stderr = stderr;
   }
 
-  raw(msg: string, opt_color?: (msg: string) => string) {
+  raw(msg: string, opt_color?: clc.Format) {
     this.messages_.push(this.color_ && opt_color ? opt_color(msg) : msg);
   }
 

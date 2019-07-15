@@ -242,12 +242,12 @@ export class Parser {
         return this.extractType(type.expression);
       case "TypeApplication":
         result = this.extractType(type.expression);
-        result.push(...flat(type.applications.map(app => this.extractType(app))));
+        result.push(...flat<string>(type.applications.map(app => this.extractType(app))));
         break;
       case "UnionType":
-        return flat(type.elements.map(el => this.extractType(el)));
+        return flat<string>(type.elements.map(el => this.extractType(el)));
       case "RecordType":
-        return flat(type.fields.map(field => this.extractType(field)));
+        return flat<string>(type.fields.map(field => this.extractType(field)));
       case "FieldType":
         if (type.value) {
           return this.extractType(type.value);
@@ -255,7 +255,7 @@ export class Parser {
           return [];
         }
       case "FunctionType":
-        result = flat(type.params.map(param => this.extractType(param)));
+        result = flat<string>(type.params.map(param => this.extractType(param)));
         if (type.result) {
           result.push(...this.extractType(type.result));
         }
