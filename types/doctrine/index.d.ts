@@ -116,99 +116,99 @@ export type Type =
 
 export namespace type {
   export interface AllLiteral {
-    type: "AllLiteral";
+    type: 'AllLiteral';
   }
   export interface ArrayType {
-    type: "ArrayType";
+    type: 'ArrayType';
     elements: Type[];
   }
   export interface FieldType {
-    type: "FieldType";
+    type: 'FieldType';
     key: string;
     value: Type | null;
   }
   export interface FunctionType {
-    type: "FunctionType";
+    type: 'FunctionType';
     this?: Type;
     new?: boolean;
     params: Type[];
     result: Type | null;
   }
   export interface NameExpression {
-    type: "NameExpression";
+    type: 'NameExpression';
     name: string;
   }
   export interface NonNullableType {
-    type: "NonNullableType";
+    type: 'NonNullableType';
     prefix: boolean;
     expression: Type;
   }
   export interface NullableLiteral {
-    type: "NullableLiteral";
+    type: 'NullableLiteral';
   }
   export interface NullableType {
-    type: "NullableType";
+    type: 'NullableType';
     prefix: boolean;
     expression: Type;
   }
   export interface NullLiteral {
-    type: "NullLiteral";
+    type: 'NullLiteral';
   }
   export interface OptionalType {
-    type: "OptionalType";
+    type: 'OptionalType';
     expression: Type;
   }
   export interface ParameterType {
-    type: "ParameterType";
+    type: 'ParameterType';
     name: string;
     expression: Type;
   }
   export interface RecordType {
-    type: "RecordType";
+    type: 'RecordType';
     fields: Type[];
   }
   export interface RestType {
-    type: "RestType";
+    type: 'RestType';
     expression: Type | null;
   }
   export interface TypeApplication {
-    type: "TypeApplication";
+    type: 'TypeApplication';
     expression: Type;
     applications: Type[];
   }
   export interface UndefinedLiteral {
-    type: "UndefinedLiteral";
+    type: 'UndefinedLiteral';
   }
   export interface UnionType {
-    type: "UnionType";
+    type: 'UnionType';
     elements: Type[];
   }
   export interface VoidLiteral {
-    type: "VoidLiteral";
+    type: 'VoidLiteral';
   }
 
   export function stringify(type: Type): string;
-  export function parseType(src: string, options?: { midstream: boolean }): Type;
-  export function parseParamType(src: string, options?: { midstream: boolean }): Type;
+  export function parseType(src: string, options?: {midstream: boolean}): Type;
+  export function parseParamType(src: string, options?: {midstream: boolean}): Type;
 
   export const Syntax: {
-    NullableLiteral: "NullableLiteral";
-    AllLiteral: "AllLiteral";
-    NullLiteral: "NullLiteral";
-    UndefinedLiteral: "UndefinedLiteral";
-    VoidLiteral: "VoidLiteral";
-    UnionType: "UnionType";
-    ArrayType: "ArrayType";
-    RecordType: "RecordType";
-    FieldType: "FieldType";
-    FunctionType: "FunctionType";
-    ParameterType: "ParameterType";
-    RestType: "RestType";
-    NonNullableType: "NonNullableType";
-    OptionalType: "OptionalType";
-    NullableType: "NullableType";
-    NameExpression: "NameExpression";
-    TypeApplication: "TypeApplication";
+    NullableLiteral: 'NullableLiteral';
+    AllLiteral: 'AllLiteral';
+    NullLiteral: 'NullLiteral';
+    UndefinedLiteral: 'UndefinedLiteral';
+    VoidLiteral: 'VoidLiteral';
+    UnionType: 'UnionType';
+    ArrayType: 'ArrayType';
+    RecordType: 'RecordType';
+    FieldType: 'FieldType';
+    FunctionType: 'FunctionType';
+    ParameterType: 'ParameterType';
+    RestType: 'RestType';
+    NonNullableType: 'NonNullableType';
+    OptionalType: 'OptionalType';
+    NullableType: 'NullableType';
+    NameExpression: 'NameExpression';
+    TypeApplication: 'TypeApplication';
   };
 }
 
