@@ -139,12 +139,12 @@ export class Parser {
   private extractToProvide_(parsed: UsedNamespace[], comments: Comment[]): string[] {
     const suppressComments = this.getSuppressProvideComments_(comments);
     return parsed
-      .filter(this.suppressFilter_.bind(this, suppressComments))
-      .map(this.toProvideMapper_.bind(this, comments))
-      .filter(this.isDefAndNotNull_)
-      .filter(this.provideRootFilter_.bind(this))
+      .filter(namespace => this.suppressFilter_(suppressComments, namespace))
+      .map(namespace => this.toProvideMapper_(comments, namespace))
+      .filter(isDefAndNotNull)
+      .filter(provide => this.provideRootFilter_(provide))
       .sort()
-      .reduce(this.uniq_, []);
+      .reduce(uniq, []);
   }
 
   /**
@@ -153,11 +153,11 @@ export class Parser {
    * Use ESLint context like `context.getJSDocComment(node)` if possible.
    */
   private hasTypedefAnnotation_(node: ExpressionStatement, comments: Comment[]): boolean {
-    const { line } = getLocation(node).start;
+    const { line } = getLoc(node).start;
     const jsDocComments = comments.filter(
       comment =>
-        getLocation(comment).end.line === line - 1 &&
-        isCommentBlock(comment) &&
+        getLoc(comment).end.line === line - 1 &&
+        isBlockComment(comment) &&
         /^\*/.test(comment.value)
     );
     if (jsDocComments.length === 0) {
@@ -175,14 +175,14 @@ export class Parser {
   private getSuppressProvideComments_(comments: Comment[]): Comment[] {
     return comments.filter(
       comment =>
-        isCommentLine(comment) && /^\s*fixclosure\s*:\s*suppressProvide\b/.test(comment.value)
+        isLineComment(comment) && /^\s*fixclosure\s*:\s*suppressProvide\b/.test(comment.value)
     );
   }
 
   private getSuppressRequireComments_(comments: Comment[]): Comment[] {
     return comments.filter(
       comment =>
-        isCommentLine(comment) && /^\s*fixclosure\s*:\s*suppressRequire\b/.test(comment.value)
+        isLineComment(comment) && /^\s*fixclosure\s*:\s*suppressRequire\b/.test(comment.value)
     );
   }
 
@@ -195,13 +195,13 @@ export class Parser {
     const additional = opt_required || [];
     const suppressComments = this.getSuppressRequireComments_(comments);
     const toRequire = parsed
-      .filter(this.toRequireFilter_.bind(this))
-      .filter(this.suppressFilter_.bind(this, suppressComments))
-      .map(this.toRequireMapper_.bind(this))
+      .filter(namespace => this.toRequireFilter_(namespace))
+      .filter(namespace => this.suppressFilter_(suppressComments, namespace))
+      .map(namespace => this.toRequireMapper_(namespace))
       .concat(additional)
-      .filter(this.isDefAndNotNull_)
+      .filter(isDefAndNotNull)
       .sort()
-      .reduce(this.uniq_, []);
+      .reduce(uniq, []);
     return difference(toRequire, toProvide);
   }
 
@@ -214,10 +214,10 @@ export class Parser {
       .filter(
         comment =>
           // JSDoc Style
-          isCommentBlock(comment) && /^\*/.test(comment.value)
+          isBlockComment(comment) && /^\*/.test(comment.value)
       )
       .forEach(comment => {
-        const { tags } = doctrine.parse(`/* ${comment.value}*/`, { unwrap: true });
+        const { tags } = doctrine.parse(`/*${comment.value}*/`, { unwrap: true });
         tags
           .filter(tag => tagsHavingType.has(tag.title) && tag.type)
           .map(tag => this.extractType(tag.type!))
@@ -235,11 +235,11 @@ export class Parser {
       toRequire: toRequire
         .filter(name => this.isProvidedNamespace_(name))
         .sort()
-        .reduce(this.uniq_, []),
+        .reduce(uniq, []),
       toRequireType: toRequireType
         .filter(name => this.isProvidedNamespace_(name))
         .sort()
-        .reduce(this.uniq_, []),
+        .reduce(uniq, []),
     };
   }
 
@@ -293,14 +293,14 @@ export class Parser {
     const suppresses = comments
       .filter(
         comment =>
-          isCommentLine(comment) &&
-          getLocation(comment).start.line >= this.min_ &&
-          getLocation(comment).start.line <= this.max_ &&
+          isLineComment(comment) &&
+          getLoc(comment).start.line >= this.min_ &&
+          getLoc(comment).start.line <= this.max_ &&
           /^\s*fixclosure\s*:\s*(?:suppressUnused|ignore)\b/.test(comment.value)
       )
       .reduce(
         (prev, item) => {
-          prev[getLocation(item).start.line] = true;
+          prev[getLoc(item).start.line] = true;
           return prev;
         },
         // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
@@ -313,10 +313,10 @@ export class Parser {
 
     const getSuppressedNamespaces = (method: string) =>
       parsed
-        .filter(this.callExpFilter_.bind(this, method))
-        .filter(req => !!suppresses[getLocation(req.node).start.line])
+        .filter(namespace => this.callExpFilter_(method, namespace))
+        .filter(req => !!suppresses[getLoc(req.node).start.line])
         .map(this.callExpMapper_)
-        .filter(this.isDefAndNotNull_)
+        .filter(isDefAndNotNull)
         .sort();
 
     return {
@@ -325,13 +325,6 @@ export class Parser {
       requireType: getSuppressedNamespaces("goog.requireType"),
       forwardDeclare: getSuppressedNamespaces("goog.forwardDeclare"),
     };
-  }
-
-  private uniq_(prev: string[], cur: string): string[] {
-    if (prev[prev.length - 1] !== cur) {
-      prev.push(cur);
-    }
-    return prev;
   }
 
   private extractProvided_(parsed: UsedNamespace[]): string[] {
@@ -356,9 +349,9 @@ export class Parser {
    */
   private extractGoogDeclaration_(parsed: UsedNamespace[], method: string): string[] {
     return parsed
-      .filter(this.callExpFilter_.bind(this, method))
-      .map(this.callExpMapper_)
-      .filter(this.isDefAndNotNull_)
+      .filter(namespace => this.callExpFilter_(method, namespace))
+      .map(namespace => this.callExpMapper_(namespace))
+      .filter(isDefAndNotNull)
       .sort();
   }
 
@@ -370,10 +363,6 @@ export class Parser {
       },
     });
     return uses;
-  }
-
-  private isDefAndNotNull_<T>(item: T): item is NonNullable<T> {
-    return item != null;
   }
 
   /**
@@ -391,7 +380,7 @@ export class Parser {
     const name = use.name.join(".");
     switch (use.node.type) {
       case "AssignmentExpression":
-        if (use.key === "left" && getLocation(use.node).start.column === 0) {
+        if (use.key === "left" && getLoc(use.node).start.column === 0) {
           return this.getProvidedPackageName_(name);
         }
         break;
@@ -421,7 +410,7 @@ export class Parser {
         return false;
 
       case "AssignmentExpression":
-        if (use.key === "left" && getLocation(use.node).start.column === 0) {
+        if (use.key === "left" && getLoc(use.node).start.column === 0) {
           return false;
         }
         break;
@@ -442,8 +431,8 @@ export class Parser {
    * Filter toProvide and toRequire if it is suppressed.
    */
   private suppressFilter_(comments: Comment[], use: UsedNamespace): boolean {
-    const start = getLocation(use.node).start.line;
-    const suppressComment = comments.some(comment => getLocation(comment).start.line + 1 === start);
+    const start = getLoc(use.node).start.line;
+    const suppressComment = comments.some(comment => getLoc(comment).start.line + 1 === start);
     return !suppressComment;
   }
 
@@ -528,8 +517,8 @@ export class Parser {
     switch (use.node.type) {
       case "CallExpression":
         if (method === name) {
-          const start = getLocation(use.node).start.line;
-          const end = getLocation(use.node).end.line;
+          const start = getLoc(use.node).start.line;
+          const end = getLoc(use.node).end.line;
           this.min_ = Math.min(this.min_, start);
           this.max_ = Math.max(this.max_, end);
           return true;
@@ -549,22 +538,42 @@ export class Parser {
 /**
  * Support both ESTree (Line) and @babel/parser (CommentLine)
  */
-function isCommentLine(comment: any): boolean {
+function isLineComment(comment: { type: string }): boolean {
   return comment.type === "CommentLine" || comment.type === "Line";
 }
 
 /**
  * Support both ESTree (Block) and @babel/parser (CommentBlock)
  */
-function isCommentBlock(comment: any): boolean {
+function isBlockComment(comment: { type: string }): boolean {
   return comment.type === "CommentBlock" || comment.type === "Block";
 }
 
-function getLocation(node: { loc?: SourceLocation | null }): SourceLocation {
+/**
+ * Get non-nullable `.loc` (SourceLocation) prop or throw an error
+ */
+function getLoc(node: { loc?: SourceLocation | null }): SourceLocation {
   if (!node.loc) {
     throw new TypeError(
       `Enable "loc" option of your parser. The node doesn't have "loc" property: ${node}`
     );
   }
   return node.loc;
+}
+
+/**
+ * Use like `array.filter(isDefAndNotNull)`
+ */
+function isDefAndNotNull<T>(item: T): item is NonNullable<T> {
+  return item != null;
+}
+
+/**
+ * Use like `array.reduce(uniq, [])`
+ */
+function uniq(prev: string[], cur: string): string[] {
+  if (prev[prev.length - 1] !== cur) {
+    prev.push(cur);
+  }
+  return prev;
 }
