@@ -1,4 +1,4 @@
-import { Syntax, VisitorOption } from "estraverse";
+import { VisitorOption } from "estraverse";
 type Node = import("estree-jsx").Node;
 
 export interface Visitor {
@@ -18,7 +18,7 @@ export interface Visitor {
 
 export function traverse(root: Node, visitor: Visitor): void;
 export function replace(root: Node, visitor: Visitor): Node;
-export { Syntax, VisitorOption };
+export { VisitorOption };
 
 export interface EstraverseController {
   /**
