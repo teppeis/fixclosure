@@ -7,12 +7,14 @@
     "node": ">=10"
   },
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "bin": {
     "fixclosure": "./bin/fixclosure.js"
   },
   "files": [
     "bin",
-    "lib"
+    "lib",
+    "types"
   ],
   "scripts": {
     "build": "tsc",
@@ -24,6 +26,8 @@
     "unit:coverage": "nyc --reporter=html --reporter=text mocha"
   },
   "dependencies": {
+    "@types/cli-color": "^0.3.29",
+    "@types/estree": "0.0.39",
     "array.prototype.flat": "^1.2.1",
     "cli-color": "^1.4.0",
     "commander": "^2.20.0",
@@ -36,9 +40,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
-    "@types/cli-color": "^0.3.29",
     "@types/estraverse": "0.0.6",
-    "@types/estree": "0.0.39",
     "@types/lodash.difference": "^4.5.6",
     "@types/mocha": "^5.2.7",
     "@types/node": "^10.14.12",
