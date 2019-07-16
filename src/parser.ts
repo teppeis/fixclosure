@@ -1,6 +1,6 @@
-import * as parser from "@babel/parser";
 import flat from "array.prototype.flat";
 import doctrine from "doctrine";
+import espree from "espree";
 import { traverse } from "estraverse-fb";
 import difference from "lodash.difference";
 import * as def from "./default";
@@ -8,9 +8,10 @@ import { leave, UsedNamespace } from "./visitor";
 
 type Program = import("estree").Program;
 type Comment = import("estree").Comment;
+type SourceLocation = import("estree").SourceLocation;
 type SimpleCallExpression = import("estree").SimpleCallExpression;
 type SimpleLiteral = import("estree").SimpleLiteral;
-type SourceLocation = import("estree").SourceLocation;
+type ExpressionStatement = import("estree").ExpressionStatement;
 
 const tagsHavingType = new Set([
   "const",
@@ -86,19 +87,21 @@ export class Parser {
 
   parse(src: string): FixClosureInfo {
     const options = {
-      comment: true,
-      attachComment: true,
       loc: true,
+      comment: true,
       ecmaVersion: 2019,
+      sourceType: "script",
       ecmaFeatures: {
         jsx: true,
       },
-      plugins: ["estree", "jsx"],
       ...this.options.parserOptions,
     };
-    const { program, comments } = parser.parse(src, options);
-    // TODO: use espree instead of @babel/parser
-    return this.parseAst(program as any, comments);
+    const program = espree.parse(src, options);
+    const { comments } = program;
+    if (!comments) {
+      throw new Error("Enable `comment` option for espree parser");
+    }
+    return this.parseAst(program, comments);
   }
 
   parseAst(program: Program, comments: Comment[]): FixClosureInfo {
@@ -137,7 +140,7 @@ export class Parser {
     const suppressComments = this.getSuppressProvideComments_(comments);
     return parsed
       .filter(this.suppressFilter_.bind(this, suppressComments))
-      .map(this.toProvideMapper_.bind(this))
+      .map(this.toProvideMapper_.bind(this, comments))
       .filter(this.isDefAndNotNull_)
       .filter(this.provideRootFilter_.bind(this))
       .sort()
@@ -145,18 +148,27 @@ export class Parser {
   }
 
   /**
-   * @return comments that includes @typedef and not @private
+   * @return true if the node has JSDoc that includes @typedef and not @private
+   * This method assume the JSDoc is at a line just before the node.
+   * Use ESLint context like `context.getJSDocComment(node)` if possible.
    */
-  private getTypedefComments_(comments: Comment[]): Comment[] {
-    return comments.filter(comment => {
-      if (isCommentBlock(comment) && /^\*/.test(comment.value)) {
-        const jsdoc = doctrine.parse(`/* ${comment.value}*/`, { unwrap: true });
-        return (
-          jsdoc.tags.some(tag => tag.title === "typedef") &&
-          !jsdoc.tags.some(tag => tag.title === "private")
-        );
-      }
+  private hasTypedefAnnotation_(node: ExpressionStatement, comments: Comment[]): boolean {
+    const { line } = getLocation(node).start;
+    const jsDocComments = comments.filter(
+      comment =>
+        getLocation(comment).end.line === line - 1 &&
+        isCommentBlock(comment) &&
+        /^\*/.test(comment.value)
+    );
+    if (jsDocComments.length === 0) {
       return false;
+    }
+    return jsDocComments.every(comment => {
+      const jsdoc = doctrine.parse(`/*${comment.value}*/`, { unwrap: true });
+      return (
+        jsdoc.tags.some(tag => tag.title === "typedef") &&
+        !jsdoc.tags.some(tag => tag.title === "private")
+      );
     });
   }
 
@@ -375,9 +387,8 @@ export class Parser {
   /**
    * @return Provided namespace
    */
-  private toProvideMapper_(use: UsedNamespace): string | null {
+  private toProvideMapper_(comments: Comment[], use: UsedNamespace): string | null {
     const name = use.name.join(".");
-    let typeDefComments;
     switch (use.node.type) {
       case "AssignmentExpression":
         if (use.key === "left" && getLocation(use.node).start.column === 0) {
@@ -385,11 +396,7 @@ export class Parser {
         }
         break;
       case "ExpressionStatement":
-        if (!use.node.leadingComments) {
-          return null;
-        }
-        typeDefComments = this.getTypedefComments_(use.node.leadingComments);
-        if (typeDefComments.length > 0) {
+        if (this.hasTypedefAnnotation_(use.node, comments)) {
           return this.getProvidedPackageName_(name);
         }
         break;

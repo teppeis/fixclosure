@@ -1,14 +1,14 @@
-import fs from "fs";
-import { promisify } from "util";
-import path from "path";
+import flat from "array.prototype.flat";
 import clc from "cli-color";
 import commander from "commander";
+import fs from "fs";
+import { parser as depsJsParser } from "google-closure-deps";
 import difference from "lodash.difference";
+import path from "path";
+import { promisify } from "util";
+import Logger, { LogOutput } from "./clilogger";
 import { fixInPlace } from "./fix";
 import { Parser } from "./parser";
-import Logger, { LogOutput } from "./clilogger";
-import { parser as depsJsParser } from "google-closure-deps";
-import flat from "array.prototype.flat";
 
 // To avoid enabling resolveJsonModule option and rootDir: "."
 // eslint-disable-next-line @typescript-eslint/no-var-requires

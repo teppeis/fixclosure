@@ -1,6 +1,6 @@
-import { Parser } from "./parser";
 import { cli, resolveConfig } from "./cli";
 import { fixInPlace, getFixedSource } from "./fix";
+import { Parser } from "./parser";
 
 export {
   Parser,
