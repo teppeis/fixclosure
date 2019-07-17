@@ -98,6 +98,7 @@ export class Parser {
     };
     const program = espree.parse(src, options);
     const { comments } = program;
+    /* istanbul ignore if */
     if (!comments) {
       throw new Error("Enable `comment` option for espree parser");
     }
@@ -553,6 +554,7 @@ function isBlockComment(comment: { type: string }): boolean {
  * Get non-nullable `.loc` (SourceLocation) prop or throw an error
  */
 function getLoc(node: { loc?: SourceLocation | null }): SourceLocation {
+  /* istanbul ignore if */
   if (!node.loc) {
     throw new TypeError(
       `Enable "loc" option of your parser. The node doesn't have "loc" property: ${node}`

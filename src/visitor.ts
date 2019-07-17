@@ -32,6 +32,7 @@ export function leave(this: EstraverseController, node: Node, uses: UsedNamespac
 }
 
 function nonNullable<T>(value: T): NonNullable<T> {
+  /* istanbul ignore if */
   if (value == null) {
     throw new TypeError(`The value must be non-nullable, but actually ${value}`);
   }
