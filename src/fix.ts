@@ -1,13 +1,13 @@
 import fs from "fs";
 import { promisify } from "util";
-import { FixClosureInfo } from "./parser";
+import { FixclosureInfo } from "./parser";
 
-export function fixInPlace(file: string, src: string, info: FixClosureInfo): Promise<void> {
+export function fixInPlace(file: string, src: string, info: FixclosureInfo): Promise<void> {
   const fixedSrc = getFixedSource(src, info);
   return promisify(fs.writeFile)(file, fixedSrc, "utf8");
 }
 
-export function getFixedSource(src: string, info: FixClosureInfo): string {
+export function getFixedSource(src: string, info: FixclosureInfo): string {
   const buf: string[] = [];
   let bodyStarted = false;
   if (info.provideEnd === 0) {
@@ -31,7 +31,7 @@ export function getFixedSource(src: string, info: FixClosureInfo): string {
   return buf.join("\n");
 }
 
-function writeDeclarationHeader(buf: string[], info: FixClosureInfo): void {
+function writeDeclarationHeader(buf: string[], info: FixclosureInfo): void {
   const provides = getProvideSrc(info);
   const requires = getRequireSrc(info);
   const requireTypes = getRequireTypeSrc(info);
@@ -55,19 +55,19 @@ function writeDeclarationHeader(buf: string[], info: FixClosureInfo): void {
   }
 }
 
-function getProvideSrc(info: FixClosureInfo): string[] {
+function getProvideSrc(info: FixclosureInfo): string[] {
   return getDeclarationSrc(info.toProvide, info.ignoredProvide, "goog.provide");
 }
 
-function getRequireSrc(info: FixClosureInfo): string[] {
+function getRequireSrc(info: FixclosureInfo): string[] {
   return getDeclarationSrc(info.toRequire, info.ignoredRequire, "goog.require");
 }
 
-function getRequireTypeSrc(info: FixClosureInfo): string[] {
+function getRequireTypeSrc(info: FixclosureInfo): string[] {
   return getDeclarationSrc(info.toRequireType, info.ignoredRequireType, "goog.requireType");
 }
 
-function getForwardDeclareSrc(info: FixClosureInfo): string[] {
+function getForwardDeclareSrc(info: FixclosureInfo): string[] {
   return getDeclarationSrc(
     info.toForwardDeclare,
     info.ignoredForwardDeclare,

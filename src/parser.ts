@@ -34,7 +34,7 @@ export interface ParserOptions {
   parserOptions?: any;
 }
 
-export interface FixClosureInfo {
+export interface FixclosureInfo {
   provided: string[];
   required: string[];
   requireTyped: string[];
@@ -85,7 +85,7 @@ export class Parser {
     this.ignorePackages_ = def.getIgnorePackages();
   }
 
-  parse(src: string): FixClosureInfo {
+  parse(src: string): FixclosureInfo {
     const options = {
       loc: true,
       comment: true,
@@ -105,7 +105,7 @@ export class Parser {
     return this.parseAst(program, comments);
   }
 
-  parseAst(program: Program, comments: Comment[]): FixClosureInfo {
+  parseAst(program: Program, comments: Comment[]): FixclosureInfo {
     const parsed = this.traverseProgram_(program);
     const provided = this.extractProvided_(parsed);
     const required = this.extractRequired_(parsed);
@@ -531,7 +531,7 @@ export class Parser {
     return false;
   }
 
-  callExpMapper_(use: UsedNamespace): string {
+  private callExpMapper_(use: UsedNamespace): string {
     return ((use.node as SimpleCallExpression).arguments[0] as SimpleLiteral).value as string;
   }
 }
