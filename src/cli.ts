@@ -1,24 +1,25 @@
-"use strict";
+import flat from "array.prototype.flat";
+import clc from "cli-color";
+import commander from "commander";
+import fs from "fs";
+import { parser as depsJsParser } from "google-closure-deps";
+import difference from "lodash.difference";
+import path from "path";
+import { promisify } from "util";
+import Logger, { LogOutput } from "./clilogger";
+import { fixInPlace } from "./fix";
+import { Parser } from "./parser";
 
-const fs = require("fs");
-const { promisify } = require("util");
-const path = require("path");
-const clc = require("cli-color");
-const commander = require("commander");
-const difference = require("lodash.difference");
-const { fixInPlace } = require("./fix");
-const Parser = require("./parser");
-const Logger = require("./clilogger");
-const pkg = require("../package.json");
-const { parser: depsJsParser } = require("google-closure-deps");
-const flat = require("array.prototype.flat");
+// To avoid enabling resolveJsonModule option and rootDir: "."
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { version } = require("../package.json");
 
-function list(val) {
+function list(val: string): string[] {
   return val.split(",");
 }
 
-function map(val) {
-  const mapping = new Map();
+function map(val: string): Map<string, string> {
+  const mapping = new Map<string, string>();
   val.split(",").forEach(item => {
     const [key, value] = item.split(":");
     mapping.set(key, value);
@@ -26,9 +27,9 @@ function map(val) {
   return mapping;
 }
 
-function setCommandOptions(command) {
+function setCommandOptions(command: commander.Command) {
   return command
-    .version(pkg.version, "-v, --version")
+    .version(version, "-v, --version")
     .usage("[options] files...")
     .option("-f, --fix-in-place", "Fix the file in-place.")
     .option("--provideRoots <roots>", "Root namespaces to provide separated by comma.", list)
@@ -50,9 +51,9 @@ function setCommandOptions(command) {
     .option("--no-color", "Disable color highlight.");
 }
 
-function getDuplicated(namespaces) {
-  const dups = new Set();
-  namespaces.reduce((prev, cur) => {
+function getDuplicated(namespaces: string[]): string[] {
+  const dups = new Set<string>();
+  namespaces.reduce((prev: string | null, cur) => {
     if (prev === cur) {
       dups.add(cur);
     }
@@ -63,14 +64,12 @@ function getDuplicated(namespaces) {
 
 /**
  * Find .fixclosurerc up from current working dir
- * @param {string=} opt_dir
- * @return {string|null}
  */
-function findConfig(opt_dir) {
+function findConfig(opt_dir?: string): string | null {
   return findConfig_(opt_dir || process.cwd());
 }
 
-const findConfig_ = memoize(dir => {
+const findConfig_: (dir: string) => string | null = memoize<string, string | null>(dir => {
   const filename = ".fixclosurerc";
   const filepath = path.normalize(path.join(dir, filename));
   try {
@@ -88,19 +87,17 @@ const findConfig_ = memoize(dir => {
   return findConfig_(parent);
 });
 
-/**
- * @param {Array<string>} argv
- * @return {Object}
- */
-function parseArgs(argv) {
+function parseArgs(argv: string[]): commander.Command {
   const program = new commander.Command();
   setCommandOptions(program).parse(argv);
 
-  /** @type {string[]} */
-  let symbols = [];
+  let symbols: string[] = [];
   if (Array.isArray(program.depsJs) && program.depsJs.length > 0) {
     const results = program.depsJs.map(file => depsJsParser.parseFile(file));
-    symbols = flat(results.map(result => result.dependencies.map(dep => dep.closureSymbols)), 2);
+    symbols = flat<string>(
+      results.map(result => result.dependencies.map(dep => dep.closureSymbols)),
+      2
+    );
   }
 
   program.providedNamespace = symbols
@@ -110,11 +107,15 @@ function parseArgs(argv) {
   return program;
 }
 
-/**
- * @param {{config: string=, cwd: string=}} options
- * @return {Object|null}
- */
-function resolveConfig({ config, cwd }) {
+interface ResolveConfigOptions {
+  config?: string;
+  cwd?: string;
+}
+
+export function resolveConfig({
+  config,
+  cwd,
+}: ResolveConfigOptions = {}): commander.Command | null {
   const configPath = config || findConfig(cwd);
   if (!configPath) {
     return null;
@@ -127,17 +128,15 @@ function resolveConfig({ config, cwd }) {
   return parseArgs(argv);
 }
 
-/**
- * @param {Array} argv
- * @param {Stream} stdout
- * @param {Stream} stderr
- * @param {function(number?)} exit
- * @return {Promise<void>}
- */
-async function main(argv, stdout, stderr, exit) {
+async function main(
+  argv: string[],
+  stdout: LogOutput,
+  stderr: LogOutput,
+  exit: (exitCode: number) => void
+): Promise<void> {
   const argsOptions = parseArgs(argv);
   const rcOptions = resolveConfig({ config: argsOptions.config });
-  const options = { ...rcOptions, ...argsOptions };
+  const options: any = { ...rcOptions, ...argsOptions };
 
   if (options.args.length < 1) {
     argsOptions.outputHelp();
@@ -148,7 +147,7 @@ async function main(argv, stdout, stderr, exit) {
   let ng = 0;
   let fixed = 0;
 
-  const promises = options.args.map(async file => {
+  const promises = options.args.map(async (file: string) => {
     const log = new Logger(options.color, stdout, stderr);
     log.warn(`File: ${file}\n`);
     const src = await promisify(fs.readFile)(file, "utf8");
@@ -261,14 +260,14 @@ async function main(argv, stdout, stderr, exit) {
 }
 
 function checkDeclare(
-  log,
-  method,
-  declared,
-  toDeclare,
-  ignoredDeclare,
-  optionalDeclared = [],
-  optionalToDeclare = []
-) {
+  log: Logger,
+  method: string,
+  declared: string[],
+  toDeclare: string[],
+  ignoredDeclare: string[],
+  optionalDeclared: string[] = [],
+  optionalToDeclare: string[] = []
+): boolean {
   let needToFix = false;
   const duplicated = getDuplicated(declared);
   if (duplicated.length > 0) {
@@ -295,26 +294,18 @@ function checkDeclare(
   return needToFix;
 }
 
-/**
- * @param {!Array<T>} array
- * @return {!Array<T>}
- * @template {T}
- */
-function uniqArray(array) {
+function uniqArray<T>(array: T[]): T[] {
   return [...new Set(array)];
 }
 
-function memoize(func) {
-  const cache = new Map();
-  return (key, ...args) => {
+function memoize<K, V>(func: (key: K, ...args: any[]) => V) {
+  const cache = new Map<K, V>();
+  return (key: K, ...args: any[]) => {
     if (!cache.has(key)) {
       cache.set(key, func(key, ...args));
     }
-    return cache.get(key);
+    return cache.get(key)!;
   };
 }
 
-module.exports = {
-  cli: main,
-  resolveConfig,
-};
+export { main as cli };

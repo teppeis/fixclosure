@@ -1,13 +1,5 @@
-"use strict";
-
-/**
- * @type {Array<string>}
- */
 const roots = ["goog", "proto2", "soy", "soydata", "svgpan"];
 
-/**
- * @type {Object<string, string>}
- */
 const replaceMap = {
   "goog.Disposable.MonitoringMode": "goog.Disposable",
   "goog.Promise.CancellationError": "goog.Promise",
@@ -21,13 +13,9 @@ const replaceMap = {
   "goog.ui.SplitPane.EventType": "goog.ui.SplitPane",
 };
 
-/**
- * @type {Array<string>}
- */
 const ignorePackages = ["goog"];
 
 /**
- * @type {Array<string>}
  * @deprecated Use --depsJs
  */
 const providedNamespaces = [
@@ -59,22 +47,10 @@ const providedNamespaces = [
   "goog.userAgent.product.isVersion",
 ];
 
-/**
- * @return {Map<string, string>}
- */
-exports.getReplaceMap = () => new Map(Object.entries(replaceMap));
+export const getReplaceMap = () => new Map(Object.entries(replaceMap));
 
-/**
- * @return {Set<string>}
- */
-exports.getProvidedNamespaces = () => new Set(providedNamespaces);
+export const getProvidedNamespaces = () => new Set(providedNamespaces);
 
-/**
- * @return {Set<string>}
- */
-exports.getRoots = () => new Set(roots);
+export const getRoots = () => new Set(roots);
 
-/**
- * @return {Set<string>}
- */
-exports.getIgnorePackages = () => new Set(ignorePackages);
+export const getIgnorePackages = () => new Set(ignorePackages);

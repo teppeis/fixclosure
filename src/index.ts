@@ -1,17 +1,15 @@
-"use strict";
+import { cli, resolveConfig } from "./cli";
+import { fixInPlace, getFixedSource } from "./fix";
+import { Parser } from "./parser";
 
-const Parser = require("./lib/parser");
-const { cli, resolveConfig } = require("./lib/cli");
-const { fixInPlace, getFixedSource } = require("./lib/fix");
-
-module.exports = {
+export {
   Parser,
   cli,
   resolveConfig,
   fixInPlace,
-  getFixedSource,
   // for backward compatibility
-  fix: fixInPlace,
+  fixInPlace as fix,
+  getFixedSource,
 };
 
 // TODO: suppress warning
