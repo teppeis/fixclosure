@@ -1,5 +1,5 @@
 {
   "all": true,
-  "include": ["src/**/*.ts"],
-  "extension": [".ts"]
+  "include": ["src/**/*.ts", "bin/*.js"],
+  "extension": [".ts", ".js"]
 }
