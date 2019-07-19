@@ -21,7 +21,7 @@
     "clean": "rimraf lib .tsbuildinfo .nyc_output coverage",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint --ext js,ts src test",
-    "test": "run-s clean lint unit:coverage build",
+    "test": "run-s clean lint build unit:coverage",
     "unit": "mocha",
     "unit:coverage": "nyc --reporter=html --reporter=text mocha"
   },

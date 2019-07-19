@@ -1,0 +1,16 @@
+File: test/fixtures/bin/ng.js
+
+Provided:
+- goog.bar
+
+Required:
+- goog.baz
+
+Unnecessary Require:
+- goog.baz
+
+FAIL!
+
+Total: 1 files
+Passed: 0 files
+Failed: 1 files
