@@ -1,5 +1,5 @@
 import flat from "array.prototype.flat";
-import doctrine from "doctrine";
+import doctrine from "@teppeis/doctrine";
 import espree from "espree";
 import { traverse } from "estraverse-fb";
 import difference from "lodash.difference";
