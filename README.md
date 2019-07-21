@@ -1,5 +1,4 @@
-fixclosure
-====
+# fixclosure
 
 fixclosure is JavaScript dependency checker/fixer for Closure Library based on ECMAScript AST.
 It finds namespaces used in a JavaScript file and insert/remove `goog.provide`, `goog.require`, `goog.requireType` and `goog.forwardDeclare` automatically.
@@ -14,13 +13,12 @@ It finds namespaces used in a JavaScript file and insert/remove `goog.provide`, 
 ## Install
 
 ```bash
-$ npm install -g fixclosure
+$ npm install fixclosure
 ```
 
 ## Usage
 
-Following `foo.js` requires an unused namespace `goog.unused`.
-Also `goog.missing` is used but not required.
+The following code `goog.require()`s an unused namespace `goog.unused`, also `goog.missing` is used but not `goog.require()`d.
 
 ```javascript
 // foo.js (before)
@@ -38,7 +36,7 @@ goog.foo.Bar = function() {
 Fix it !
 
 ```bash
-$ fixclosure --fix-in-place foo.js
+$ npx fixclosure --fix-in-place --namespaces=goog.foo,goog.missing foo.js
 File: foo.js
 
 Provided:
@@ -56,14 +54,15 @@ Unnecessary Require:
 
 FIXED!
 
-1 files fixed
+Total: 1 files
+Passed: 0 files
+Fixed: 1 files
 ```
 
-Fixed !  
 `goog.require('goog.unused')` is removed and `goog.require('goog.missing')` is inserted.
 
 ```javascript
-// foo.js (fixed!)
+// foo.js (fixed)
 goog.provide('goog.foo.Bar');
 
 goog.require('goog.foo');
@@ -79,14 +78,9 @@ goog.foo.Bar = function() {
 
 fixclosure checks and fixes:
 
-* Duplicated provide/require/requireType/forwardDeclare
-* Missing provide/require/requireType/forwardDeclare
-* Unnecessary provide/require/requireType/forwardDeclare
-
-### gjslint beforehand
-
-Run [Closure Linter (gjslint)](https://developers.google.com/closure/utilities/) before fixclosure.
-fixclosure is based on the assumption that target files are linted by it.
+- Duplicated provide/require/requireType/forwardDeclare
+- Missing provide/require/requireType/forwardDeclare
+- Unnecessary provide/require/requireType/forwardDeclare
 
 ### Use with Grunt
 
@@ -95,11 +89,13 @@ Use [grunt-fixclosure](https://github.com/teppeis/grunt-fixclosure "grunt-fixclo
 ## Configuration file
 
 fixclosure loads options from `.fixclosurerc` config file like:
+
 ```
 --provideRoots foo,bar
 --namespaceMethods foo.foo1,bar.bar1
 --replaceMap foo.foobar:foo.foo
 ```
+
 fixclosure will find the file in the current directory and, if not found, will move one level up the directory tree all the way up to the filesystem root.
 
 ## Options
@@ -119,31 +115,29 @@ Default: `${process.cwd()}/.fixclosurerc`
 Specify your root namespaces to provide. Default is `goog`.
 Comma separated list.
 
-### `--requireRoots <roots>`
+### `--namespaceMethods <methods>` (deprecated)
 
-Specify root namespaces to require.
-Default require roots are `--provideRoots` value and `goog,proto2,soy,soydata,svgpan`.
-Comma separated list.
+Use `--namespaces`.
 
-### `--namespaceMethods <methods>`
+### `--namespaces <namespaces>`
 
 Specify method or property exported as a namespace itself like `goog.dispose`.  
 Comma separated list.
-
-### `--depsJs <files>`
-
-Load namespace methods from deps.js files separated by comma.
-You can generate deps.js with [google-closure-deps](https://www.npmjs.com/package/google-closure-deps).
 
 ### `--replaceMap <map>`
 
 Replace method or property to namespace mapping like `goog.disposeAll:goog.dispose`.  
 Comma separated list of colon separated pairs like `foo.bar1:foo.bar2,foo.bar3:foo.bar4`.
 
-###  `--useForwardDeclare`
+### `--useForwardDeclare`
 
 Use `goog.forwardDeclare()` instead of `goog.requireType()` for types used only in JSDoc.
 Default: `false`
+
+### `--depsJs <files>`
+
+Load namespace methods from deps.js files separated by comma.
+You can generate deps.js with [google-closure-deps](https://www.npmjs.com/package/google-closure-deps) or [duck](https://www.npmjs.com/package/@teppeis/duck).
 
 ### `--showSuccess`
 
@@ -169,10 +163,10 @@ goog.require('goog.bar'); // fixclosure: ignore
 
 In the above, `goog.provide('goog.foo')` will not removed by fixclosure even if it isn't provided in the file.
 Also `goog.require('goog.bar')` will not removed if it isn't used.
-The hint affects only *same* line.
+The hint affects only _same_ line.
 Useful in module declaration.
 
-*`fixclosure: suppressUnused` is deprecated and will be removed next update.*
+_`fixclosure: suppressUnused` is deprecated and will be removed next update._
 
 ### `suppressRequire`
 
@@ -184,7 +178,7 @@ goog.foo.bar();
 ```
 
 In the above, `goog.require('goog.foo')` will not inserted.
-The hint affects only *next* line.
+The hint affects only _next_ line.
 This is useful to workaround cyclic reference.
 
 ### `suppressProvide`
@@ -197,7 +191,15 @@ goog.Foo = function() {};
 ```
 
 In the above, `goog.provide('goog.Foo')` will not inserted.
-The hint affects only *next* line.
+The hint affects only _next_ line.
+
+## Migration from v1 to v2
+
+- Old Node.js versions were no longer supported, use Node.js v10 or higher.
+- `--namespaceMethods` was deprecated, use `--namespaces`.
+- Deprecated `--roots` was removed, use `--provideRoots`.
+- `--requireRoots` was removed because fixclosure v2 no longer detects required namespaces heuristically. Use `--namespaces` or `--depsJs` to detect them. They can detect the namespaces correctly.
+- Types used only in JSDoc are reported as errors, while previously only types of `@extends` in `@interface` are reported. Add `goog.requireType()` or `goog.fowardDeclare()`.
 
 ### License
 
