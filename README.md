@@ -195,11 +195,11 @@ The hint affects only _next_ line.
 
 ## Migration from v1 to v2
 
-- Old Node.js versions were removed, use v10+.
+- Old Node.js versions were no longer supported, use Node.js v10 or higher.
 - `--namespaceMethods` was deprecated, use `--namespaces`.
 - Deprecated `--roots` was removed, use `--provideRoots`.
 - `--requireRoots` was removed because fixclosure v2 no longer detects required namespaces heuristically. Use `--namespaces` or `--depsJs` to detect them. They can detect the namespaces correctly.
-- Types used only in JSDoc are reported as errors, while previously only types of @extends in @interface are reported. Add `goog.requireType()` or `goog.fowardDeclare()`.
+- Types used only in JSDoc are reported as errors, while previously only types of `@extends` in `@interface` are reported. Add `goog.requireType()` or `goog.fowardDeclare()`.
 
 ### License
 
