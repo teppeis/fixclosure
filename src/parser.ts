@@ -10,7 +10,6 @@ type Program = import("estree").Program;
 type Comment = import("estree").Comment;
 type SourceLocation = import("estree").SourceLocation;
 type SimpleCallExpression = import("estree").SimpleCallExpression;
-type SimpleLiteral = import("estree").SimpleLiteral;
 type ExpressionStatement = import("estree").ExpressionStatement;
 
 const tagsHavingType = new Set([
@@ -317,9 +316,11 @@ export class Parser {
 
     const getSuppressedNamespaces = (method: string) =>
       parsed
-        .filter(namespace => this.callExpFilter_(method, namespace))
+        .filter(isSimpleCallExpression)
+        .filter(isMethodName(method))
+        .filter(this.updateMinMax_.bind(this))
         .filter(req => !!suppresses[getLoc(req.node).start.line])
-        .map(this.callExpMapper_)
+        .map(getArgStringLiteralOrNull)
         .filter(isDefAndNotNull)
         .sort();
 
@@ -353,8 +354,10 @@ export class Parser {
    */
   private extractGoogDeclaration_(parsed: UsedNamespace[], method: string): string[] {
     return parsed
-      .filter(namespace => this.callExpFilter_(method, namespace))
-      .map(namespace => this.callExpMapper_(namespace))
+      .filter(isSimpleCallExpression)
+      .filter(isMethodName(method))
+      .filter(this.updateMinMax_.bind(this))
+      .map(getArgStringLiteralOrNull)
       .filter(isDefAndNotNull)
       .sort();
   }
@@ -516,27 +519,29 @@ export class Parser {
     return this.providedNamespaces_.has(name);
   }
 
-  private callExpFilter_(method: string, use: UsedNamespace): boolean {
-    const name = use.name.join(".");
-    switch (use.node.type) {
-      case "CallExpression":
-        if (method === name) {
-          const start = getLoc(use.node).start.line;
-          const end = getLoc(use.node).end.line;
-          this.min_ = Math.min(this.min_, start);
-          this.max_ = Math.max(this.max_, end);
-          return true;
-        }
-        break;
-      default:
-        break;
-    }
-    return false;
+  private updateMinMax_(use: UsedNamespace<SimpleCallExpression>): true {
+    const start = getLoc(use.node).start.line;
+    const end = getLoc(use.node).end.line;
+    this.min_ = Math.min(this.min_, start);
+    this.max_ = Math.max(this.max_, end);
+    return true;
   }
+}
 
-  private callExpMapper_(use: UsedNamespace): string {
-    return ((use.node as SimpleCallExpression).arguments[0] as SimpleLiteral).value as string;
+function isSimpleCallExpression(use: UsedNamespace): use is UsedNamespace<SimpleCallExpression> {
+  return use.node.type === "CallExpression";
+}
+
+function isMethodName(method: string) {
+  return (use: UsedNamespace<SimpleCallExpression>) => use.name.join(".") === method;
+}
+
+function getArgStringLiteralOrNull(use: UsedNamespace<SimpleCallExpression>): string | null {
+  const arg = use.node.arguments[0];
+  if (arg.type === "Literal" && typeof arg.value === "string") {
+    return arg.value;
   }
+  return null;
 }
 
 /**
