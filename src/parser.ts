@@ -125,7 +125,7 @@ export class Parser {
       toProvide,
       toRequire,
       toRequireType,
-      toForwardDeclare: [] as string[],
+      toForwardDeclare: [],
       ignoredProvide: ignored.provide,
       ignoredRequire: ignored.require,
       ignoredRequireType: ignored.requireType,
@@ -290,7 +290,10 @@ export class Parser {
    * Extract "goog.require('goog.foo') // fixclosure: ignore".
    * "suppressUnused" is deprecated.
    */
-  private extractSuppressUnused_(parsed: UsedNamespace[], comments: Comment[]) {
+  private extractSuppressUnused_(
+    parsed: UsedNamespace[],
+    comments: Comment[]
+  ): { provide: string[]; require: string[]; requireType: string[]; forwardDeclare: string[] } {
     const suppresses = comments
       .filter(
         comment =>
@@ -305,7 +308,7 @@ export class Parser {
           return prev;
         },
         // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
-        {} as { [index: number]: boolean }
+        {} as { [index: number]: true }
       );
 
     if (Object.keys(suppresses).length === 0) {
