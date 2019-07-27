@@ -56,8 +56,8 @@ export class Parser {
   private replaceMap_: Map<string, string>;
   private providedNamespaces_: Set<string>;
   private ignorePackages_: Set<string>;
-  private min_ = Number.MAX_VALUE;
-  private max_ = 0;
+  private minLine_ = Number.MAX_VALUE;
+  private maxLine_ = 0;
 
   constructor(opt_options?: ParserOptions) {
     const options = (this.options = opt_options || {});
@@ -130,9 +130,9 @@ export class Parser {
       ignoredRequireType: ignored.requireType,
       ignoredForwardDeclare: ignored.forwardDeclare,
       // first goog.provide or goog.require line
-      provideStart: this.min_,
+      provideStart: this.minLine_,
       // last goog.provide or goog.require line
-      provideEnd: this.max_,
+      provideEnd: this.maxLine_,
     };
   }
 
@@ -297,8 +297,6 @@ export class Parser {
       .filter(
         comment =>
           isLineComment(comment) &&
-          getLoc(comment).start.line >= this.min_ &&
-          getLoc(comment).start.line <= this.max_ &&
           /^\s*fixclosure\s*:\s*(?:suppressUnused|ignore)\b/.test(comment.value)
       )
       .reduce(
@@ -317,8 +315,8 @@ export class Parser {
     const getSuppressedNamespaces = (method: string) =>
       parsed
         .filter(isSimpleCallExpression)
-        .filter(isMethodName(method))
-        .filter(this.updateMinMax_.bind(this))
+        .filter(isCalledMethodName(method))
+        .filter(namespace => this.updateMinMaxLine_(namespace))
         .filter(req => !!suppresses[getLoc(req.node).start.line])
         .map(getArgStringLiteralOrNull)
         .filter(isDefAndNotNull)
@@ -355,8 +353,8 @@ export class Parser {
   private extractGoogDeclaration_(parsed: UsedNamespace[], method: string): string[] {
     return parsed
       .filter(isSimpleCallExpression)
-      .filter(isMethodName(method))
-      .filter(this.updateMinMax_.bind(this))
+      .filter(isCalledMethodName(method))
+      .filter(namespace => this.updateMinMaxLine_(namespace))
       .map(getArgStringLiteralOrNull)
       .filter(isDefAndNotNull)
       .sort();
@@ -519,11 +517,11 @@ export class Parser {
     return this.providedNamespaces_.has(name);
   }
 
-  private updateMinMax_(use: UsedNamespace<SimpleCallExpression>): true {
+  private updateMinMaxLine_(use: UsedNamespace<SimpleCallExpression>): true {
     const start = getLoc(use.node).start.line;
     const end = getLoc(use.node).end.line;
-    this.min_ = Math.min(this.min_, start);
-    this.max_ = Math.max(this.max_, end);
+    this.minLine_ = Math.min(this.minLine_, start);
+    this.maxLine_ = Math.max(this.maxLine_, end);
     return true;
   }
 }
@@ -532,7 +530,7 @@ function isSimpleCallExpression(use: UsedNamespace): use is UsedNamespace<Simple
   return use.node.type === "CallExpression";
 }
 
-function isMethodName(method: string) {
+function isCalledMethodName(method: string) {
   return (use: UsedNamespace<SimpleCallExpression>) => use.name.join(".") === method;
 }
 
