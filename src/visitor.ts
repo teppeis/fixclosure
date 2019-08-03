@@ -5,6 +5,7 @@ type Identifier = import("estree").Identifier;
 type MemberExpression = import("estree").MemberExpression;
 type Node = import("estree-jsx").Node;
 type JSXMemberExpression = import("estree-jsx").JSXMemberExpression;
+type JSXIdentifier = import("estree-jsx").JSXIdentifier;
 
 /**
  * Visitor for estraverse.
@@ -13,14 +14,17 @@ export function leave(this: EstraverseController, node: Node, uses: UsedNamespac
   switch (node.type) {
     case "MemberExpression":
     case "JSXMemberExpression":
-      if (hasObjectIdentifier_(node) && !hasScope_(node, this.parents())) {
+      if (hasComputedProperty_(node)) {
+        return;
+      }
+      if (isIdentifierType_(node.object) && !hasScope_(node, this.parents())) {
         const parents = this.parents()
           .concat(node)
           .reverse();
         const path = nonNullable(this.path())
           .concat("object")
           .reverse();
-        const use = registerIdentifier_(node.object as Identifier, parents, path);
+        const use = registerIdentifier_(node.object, parents, path);
         if (use) {
           uses.push(use);
         }
@@ -40,19 +44,17 @@ function nonNullable<T>(value: T): NonNullable<T> {
 }
 
 /**
- * @return True if the node is not computed (accessed by dot operator)
- * and the "object" property is an identifier node.
+ * @return True if the property is computed like `foo["bar"]` not `foo.bar`.
  */
-function hasObjectIdentifier_(node: MemberExpression | JSXMemberExpression): boolean {
-  return !(node as any).computed && isIdentifierType_(node.object.type);
+function hasComputedProperty_(node: MemberExpression | JSXMemberExpression): boolean {
+  return node.type === "MemberExpression" && node.computed;
 }
 
 /**
- * @return True if the type is Syntax.Identifier or
- * Syntax.JSXIdentifier.
+ * @return True if the type is Identifier or JSXIdentifier.
  */
-function isIdentifierType_(type: string): boolean {
-  return type === "Identifier" || type === "JSXIdentifier";
+function isIdentifierType_(node: Node): node is Identifier | JSXIdentifier {
+  return node.type === "Identifier" || node.type === "JSXIdentifier";
 }
 
 /**
@@ -94,7 +96,7 @@ function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[
 }
 
 function registerIdentifier_(
-  node: Identifier,
+  node: Identifier | JSXIdentifier,
   parents: Node[],
   path: string[]
 ): UsedNamespace | null {
@@ -105,8 +107,8 @@ function registerIdentifier_(
     switch (current.type) {
       case "MemberExpression":
       case "JSXMemberExpression":
-        if (!(current as MemberExpression).computed && isIdentifierType_(current.property.type)) {
-          namespace.push((current.property as Identifier).name);
+        if (!hasComputedProperty_(current) && isIdentifierType_(current.property)) {
+          namespace.push(current.property.name);
         } else {
           return createMemberObject_(namespace, current, parentKey);
         }
