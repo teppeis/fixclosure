@@ -17,7 +17,7 @@ export function leave(this: EstraverseController, node: Node, uses: UsedNamespac
       if (hasComputedProperty_(node)) {
         return;
       }
-      if (isIdentifierType_(node.object) && !hasScope_(node, this.parents())) {
+      if (isIdentifierType_(node.object) && !isLocalVar_(node.object, this.parents())) {
         const parents = this.parents()
           .concat(node)
           .reverse();
@@ -58,17 +58,21 @@ function isIdentifierType_(node: Node): node is Identifier | JSXIdentifier {
 }
 
 /**
- * @return True if the node has a local or a lexical scope.
+ * @return True if the object is a local variable, not a global object.
+ * TODO: use escope to support complicated patterns like destructuring.
  */
-function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[]): boolean {
-  const nodeName: string = (start.object as any).name;
+function isLocalVar_(object: Identifier | JSXIdentifier, parents: Node[]): boolean {
+  const nodeName: string = object.name;
   let node: Node | undefined;
   parents = parents.slice();
   while ((node = parents.pop())) {
     switch (node.type) {
       case "FunctionExpression":
       case "FunctionDeclaration":
-        if (node.params && node.params.some(param => (param as Identifier).name === nodeName)) {
+        if (
+          node.params &&
+          node.params.some(param => param.type === "Identifier" && param.name === nodeName)
+        ) {
           return true;
         }
         break;
@@ -81,7 +85,8 @@ function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[
               bodyPart.declarations.some(
                 declaration =>
                   declaration.type === "VariableDeclarator" &&
-                  (declaration.id as Identifier).name === nodeName
+                  declaration.id.type === "Identifier" &&
+                  declaration.id.name === nodeName
               )
           )
         ) {
