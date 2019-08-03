@@ -10,7 +10,7 @@ import Logger, { LogOutput } from "./clilogger";
 import { fixInPlace } from "./fix";
 import { Parser } from "./parser";
 
-// To avoid enabling resolveJsonModule option and rootDir: "."
+// Dont't use `import from` to avoid creating nested directory `./lib/src`.
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version } = require("../package.json");
 
