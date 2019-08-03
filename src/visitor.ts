@@ -118,9 +118,9 @@ function registerIdentifier_(
   return null;
 }
 
-export interface UsedNamespace {
+export interface UsedNamespace<T extends Node = Node> {
   name: string[];
-  node: Node;
+  node: T;
   key: string;
 }
 
