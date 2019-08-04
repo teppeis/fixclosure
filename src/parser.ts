@@ -1,16 +1,17 @@
-import flat from "array.prototype.flat";
 import doctrine from "@teppeis/doctrine";
+import flat from "array.prototype.flat";
 import espree from "espree";
 import { traverse } from "estraverse-fb";
+import {
+  Comment,
+  ExpressionStatement,
+  Program,
+  SimpleCallExpression,
+  SourceLocation,
+} from "estree-jsx";
 import difference from "lodash.difference";
 import * as def from "./default";
 import { leave, UsedNamespace } from "./visitor";
-
-type Program = import("estree").Program;
-type Comment = import("estree").Comment;
-type SourceLocation = import("estree").SourceLocation;
-type SimpleCallExpression = import("estree").SimpleCallExpression;
-type ExpressionStatement = import("estree").ExpressionStatement;
 
 const tagsHavingType = new Set([
   "const",

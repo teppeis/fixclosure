@@ -1,20 +1,15 @@
 {
-  "extends": [
-    "teppeis/node-v10",
-    "teppeis/+typescript",
-    "teppeis/+prettier",
-    "teppeis/+mocha"
-  ],
-  "rules": {
-    "no-sync": 0
-  },
+  "extends": ["teppeis/node-v10", "teppeis/+typescript", "teppeis/+prettier", "teppeis/+mocha"],
   "overrides": [
     {
-      "files": [
-        "test/**/*.js"
-      ],
+      "files": ["**/*.ts"],
       "rules": {
-        "no-unused-expressions": "off"
+        "node/no-missing-import": [
+          "error",
+          {
+            "allowModules": ["estree", "estree-jsx"]
+          }
+        ]
       }
     }
   ]

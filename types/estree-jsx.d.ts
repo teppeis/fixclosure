@@ -1,11 +1,9 @@
 // Add JSX node types to estree
-
-type BaseNode = import("estree").BaseNode;
-type Expression = import("estree").Expression;
-type SimpleLiteral = import("estree").SimpleLiteral;
+export * from "estree";
+import * as ESTree from "estree";
 
 export type Node =
-  | import("estree").Node
+  | ESTree.Node
   | JSXAttribute
   | JSXClosingElement
   | JSXClosingFragment
@@ -22,18 +20,18 @@ export type Node =
   | JSXSpreadChild
   | JSXText;
 
-export interface JSXAttribute extends BaseNode {
+export interface JSXAttribute extends ESTree.BaseNode {
   type: "JSXAttribute";
   name: JSXIdentifier | JSXNamespacedName;
-  value: JSXElement | JSXFragment | SimpleLiteral | JSXExpressionContainer | null;
+  value: JSXElement | JSXFragment | ESTree.SimpleLiteral | JSXExpressionContainer | null;
 }
 
-export interface JSXClosingElement extends BaseNode {
+export interface JSXClosingElement extends ESTree.BaseNode {
   type: "JSXClosingElement";
   name: JSXIdentifier | JSXMemberExpression;
 }
 
-export interface JSXElement extends BaseNode {
+export interface JSXElement extends ESTree.BaseNode {
   type: "JSXElement";
   openingElement: JSXOpeningElement;
   closingElement: JSXClosingElement | null;
@@ -41,38 +39,38 @@ export interface JSXElement extends BaseNode {
   selfClosing: any;
 }
 
-export interface JSXEmptyExpression extends BaseNode {
+export interface JSXEmptyExpression extends ESTree.BaseNode {
   type: "JSXEmptyExpression";
 }
 
-export interface JSXExpressionContainer extends BaseNode {
+export interface JSXExpressionContainer extends ESTree.BaseNode {
   type: "JSXExpressionContainer";
-  expression: Expression | JSXEmptyExpression;
+  expression: ESTree.Expression | JSXEmptyExpression;
 }
 
-export interface JSXSpreadChild extends BaseNode {
+export interface JSXSpreadChild extends ESTree.BaseNode {
   type: "JSXSpreadChild";
-  expression: Expression;
+  expression: ESTree.Expression;
 }
 
-export interface JSXIdentifier extends BaseNode {
+export interface JSXIdentifier extends ESTree.BaseNode {
   type: "JSXIdentifier";
   name: string;
 }
 
-export interface JSXMemberExpression extends BaseNode {
+export interface JSXMemberExpression extends ESTree.BaseNode {
   type: "JSXMemberExpression";
   object: JSXMemberExpression | JSXIdentifier;
   property: JSXIdentifier;
 }
 
-export interface JSXNamespacedName extends BaseNode {
+export interface JSXNamespacedName extends ESTree.BaseNode {
   type: "JSXNamespacedName";
   namespace: JSXIdentifier;
   name: JSXIdentifier;
 }
 
-export interface JSXOpeningElement extends BaseNode {
+export interface JSXOpeningElement extends ESTree.BaseNode {
   type: "JSXOpeningElement";
   name: JSXIdentifier | JSXMemberExpression;
   attributes: Array<JSXAttribute | JSXSpreadAttribute>;
@@ -80,27 +78,27 @@ export interface JSXOpeningElement extends BaseNode {
   typeParameters: null;
 }
 
-export interface JSXSpreadAttribute extends BaseNode {
+export interface JSXSpreadAttribute extends ESTree.BaseNode {
   type: "JSXSpreadAttribute";
-  argument: Expression;
+  argument: ESTree.Expression;
 }
 
-export interface JSXText extends BaseNode {
+export interface JSXText extends ESTree.BaseNode {
   type: "JSXText";
   value: string;
 }
 
-export interface JSXFragment extends BaseNode {
+export interface JSXFragment extends ESTree.BaseNode {
   type: "JSXFragment";
   openingFragment: JSXOpeningFragment;
   closingFragment: JSXClosingFragment;
   children: Array<JSXText | JSXExpressionContainer | JSXSpreadChild | JSXElement | JSXFragment>;
 }
 
-export interface JSXOpeningFragment extends BaseNode {
+export interface JSXOpeningFragment extends ESTree.BaseNode {
   type: "JSXOpeningFragment";
 }
 
-export interface JSXClosingFragment extends BaseNode {
+export interface JSXClosingFragment extends ESTree.BaseNode {
   type: "JSXClosingFragment";
 }

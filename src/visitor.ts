@@ -1,26 +1,25 @@
-/* eslint-disable no-invalid-this */
 import { EstraverseController } from "estraverse-fb";
-
-type Identifier = import("estree").Identifier;
-type MemberExpression = import("estree").MemberExpression;
-type Node = import("estree-jsx").Node;
-type JSXMemberExpression = import("estree-jsx").JSXMemberExpression;
+import { Identifier, JSXIdentifier, JSXMemberExpression, MemberExpression, Node } from "estree-jsx";
 
 /**
  * Visitor for estraverse.
  */
 export function leave(this: EstraverseController, node: Node, uses: UsedNamespace[]) {
+  /* eslint-disable no-invalid-this */
   switch (node.type) {
     case "MemberExpression":
     case "JSXMemberExpression":
-      if (hasObjectIdentifier_(node) && !hasScope_(node, this.parents())) {
+      if (hasComputedProperty_(node)) {
+        return;
+      }
+      if (isIdentifierType_(node.object) && !isLocalVar_(node.object, this.parents())) {
         const parents = this.parents()
           .concat(node)
           .reverse();
         const path = nonNullable(this.path())
           .concat("object")
           .reverse();
-        const use = registerIdentifier_(node.object as Identifier, parents, path);
+        const use = registerIdentifier_(node.object, parents, path);
         if (use) {
           uses.push(use);
         }
@@ -29,6 +28,7 @@ export function leave(this: EstraverseController, node: Node, uses: UsedNamespac
     default:
       break;
   }
+  /* eslint-enable no-invalid-this */
 }
 
 function nonNullable<T>(value: T): NonNullable<T> {
@@ -40,33 +40,35 @@ function nonNullable<T>(value: T): NonNullable<T> {
 }
 
 /**
- * @return True if the node is not computed (accessed by dot operator)
- * and the "object" property is an identifier node.
+ * @return True if the property is computed like `foo["bar"]` not `foo.bar`.
  */
-function hasObjectIdentifier_(node: MemberExpression | JSXMemberExpression): boolean {
-  return !(node as any).computed && isIdentifierType_(node.object.type);
+function hasComputedProperty_(node: MemberExpression | JSXMemberExpression): boolean {
+  return node.type === "MemberExpression" && node.computed;
 }
 
 /**
- * @return True if the type is Syntax.Identifier or
- * Syntax.JSXIdentifier.
+ * @return True if the type is Identifier or JSXIdentifier.
  */
-function isIdentifierType_(type: string): boolean {
-  return type === "Identifier" || type === "JSXIdentifier";
+function isIdentifierType_(node: Node): node is Identifier | JSXIdentifier {
+  return node.type === "Identifier" || node.type === "JSXIdentifier";
 }
 
 /**
- * @return True if the node has a local or a lexical scope.
+ * @return True if the object is a local variable, not a global object.
+ * TODO: use escope to support complicated patterns like destructuring.
  */
-function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[]): boolean {
-  const nodeName: string = (start.object as any).name;
+function isLocalVar_(object: Identifier | JSXIdentifier, parents: Node[]): boolean {
+  const nodeName: string = object.name;
   let node: Node | undefined;
   parents = parents.slice();
   while ((node = parents.pop())) {
     switch (node.type) {
       case "FunctionExpression":
       case "FunctionDeclaration":
-        if (node.params && node.params.some(param => (param as Identifier).name === nodeName)) {
+        if (
+          node.params &&
+          node.params.some(param => param.type === "Identifier" && param.name === nodeName)
+        ) {
           return true;
         }
         break;
@@ -79,7 +81,8 @@ function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[
               bodyPart.declarations.some(
                 declaration =>
                   declaration.type === "VariableDeclarator" &&
-                  (declaration.id as Identifier).name === nodeName
+                  declaration.id.type === "Identifier" &&
+                  declaration.id.name === nodeName
               )
           )
         ) {
@@ -94,7 +97,7 @@ function hasScope_(start: MemberExpression | JSXMemberExpression, parents: Node[
 }
 
 function registerIdentifier_(
-  node: Identifier,
+  node: Identifier | JSXIdentifier,
   parents: Node[],
   path: string[]
 ): UsedNamespace | null {
@@ -105,8 +108,8 @@ function registerIdentifier_(
     switch (current.type) {
       case "MemberExpression":
       case "JSXMemberExpression":
-        if (!(current as MemberExpression).computed && isIdentifierType_(current.property.type)) {
-          namespace.push((current.property as Identifier).name);
+        if (!hasComputedProperty_(current) && isIdentifierType_(current.property)) {
+          namespace.push(current.property.name);
         } else {
           return createMemberObject_(namespace, current, parentKey);
         }
