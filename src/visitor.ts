@@ -1,4 +1,3 @@
-/* eslint-disable no-invalid-this */
 import { EstraverseController } from "estraverse-fb";
 import { Identifier, JSXIdentifier, JSXMemberExpression, MemberExpression, Node } from "estree-jsx";
 
@@ -6,6 +5,7 @@ import { Identifier, JSXIdentifier, JSXMemberExpression, MemberExpression, Node 
  * Visitor for estraverse.
  */
 export function leave(this: EstraverseController, node: Node, uses: UsedNamespace[]) {
+  /* eslint-disable no-invalid-this */
   switch (node.type) {
     case "MemberExpression":
     case "JSXMemberExpression":
@@ -28,6 +28,7 @@ export function leave(this: EstraverseController, node: Node, uses: UsedNamespac
     default:
       break;
   }
+  /* eslint-enable no-invalid-this */
 }
 
 function nonNullable<T>(value: T): NonNullable<T> {
