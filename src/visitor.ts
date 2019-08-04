@@ -1,11 +1,6 @@
 /* eslint-disable no-invalid-this */
 import { EstraverseController } from "estraverse-fb";
-
-type Identifier = import("estree").Identifier;
-type MemberExpression = import("estree").MemberExpression;
-type Node = import("estree-jsx").Node;
-type JSXMemberExpression = import("estree-jsx").JSXMemberExpression;
-type JSXIdentifier = import("estree-jsx").JSXIdentifier;
+import { Identifier, JSXIdentifier, JSXMemberExpression, MemberExpression, Node } from "estree-jsx";
 
 /**
  * Visitor for estraverse.
