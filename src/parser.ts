@@ -414,22 +414,14 @@ export class Parser {
     switch (use.node.type) {
       case "ExpressionStatement":
         return false;
-
       case "AssignmentExpression":
         if (use.key === "left" && getLoc(use.node).start.column === 0) {
           return false;
         }
         break;
-      case "VariableDeclarator":
-        if (use.key === "id") {
-          return false;
-        }
-        break;
-
       default:
         break;
     }
-
     return true;
   }
 
