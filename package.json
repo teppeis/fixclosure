@@ -17,7 +17,6 @@
     "types"
   ],
   "scripts": {
-    "build": "tsc",
     "clean": "rimraf lib .tsbuildinfo .nyc_output coverage",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint --ext js,ts src types test",
