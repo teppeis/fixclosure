@@ -305,7 +305,6 @@ export class Parser {
           prev[getLoc(item).start.line] = true;
           return prev;
         },
-        // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
         {} as { [index: number]: true }
       );
 
