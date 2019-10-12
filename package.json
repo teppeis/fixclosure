@@ -30,7 +30,7 @@
     "@types/cli-color": "^0.3.29",
     "@types/estree": "0.0.39",
     "array.prototype.flat": "^1.2.2",
-    "cli-color": "^1.4.0",
+    "cli-color": "^2.0.0",
     "commander": "^3.0.2",
     "espree": "^6.1.1",
     "estraverse": "^4.3.0",
