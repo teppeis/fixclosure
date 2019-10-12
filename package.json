@@ -46,7 +46,7 @@
     "@types/node": "^10.14.21",
     "@types/sinon": "^7.5.0",
     "chai": "^4.2.0",
-    "coveralls": "^3.0.6",
+    "coveralls": "^3.0.7",
     "eslint": "^6.5.1",
     "eslint-config-teppeis": "^10.2.1",
     "mocha": "^6.2.1",
