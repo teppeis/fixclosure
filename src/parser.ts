@@ -300,13 +300,10 @@ export class Parser {
           isLineComment(comment) &&
           /^\s*fixclosure\s*:\s*(?:suppressUnused|ignore)\b/.test(comment.value)
       )
-      .reduce(
-        (prev, item) => {
-          prev[getLoc(item).start.line] = true;
-          return prev;
-        },
-        {} as { [index: number]: true }
-      );
+      .reduce((prev, item) => {
+        prev[getLoc(item).start.line] = true;
+        return prev;
+      }, {} as { [index: number]: true });
 
     if (Object.keys(suppresses).length === 0) {
       return { provide: [], require: [], requireType: [], forwardDeclare: [] };
@@ -450,17 +447,14 @@ export class Parser {
     let names = name.split(".");
     let lastname = names[names.length - 1];
     // Remove prototype or superClass_.
-    names = names.reduceRight(
-      (prev, cur) => {
-        if (cur === "prototype") {
-          return [];
-        } else {
-          prev.unshift(cur);
-          return prev;
-        }
-      },
-      [] as string[]
-    );
+    names = names.reduceRight((prev, cur) => {
+      if (cur === "prototype") {
+        return [];
+      } else {
+        prev.unshift(cur);
+        return prev;
+      }
+    }, [] as string[]);
 
     if (!this.isProvidedNamespace_(name)) {
       lastname = names[names.length - 1];
