@@ -226,7 +226,7 @@ export class Parser {
             toRequireType.push(...names);
           });
         tags
-          .filter(tag => tag.title === "implements" && tag.type)
+          .filter(tag => (tag.title === "implements" || tag.title === "extends") && tag.type)
           .map(tag => this.extractType(tag.type!))
           .forEach(names => {
             toRequire.push(...names);
