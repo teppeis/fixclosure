@@ -233,16 +233,6 @@ describe("Command line", () => {
     });
 
     describe("--fix-in-place", () => {
-      const testFixInPlace = async (filename: string, options: string[] = []) => {
-        const tmppath = tempy.file();
-        fs.copyFileSync(`test/fixtures/cli/${filename}`, tmppath);
-        await cli(cmd.concat([tmppath, "--fix-in-place", ns]).concat(options), out, err, exit);
-        exit.calledOnce.should.be.false;
-        const fixedSrc = fs.readFileSync(tmppath, "utf8");
-        const expected = fs.readFileSync(`test/fixtures/cli/${filename}.fixed.txt`, "utf8");
-        fixedSrc.should.be.eql(expected);
-      };
-
       it("fix in place all error types", () => testFixInPlace("all-ng-types.js"));
 
       it("fix in place all error types with --useForwardDeclare", () =>
@@ -254,6 +244,16 @@ describe("Command line", () => {
         testFixInPlace("fix-comment-and-no-provide.js"));
     });
   });
+
+  const testFixInPlace = async (filename: string, options: string[] = []) => {
+    const tmppath = tempy.file();
+    fs.copyFileSync(`test/fixtures/cli/${filename}`, tmppath);
+    await cli(cmd.concat([tmppath, "--fix-in-place", ns]).concat(options), out, err, exit);
+    exit.calledOnce.should.be.false;
+    const fixedSrc = fs.readFileSync(tmppath, "utf8");
+    const expected = fs.readFileSync(`test/fixtures/cli/${filename}.fixed.txt`, "utf8");
+    fixedSrc.should.be.eql(expected);
+  };
 
   describe(".fixclosurerc", () => {
     let cwd: string;
@@ -279,5 +279,10 @@ describe("Command line", () => {
       );
       exit.called.should.be.false;
     });
+
+    it("load --useForwardDecalre from config", () =>
+      testFixInPlace("all-ng-types.js.forwarddeclare", [
+        "--config=test/fixtures/cli/.fixclosurerc-forwarddeclare",
+      ]));
   });
 });

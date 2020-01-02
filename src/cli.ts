@@ -40,14 +40,10 @@ function setCommandOptions(command: commander.Command) {
       'Methods or properties to namespaces mapping like "before1:after1,before2:after2".',
       map
     )
-    .option(
-      "--useForwardDeclare",
-      "Use goog.forwardDeclare() instead of goog.requireType().",
-      false
-    )
+    .option("--useForwardDeclare", "Use goog.forwardDeclare() instead of goog.requireType().")
     .option("--config <file>", ".fixclosurerc file path.")
     .option("--depsJs <files>", "deps.js file paths separated by comma.", list)
-    .option("--showSuccess", "Show success ouput.", false)
+    .option("--showSuccess", "Show success ouput.")
     .option("--no-color", "Disable color highlight.");
 }
 
