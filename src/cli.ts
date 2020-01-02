@@ -41,14 +41,10 @@ function setCommandOptions(command: commander.Command) {
       'Methods or properties to namespaces mapping like "before1:after1,before2:after2".',
       map
     )
-    .option(
-      "--useForwardDeclare",
-      "Use goog.forwardDeclare() instead of goog.requireType().",
-      false
-    )
+    .option("--useForwardDeclare", "Use goog.forwardDeclare() instead of goog.requireType().")
     .option("--config <file>", ".fixclosurerc file path.")
     .option("--depsJs <files>", "deps.js file paths separated by comma.", list)
-    .option("--showSuccess", "Show success ouput.", false)
+    .option("--showSuccess", "Show success ouput.")
     .option("--no-color", "Disable color highlight.");
 }
 
@@ -92,19 +88,14 @@ function parseArgs(argv: string[]): commander.Command {
   const program = new commander.Command();
   setCommandOptions(program).parse(argv);
 
-  let symbols: string[] = [];
   if (Array.isArray(program.depsJs) && program.depsJs.length > 0) {
     const results = program.depsJs.map(file => depsJsParser.parseFile(file));
-    symbols = flat<string>(
+    const symbols = flat<string>(
       results.map(result => result.dependencies.map(dep => dep.closureSymbols)),
       2
     );
+    program.depsJsSymbols = symbols;
   }
-
-  program.providedNamespace = symbols
-    .concat(program.namespaceMethods || [])
-    .concat(program.namespaces || []);
-
   return program;
 }
 
@@ -158,6 +149,11 @@ async function main(
   }
 
   const files = await getFiles(options.args);
+
+  // for Parser
+  options.providedNamespace = (options.depsJsSymbols || [])
+    .concat(options.namespaceMethods || [])
+    .concat(options.namespaces || []);
 
   let ok = 0;
   let ng = 0;

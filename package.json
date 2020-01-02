@@ -1,7 +1,7 @@
 {
   "name": "fixclosure",
   "description": "JavaScript dependency checker/fixer for Closure Library based on ECMAScript AST",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "author": "Teppei Sato <teppeis@gmail.com>",
   "engines": {
     "node": ">=10"
@@ -28,9 +28,9 @@
   "dependencies": {
     "@teppeis/doctrine": "^3.2.0",
     "@types/cli-color": "^0.3.30",
-    "@types/estree": "0.0.40",
+    "@types/estree": "0.0.41",
     "@types/glob": "^7.1.1",
-    "array.prototype.flat": "^1.2.2",
+    "array.prototype.flat": "^1.2.3",
     "cli-color": "^2.0.0",
     "commander": "^4.0.1",
     "espree": "^6.1.2",
@@ -41,25 +41,25 @@
     "lodash.difference": "^4.5.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.6",
+    "@types/chai": "^4.2.7",
     "@types/estraverse": "0.0.6",
     "@types/lodash.difference": "^4.5.6",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^10.17.6",
+    "@types/node": "^10.17.13",
     "@types/sinon": "^7.5.1",
     "chai": "^4.2.0",
     "coveralls": "^3.0.9",
-    "eslint": "^6.6.0",
-    "eslint-config-teppeis": "^10.3.0",
+    "eslint": "^6.8.0",
+    "eslint-config-teppeis": "^10.3.1",
     "mocha": "^6.2.2",
     "npm-run-all": "^4.1.5",
-    "nyc": "^14.1.1",
+    "nyc": "^15.0.0",
     "rimraf": "^3.0.0",
-    "sinon": "^7.5.0",
+    "sinon": "^8.0.2",
     "tempy": "^0.3.0",
     "ts-node": "^8.5.4",
     "ts-node-test-register": "^8.0.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.4"
   },
   "repository": "https://github.com/teppeis/fixclosure",
   "license": "MIT"
