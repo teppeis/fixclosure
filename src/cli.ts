@@ -9,7 +9,7 @@ import { promisify } from "util";
 import Logger, { LogOutput } from "./clilogger";
 import { fixInPlace } from "./fix";
 import { Parser } from "./parser";
-import glob from "glob";
+import globby from "globby";
 
 // Dont't use `import from` to avoid creating nested directory `./lib/src`.
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -120,9 +120,10 @@ export function resolveConfig({
   return parseArgs(argv);
 }
 
-async function getFiles(args: string[]) {
-  const files = await Promise.all(args.map(file => promisify(glob)(file)));
-  return flat<string>(files);
+async function getFiles(args: string[]): Promise<string[]> {
+  return globby(args, {
+    expandDirectories: { files: ["*"], extensions: ["js"] },
+  });
 }
 
 async function main(
