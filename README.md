@@ -82,6 +82,15 @@ fixclosure checks and fixes:
 - Missing provide/require/requireType/forwardDeclare
 - Unnecessary provide/require/requireType/forwardDeclare
 
+### Globbing
+
+The arguments are globbed by [globby](https://github.com/sindresorhus/globby).
+Directories are expanded as `**/*.js`.
+
+```console
+$ fixclosure path/to/dir "foo/bar-*.js"
+```
+
 ### Use with Grunt
 
 Use [grunt-fixclosure](https://github.com/teppeis/grunt-fixclosure "grunt-fixclosure") plugin.
@@ -92,8 +101,8 @@ fixclosure loads options from `.fixclosurerc` config file like:
 
 ```
 --provideRoots foo,bar
---namespaceMethods foo.foo1,bar.bar1
 --replaceMap foo.foobar:foo.foo
+--useForwardDeclare
 ```
 
 fixclosure will find the file in the current directory and, if not found, will move one level up the directory tree all the way up to the filesystem root.
