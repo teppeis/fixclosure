@@ -9,6 +9,7 @@ import { promisify } from "util";
 import Logger, { LogOutput } from "./clilogger";
 import { fixInPlace } from "./fix";
 import { Parser } from "./parser";
+import glob from "glob";
 
 // Dont't use `import from` to avoid creating nested directory `./lib/src`.
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -119,6 +120,19 @@ export function resolveConfig({
   return parseArgs(argv);
 }
 
+async function getFiles(args: string[]) {
+  const files: string[] = [];
+
+  await Promise.all(
+    args.map(async file => {
+      const matches = await promisify(glob)(file);
+      files.push(...matches);
+    })
+  );
+
+  return files;
+}
+
 async function main(
   argv: string[],
   stdout: LogOutput,
@@ -134,6 +148,8 @@ async function main(
     exit(1);
   }
 
+  const files = await getFiles(options.args);
+
   // for Parser
   options.providedNamespace = (options.depsJsSymbols || [])
     .concat(options.namespaceMethods || [])
@@ -143,7 +159,7 @@ async function main(
   let ng = 0;
   let fixed = 0;
 
-  const promises = options.args.map(async (file: string) => {
+  const promises = files.map(async (file: string) => {
     const log = new Logger(options.color, stdout, stderr);
     log.warn(`File: ${file}\n`);
     const src = await promisify(fs.readFile)(file, "utf8");
@@ -237,7 +253,7 @@ async function main(
   }
 
   const log = new Logger(options.color, stdout, stderr);
-  const total = options.args.length;
+  const total = files.length;
   log.info("");
   log.info(`Total: ${total} files`);
   log.success(`Passed: ${ok} files`);
