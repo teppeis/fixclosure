@@ -121,7 +121,9 @@ export function resolveConfig({
 }
 
 async function getFiles(args: string[]): Promise<string[]> {
-  return globby(args);
+  return globby(args, {
+    expandDirectories: { files: ["*"], extensions: ["js"] },
+  });
 }
 
 async function main(
