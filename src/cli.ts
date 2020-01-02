@@ -121,16 +121,8 @@ export function resolveConfig({
 }
 
 async function getFiles(args: string[]) {
-  const files: string[] = [];
-
-  await Promise.all(
-    args.map(async file => {
-      const matches = await promisify(glob)(file);
-      files.push(...matches);
-    })
-  );
-
-  return files;
+  const files = await Promise.all(args.map(file => promisify(glob)(file)));
+  return flat<string>(files);
 }
 
 async function main(
@@ -148,8 +140,6 @@ async function main(
     exit(1);
   }
 
-  const files = await getFiles(options.args);
-
   // for Parser
   options.providedNamespace = (options.depsJsSymbols || [])
     .concat(options.namespaceMethods || [])
@@ -159,6 +149,7 @@ async function main(
   let ng = 0;
   let fixed = 0;
 
+  const files = await getFiles(options.args);
   const promises = files.map(async (file: string) => {
     const log = new Logger(options.color, stdout, stderr);
     log.warn(`File: ${file}\n`);
