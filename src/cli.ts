@@ -87,19 +87,14 @@ function parseArgs(argv: string[]): commander.Command {
   const program = new commander.Command();
   setCommandOptions(program).parse(argv);
 
-  let symbols: string[] = [];
   if (Array.isArray(program.depsJs) && program.depsJs.length > 0) {
     const results = program.depsJs.map(file => depsJsParser.parseFile(file));
-    symbols = flat<string>(
+    const symbols = flat<string>(
       results.map(result => result.dependencies.map(dep => dep.closureSymbols)),
       2
     );
+    program.depsJsSymbols = symbols;
   }
-
-  program.providedNamespace = symbols
-    .concat(program.namespaceMethods || [])
-    .concat(program.namespaces || []);
-
   return program;
 }
 
@@ -138,6 +133,11 @@ async function main(
     argsOptions.outputHelp();
     exit(1);
   }
+
+  // for Parser
+  options.providedNamespace = (options.depsJsSymbols || [])
+    .concat(options.namespaceMethods || [])
+    .concat(options.namespaces || []);
 
   let ok = 0;
   let ng = 0;

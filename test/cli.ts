@@ -284,5 +284,20 @@ describe("Command line", () => {
       testFixInPlace("all-ng-types.js.forwarddeclare", [
         "--config=test/fixtures/cli/.fixclosurerc-forwarddeclare",
       ]));
+
+    it("load --depsJs from config", async () => {
+      await cli(
+        cmd.concat([
+          "test/fixtures/cli/depsjs.js",
+          "--config=test/fixtures/cli/.fixclosurerc-depsjs",
+          ns,
+        ]),
+        out,
+        err,
+        exit
+      );
+      console.error(err.toString());
+      exit.called.should.be.false;
+    });
   });
 });
