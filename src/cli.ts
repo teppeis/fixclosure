@@ -34,6 +34,7 @@ function setCommandOptions(command: commander.Command) {
     .usage("[options] files...")
     .option("-f, --fix-in-place", "Fix the file in-place.")
     .option("--provideRoots <roots>", "Root namespaces to provide separated by comma.", list)
+    .option("--ignoreProvides", "Provides will remain unchanged")
     .option("--namespaceMethods <methods>", "DEPRECATED: Use --namespaces", list)
     .option("--namespaces <methods>", "Provided namespaces separated by comma.", list)
     .option(
