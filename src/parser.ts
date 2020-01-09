@@ -35,6 +35,7 @@ export interface ParserOptions {
   providedNamespace?: string[];
   // TODO: espree options
   parserOptions?: any;
+  ignoreProvides?: boolean;
 }
 
 export interface FixclosureInfo {
@@ -57,6 +58,7 @@ export interface FixclosureInfo {
 export class Parser {
   options: ParserOptions;
   private provideRoots_: Set<string>;
+  private ignoreProvides_: boolean;
   private replaceMap_: Map<string, string>;
   private providedNamespaces_: Set<string>;
   private ignorePackages_: Set<string>;
@@ -83,6 +85,12 @@ export class Parser {
       options.providedNamespace.forEach(method => {
         this.providedNamespaces_.add(method);
       });
+    }
+
+    if (options.ignoreProvides != null) {
+      this.ignoreProvides_ = options.ignoreProvides;
+    } else {
+      this.ignoreProvides_ = false;
     }
 
     this.ignorePackages_ = def.getIgnorePackages();
@@ -115,7 +123,7 @@ export class Parser {
     const requireTyped = this.extractRequireTyped_(parsed);
     const forwardDeclared = this.extractForwardDeclared_(parsed);
     const ignored = this.extractSuppressUnused_(parsed, comments);
-    const toProvide = this.extractToProvide_(parsed, comments);
+    const toProvide = this.ignoreProvides_ ? provided : this.extractToProvide_(parsed, comments);
     const fromJsDoc = this.extractToRequireTypeFromJsDoc_(comments);
     const toRequire = this.extractToRequire_(parsed, toProvide, comments, fromJsDoc.toRequire);
     const toRequireType = difference(fromJsDoc.toRequireType, toProvide, toRequire);

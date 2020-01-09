@@ -189,6 +189,32 @@ describe("Command line", () => {
       });
     });
 
+    describe("--ignoreProvides", () => {
+      it("does not remove any provides", async () => {
+        await cli(
+          cmd.concat(["test/fixtures/cli/ignoreProvidesAdd.js", "--ignoreProvides"]),
+          out,
+          err,
+          exit
+        );
+        exit.called.should.be.false;
+      });
+
+      it("does not add any provides", async () => {
+        await cli(
+          cmd.concat([
+            "test/fixtures/cli/ignoreProvidesRemove.js",
+            "--ignoreProvides",
+            "--provideRoots=foo,bar",
+          ]),
+          out,
+          err,
+          exit
+        );
+        exit.called.should.be.false;
+      });
+    });
+
     it("--replaceMap", async () => {
       await cli(
         cmd.concat([
