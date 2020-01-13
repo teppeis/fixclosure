@@ -38,6 +38,7 @@ const providedNamespaces = [
   "goog.forwardDeclare.ignore",
   "goog.forwardDeclare.missing",
   "goog.forwardDeclare.unnecessary",
+  "goog.Promise",
 ];
 const ns = `--namespaces=${providedNamespaces.join(",")}`;
 
