@@ -1,6 +1,7 @@
 /**
  * @interface
  * @extends {goog.Foo}
+ * I am a comment
  */
 var Foo = function() {
 };

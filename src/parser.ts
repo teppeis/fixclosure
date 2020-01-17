@@ -229,7 +229,10 @@ export class Parser {
           isBlockComment(comment) && /^\*/.test(comment.value)
       )
       .forEach(comment => {
-        const { tags } = doctrine.parse(`/*${comment.value}*/`, { unwrap: true });
+        const { tags } = doctrine.parse(`/*${comment.value}*/`, {
+          unwrap: true,
+          recoverable: true,
+        });
         tags
           .filter(tag => tagsHavingType.has(tag.title) && tag.type)
           .map(tag => this.extractType(tag.type!))
