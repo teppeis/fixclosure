@@ -58,7 +58,7 @@
     "tempy": "^0.3.0",
     "ts-node": "^8.5.4",
     "ts-node-test-register": "^8.0.1",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "repository": "https://github.com/teppeis/fixclosure",
   "license": "MIT"
