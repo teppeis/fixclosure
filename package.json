@@ -28,7 +28,7 @@
   "dependencies": {
     "@teppeis/doctrine": "^3.2.0",
     "@types/cli-color": "^0.3.30",
-    "@types/estree": "0.0.42",
+    "@types/estree": "0.0.43",
     "array.prototype.flat": "^1.2.3",
     "cli-color": "^2.0.0",
     "commander": "^4.1.1",
