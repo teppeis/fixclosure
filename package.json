@@ -44,7 +44,7 @@
     "@types/estraverse": "0.0.6",
     "@types/lodash.difference": "^4.5.6",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^10.17.17",
+    "@types/node": "^10.17.18",
     "@types/sinon": "^7.5.2",
     "chai": "^4.2.0",
     "coveralls": "^3.0.11",
