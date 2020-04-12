@@ -7,7 +7,24 @@
         "node/no-missing-import": [
           "error",
           {
-            "allowModules": ["estree", "estree-jsx"]
+            "allowModules": ["estree-jsx"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*.d.ts"],
+      "rules": {
+        "node/no-missing-import": [
+          "error",
+          {
+            "allowModules": ["estree"]
+          }
+        ],
+        "node/no-extraneous-import": [
+          "error",
+          {
+            "allowModules": ["estraverse"]
           }
         ]
       }
