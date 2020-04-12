@@ -85,12 +85,14 @@ const findConfig_: (dir: string) => string | null = memoize<string, string | nul
   return findConfig_(parent);
 });
 
-function parseArgs(argv: string[]): commander.Command {
+function parseArgs(argv: string[], opt_dir?: string): commander.Command {
   const program = new commander.Command();
   setCommandOptions(program).parse(argv);
 
   if (Array.isArray(program.depsJs) && program.depsJs.length > 0) {
-    const results = program.depsJs.map(file => depsJsParser.parseFile(file));
+    const results = program.depsJs.map(file =>
+      depsJsParser.parseFile(path.resolve(opt_dir || process.cwd(), file))
+    );
     const symbols = flat<string>(
       results.map(result => result.dependencies.map(dep => dep.closureSymbols)),
       2
@@ -118,7 +120,7 @@ export function resolveConfig({
     .trim()
     .split(/\s+/);
   const argv = ["node", "fixclosure", ...opts];
-  return parseArgs(argv);
+  return parseArgs(argv, path.dirname(configPath));
 }
 
 async function getFiles(args: string[]): Promise<string[]> {
