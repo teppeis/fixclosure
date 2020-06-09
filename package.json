@@ -43,7 +43,7 @@
     "@types/estraverse": "0.0.6",
     "@types/lodash.difference": "^4.5.6",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^10.17.24",
+    "@types/node": "^10.17.25",
     "@types/sinon": "^9.0.4",
     "chai": "^4.2.0",
     "coveralls": "^3.1.0",
