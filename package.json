@@ -29,7 +29,7 @@
     "@teppeis/doctrine": "^3.2.0",
     "@types/cli-color": "^2.0.0",
     "@types/estree": "0.0.46",
-    "array.prototype.flat": "^1.2.3",
+    "array.prototype.flat": "^1.2.4",
     "cli-color": "^2.0.0",
     "commander": "^5.1.0",
     "espree": "^6.2.1",
