@@ -76,6 +76,7 @@ export const assertFile = (file: string, options?: ParserOptions) => {
       "goog.Foo3",
       "goog.Foo4",
       "goog.Foo5",
+      "goog.Promise",
     ],
     ...options,
   };

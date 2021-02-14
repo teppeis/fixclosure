@@ -5,7 +5,6 @@ const replaceMap = {
   "goog.Promise.CancellationError": "goog.Promise",
   "goog.debug.GcDiagnostics_": "goog.debug.GcDiagnostics",
   "goog.debug.Trace_": "goog.debug.Trace",
-  "goog.disposeAll": "goog.dispose",
   "goog.dom.$F": "goog.dom.forms.getValue",
   "goog.dom.BufferedViewportSizeMonitor.EventType": "goog.dom.BufferedViewportSizeMonitor",
   "goog.editor.Plugin.Op": "goog.editor.Plugin",
