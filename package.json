@@ -39,13 +39,13 @@
     "lodash.difference": "^4.5.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.15",
+    "@types/chai": "^4.3.1",
     "@types/estraverse": "0.0.6",
     "@types/lodash.difference": "^4.5.6",
     "@types/mocha": "^7.0.2",
     "@types/node": "^10.17.52",
     "@types/sinon": "^9.0.10",
-    "chai": "^4.2.0",
+    "chai": "^4.3.6",
     "coveralls": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-teppeis": "^11.0.2",
