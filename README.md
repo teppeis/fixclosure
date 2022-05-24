@@ -5,7 +5,7 @@ It finds namespaces used in a JavaScript file and insert/remove `goog.provide`, 
 
 [![npm version][npm-image]][npm-url]
 ![Node.js Version Support][node-version]
-[![Build Status][circleci-image]][circleci-url]
+[![Build Status][ci-image]][ci-url]
 [![Dependency Status][deps-image]][deps-url]
 [![Coverage Status][coverage-image]][coverage-url]
 ![License][license]
@@ -217,8 +217,8 @@ MIT License: Teppei Sato <teppeis@gmail.com>
 [npm-image]: https://img.shields.io/npm/v/fixclosure.svg
 [npm-url]: https://npmjs.org/package/fixclosure
 [npm-downloads-image]: https://img.shields.io/npm/dm/fixclosure.svg
-[circleci-image]: https://circleci.com/gh/teppeis/fixclosure.svg?style=shield
-[circleci-url]: https://circleci.com/gh/teppeis/fixclosure
+[ci-image]: https://github.com/teppeis/fixclosure/workflows/ci/badge.svg
+[ci-url]: https://github.com/teppeis/fixclosure/actions?query=workflow%3A%22ci%22
 [deps-image]: https://david-dm.org/teppeis/fixclosure.svg
 [deps-url]: https://david-dm.org/teppeis/fixclosure
 [node-version]: https://img.shields.io/badge/Node.js%20support-v10+-brightgreen.svg
