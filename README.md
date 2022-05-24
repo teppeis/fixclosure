@@ -6,8 +6,6 @@ It finds namespaces used in a JavaScript file and insert/remove `goog.provide`, 
 [![npm version][npm-image]][npm-url]
 ![Node.js Version Support][node-version]
 [![Build Status][ci-image]][ci-url]
-[![Dependency Status][deps-image]][deps-url]
-[![Coverage Status][coverage-image]][coverage-url]
 ![License][license]
 
 ## Install
@@ -22,10 +20,10 @@ The following code `goog.require()`s an unused namespace `goog.unused`, also `go
 
 ```javascript
 // foo.js (before)
-goog.provide('goog.foo.Bar');
+goog.provide("goog.foo.Bar");
 
-goog.require('goog.foo');
-goog.require('goog.unused');
+goog.require("goog.foo");
+goog.require("goog.unused");
 
 goog.foo.Bar = function() {
   goog.foo.baz();
@@ -63,10 +61,10 @@ Fixed: 1 files
 
 ```javascript
 // foo.js (fixed)
-goog.provide('goog.foo.Bar');
+goog.provide("goog.foo.Bar");
 
-goog.require('goog.foo');
-goog.require('goog.missing');
+goog.require("goog.foo");
+goog.require("goog.missing");
 
 goog.foo.Bar = function() {
   goog.foo.baz();
@@ -165,9 +163,9 @@ fixclosure reads "hint" for lint from special comments in your code.
 fixclosure doesn't remove any `goog.provide` and `goog.require` with this hint.
 
 ```javascript
-goog.provide('goog.foo'); // fixclosure: ignore
+goog.provide("goog.foo"); // fixclosure: ignore
 
-goog.require('goog.bar'); // fixclosure: ignore
+goog.require("goog.bar"); // fixclosure: ignore
 ```
 
 In the above, `goog.provide('goog.foo')` will not removed by fixclosure even if it isn't provided in the file.
@@ -214,14 +212,13 @@ The hint affects only _next_ line.
 
 MIT License: Teppei Sato <teppeis@gmail.com>
 
-[npm-image]: https://img.shields.io/npm/v/fixclosure.svg
+[npm-image]: https://badgen.net/npm/v/fixclosure?icon=npm&label=
 [npm-url]: https://npmjs.org/package/fixclosure
-[npm-downloads-image]: https://img.shields.io/npm/dm/fixclosure.svg
 [ci-image]: https://github.com/teppeis/fixclosure/workflows/ci/badge.svg
 [ci-url]: https://github.com/teppeis/fixclosure/actions?query=workflow%3A%22ci%22
-[deps-image]: https://david-dm.org/teppeis/fixclosure.svg
+[deps-image]: https://badgen.net/david/dep/teppeis/fixclosure
 [deps-url]: https://david-dm.org/teppeis/fixclosure
-[node-version]: https://img.shields.io/badge/Node.js%20support-v10+-brightgreen.svg
+[node-version]: https://badgen.net/npm/node/fixclosure
 [coverage-image]: https://coveralls.io/repos/github/teppeis/fixclosure/badge.svg?branch=master
 [coverage-url]: https://coveralls.io/github/teppeis/fixclosure?branch=master
-[license]: https://img.shields.io/npm/l/eslint-config-teppeis.svg
+[license]: https://badgen.net/npm/license/fixclosure
