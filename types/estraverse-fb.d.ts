@@ -1,5 +1,6 @@
 import { VisitorOption } from "estraverse";
-type Node = import("estree-jsx").Node;
+// eslint-disable-next-line node/no-missing-import
+import type { Node } from "estree-jsx";
 
 export interface Visitor {
   enter?: (

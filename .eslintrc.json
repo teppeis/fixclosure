@@ -1,5 +1,11 @@
 {
-  "extends": ["teppeis/node-v10", "teppeis/+typescript", "teppeis/+prettier", "teppeis/+mocha"],
+  "root": true,
+  "extends": [
+    "teppeis/node-v14",
+    "teppeis/+typescript",
+    "teppeis/+prettier",
+    "teppeis/+mocha"
+  ],
   "overrides": [
     {
       "files": ["**/*.ts"],

@@ -1,11 +1,12 @@
-/* eslint-disable no-unused-expressions */
-require("chai").should();
-
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+ 
+import { should } from "chai";
 import fs from "fs";
-import { cli } from "../src/cli";
 import sinon from "sinon";
 import tempy from "tempy";
+import { cli } from "../src/cli";
 
+should();
 const cmd = ["node", "fixclosure", "--no-color"];
 
 class MockStdOut {

@@ -1,6 +1,7 @@
 // Add JSX node types to estree
+import type * as ESTree from "estree";
+
 export * from "estree";
-import * as ESTree from "estree";
 
 export type Node =
   | ESTree.Node

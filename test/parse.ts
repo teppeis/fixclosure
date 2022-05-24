@@ -1,9 +1,10 @@
-require("chai").should();
-
-import fs from "fs";
-import { assertFile } from "./lib/asserts";
-import { Parser } from "../src/parser";
 import assert = require("assert");
+import { should } from "chai";
+import fs from "fs";
+import { Parser } from "../src/parser";
+import { assertFile } from "./lib/asserts";
+
+should();
 
 describe("Parser", () => {
   context("ES5", () => {
