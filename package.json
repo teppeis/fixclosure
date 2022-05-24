@@ -4,7 +4,7 @@
   "version": "2.6.1",
   "author": "Teppei Sato <teppeis@gmail.com>",
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
