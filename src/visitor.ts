@@ -1,5 +1,5 @@
-import { EstraverseController } from "estraverse-fb";
-import { Identifier, JSXIdentifier, JSXMemberExpression, MemberExpression, Node } from "estree-jsx";
+import type { EstraverseController } from "estraverse-fb";
+import type { Identifier, JSXIdentifier, JSXMemberExpression, MemberExpression, Node } from "estree-jsx";
 
 /**
  * Visitor for estraverse.
@@ -36,6 +36,7 @@ function nonNullable<T>(value: T): NonNullable<T> {
   if (value == null) {
     throw new TypeError(`The value must be non-nullable, but actually ${value}`);
   }
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return value!;
 }
 

@@ -2,16 +2,17 @@ import doctrine from "@teppeis/doctrine";
 import flat from "array.prototype.flat";
 import espree from "espree";
 import { traverse } from "estraverse-fb";
-import {
+import type {
   Comment,
   ExpressionStatement,
   Program,
   SimpleCallExpression,
-  SourceLocation,
+  SourceLocation
 } from "estree-jsx";
 import difference from "lodash.difference";
 import * as def from "./default";
-import { leave, UsedNamespace } from "./visitor";
+import type { UsedNamespace } from "./visitor";
+import { leave } from "./visitor";
 
 const tagsHavingType = new Set([
   "const",
@@ -232,12 +233,14 @@ export class Parser {
         const { tags } = doctrine.parse(`/*${comment.value}*/`, { unwrap: true });
         tags
           .filter(tag => tagsHavingType.has(tag.title) && tag.type)
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           .map(tag => this.extractType(tag.type!))
           .forEach(names => {
             toRequireType.push(...names);
           });
         tags
           .filter(tag => (tag.title === "implements" || tag.title === "extends") && tag.type)
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           .map(tag => this.extractType(tag.type!))
           .forEach(names => {
             toRequire.push(...names);
@@ -507,6 +510,7 @@ export class Parser {
   }
 
   private replaceMethod_(method: string): string {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.replaceMap_.has(method) ? this.replaceMap_.get(method)! : method;
   }
 

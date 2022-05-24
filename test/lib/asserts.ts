@@ -1,6 +1,9 @@
-require("chai").should();
+import { should } from "chai";
 import fs from "fs";
-import { Parser, ParserOptions } from "../../src/parser";
+import type { ParserOptions } from "../../src/parser";
+import { Parser } from "../../src/parser";
+
+should();
 
 export const assertFile = (file: string, options?: ParserOptions) => {
   let matches: RegExpExecArray | null;

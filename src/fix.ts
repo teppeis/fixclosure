@@ -1,6 +1,6 @@
 import fs from "fs";
 import { promisify } from "util";
-import { FixclosureInfo } from "./parser";
+import type { FixclosureInfo } from "./parser";
 
 export function fixInPlace(file: string, src: string, info: FixclosureInfo): Promise<void> {
   const fixedSrc = getFixedSource(src, info);

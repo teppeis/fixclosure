@@ -2,14 +2,15 @@ import flat from "array.prototype.flat";
 import clc from "cli-color";
 import commander from "commander";
 import fs from "fs";
+import globby from "globby";
 import { parser as depsJsParser } from "google-closure-deps";
 import difference from "lodash.difference";
 import path from "path";
 import { promisify } from "util";
-import Logger, { LogOutput } from "./clilogger";
+import type { LogOutput } from "./clilogger";
+import Logger from "./clilogger";
 import { fixInPlace } from "./fix";
 import { Parser } from "./parser";
-import globby from "globby";
 
 // Dont't use `import from` to avoid creating nested directory `./lib/src`.
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -73,7 +74,7 @@ const findConfig_: (dir: string) => string | null = memoize<string, string | nul
   try {
     fs.accessSync(filepath);
     return filepath;
-  } catch (e) {
+  } catch {
     // ignore
   }
 
@@ -311,6 +312,7 @@ function memoize<K, V>(func: (key: K, ...args: any[]) => V) {
     if (!cache.has(key)) {
       cache.set(key, func(key, ...args));
     }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return cache.get(key)!;
   };
 }
