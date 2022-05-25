@@ -2,7 +2,11 @@ import fs from "fs";
 import { promisify } from "util";
 import type { FixclosureInfo } from "./parser";
 
-export function fixInPlace(file: string, src: string, info: FixclosureInfo): Promise<void> {
+export function fixInPlace(
+  file: string,
+  src: string,
+  info: FixclosureInfo
+): Promise<void> {
   const fixedSrc = getFixedSource(src, info);
   return promisify(fs.writeFile)(file, fixedSrc, "utf8");
 }
@@ -64,7 +68,11 @@ function getRequireSrc(info: FixclosureInfo): string[] {
 }
 
 function getRequireTypeSrc(info: FixclosureInfo): string[] {
-  return getDeclarationSrc(info.toRequireType, info.ignoredRequireType, "goog.requireType");
+  return getDeclarationSrc(
+    info.toRequireType,
+    info.ignoredRequireType,
+    "goog.requireType"
+  );
 }
 
 function getForwardDeclareSrc(info: FixclosureInfo): string[] {
@@ -75,8 +83,14 @@ function getForwardDeclareSrc(info: FixclosureInfo): string[] {
   );
 }
 
-function getDeclarationSrc(to: string[], ignored: string[], method: string): string[] {
-  const declarations = to.map(namespace => `${method}('${namespace}');`);
-  const ignores = ignored.map(namespace => `${method}('${namespace}'); // fixclosure: ignore`);
+function getDeclarationSrc(
+  to: string[],
+  ignored: string[],
+  method: string
+): string[] {
+  const declarations = to.map((namespace) => `${method}('${namespace}');`);
+  const ignores = ignored.map(
+    (namespace) => `${method}('${namespace}'); // fixclosure: ignore`
+  );
   return declarations.concat(ignores).sort();
 }

@@ -44,7 +44,7 @@ class Logger {
       items = ["(none)"];
     }
     this.messages_ = this.messages_.concat(
-      items.map(item => {
+      items.map((item) => {
         item = `- ${item}`;
         return this.color_ ? clc.blackBright(item) : item;
       }, this)
@@ -57,7 +57,7 @@ class Logger {
    */
   flush(success: boolean) {
     const out = success ? this.stdout : this.stderr;
-    this.messages_.forEach(msg => {
+    this.messages_.forEach((msg) => {
       out.write(`${msg}\n`);
     });
     this.empty();

@@ -22,7 +22,7 @@ function list(val: string): string[] {
 
 function map(val: string): Map<string, string> {
   const mapping = new Map<string, string>();
-  val.split(",").forEach(item => {
+  val.split(",").forEach((item) => {
     const [key, value] = item.split(":");
     mapping.set(key, value);
   });
@@ -34,16 +34,31 @@ function setCommandOptions(command: commander.Command) {
     .version(version, "-v, --version")
     .usage("[options] files...")
     .option("-f, --fix-in-place", "Fix the file in-place.")
-    .option("--provideRoots <roots>", "Root namespaces to provide separated by comma.", list)
+    .option(
+      "--provideRoots <roots>",
+      "Root namespaces to provide separated by comma.",
+      list
+    )
     .option("--ignoreProvides", "Provides will remain unchanged")
-    .option("--namespaceMethods <methods>", "DEPRECATED: Use --namespaces", list)
-    .option("--namespaces <methods>", "Provided namespaces separated by comma.", list)
+    .option(
+      "--namespaceMethods <methods>",
+      "DEPRECATED: Use --namespaces",
+      list
+    )
+    .option(
+      "--namespaces <methods>",
+      "Provided namespaces separated by comma.",
+      list
+    )
     .option(
       "--replaceMap <map>",
       'Methods or properties to namespaces mapping like "before1:after1,before2:after2".',
       map
     )
-    .option("--useForwardDeclare", "Use goog.forwardDeclare() instead of goog.requireType().")
+    .option(
+      "--useForwardDeclare",
+      "Use goog.forwardDeclare() instead of goog.requireType()."
+    )
     .option("--config <file>", ".fixclosurerc file path.")
     .option("--depsJs <files>", "deps.js file paths separated by comma.", list)
     .option("--showSuccess", "Show success ouput.")
@@ -68,7 +83,10 @@ function findConfig(opt_dir?: string): string | null {
   return findConfig_(opt_dir || process.cwd());
 }
 
-const findConfig_: (dir: string) => string | null = memoize<string, string | null>(dir => {
+const findConfig_: (dir: string) => string | null = memoize<
+  string,
+  string | null
+>((dir) => {
   const filename = ".fixclosurerc";
   const filepath = path.normalize(path.join(dir, filename));
   try {
@@ -91,11 +109,13 @@ function parseArgs(argv: string[], opt_dir?: string): commander.Command {
   setCommandOptions(program).parse(argv);
 
   if (Array.isArray(program.depsJs) && program.depsJs.length > 0) {
-    const results = program.depsJs.map(file =>
+    const results = program.depsJs.map((file) =>
       depsJsParser.parseFile(path.resolve(opt_dir || process.cwd(), file))
     );
     const symbols = flat<string>(
-      results.map(result => result.dependencies.map(dep => dep.closureSymbols)),
+      results.map((result) =>
+        result.dependencies.map((dep) => dep.closureSymbols)
+      ),
       2
     );
     program.depsJsSymbols = symbols;
@@ -116,10 +136,7 @@ export function resolveConfig({
   if (!configPath) {
     return null;
   }
-  const opts = fs
-    .readFileSync(configPath, "utf8")
-    .trim()
-    .split(/\s+/);
+  const opts = fs.readFileSync(configPath, "utf8").trim().split(/\s+/);
   const argv = ["node", "fixclosure", ...opts];
   return parseArgs(argv, path.dirname(configPath));
 }
@@ -168,19 +185,26 @@ async function main(
     }
     log.info("Provided:");
     log.items(
-      info.provided.map(item => item + (info.ignoredProvide.includes(item) ? " (ignored)" : ""))
+      info.provided.map(
+        (item) =>
+          item + (info.ignoredProvide.includes(item) ? " (ignored)" : "")
+      )
     );
     log.info("");
     log.info("Required:");
     log.items(
-      info.required.map(item => item + (info.ignoredRequire.includes(item) ? " (ignored)" : ""))
+      info.required.map(
+        (item) =>
+          item + (info.ignoredRequire.includes(item) ? " (ignored)" : "")
+      )
     );
     log.info("");
     if (info.requireTyped.length > 0) {
       log.info("RequireTyped:");
       log.items(
         info.requireTyped.map(
-          item => item + (info.ignoredRequireType.includes(item) ? " (ignored)" : "")
+          (item) =>
+            item + (info.ignoredRequireType.includes(item) ? " (ignored)" : "")
         )
       );
       log.info("");
@@ -189,7 +213,9 @@ async function main(
       log.info("ForwardDeclared:");
       log.items(
         info.forwardDeclared.map(
-          item => item + (info.ignoredForwardDeclare.includes(item) ? " (ignored)" : "")
+          (item) =>
+            item +
+            (info.ignoredForwardDeclare.includes(item) ? " (ignored)" : "")
         )
       );
       log.info("");
@@ -197,9 +223,21 @@ async function main(
 
     let needToFix = false;
     needToFix =
-      checkDeclare(log, "Provide", info.provided, info.toProvide, info.ignoredProvide) || needToFix;
+      checkDeclare(
+        log,
+        "Provide",
+        info.provided,
+        info.toProvide,
+        info.ignoredProvide
+      ) || needToFix;
     needToFix =
-      checkDeclare(log, "Require", info.required, info.toRequire, info.ignoredRequire) || needToFix;
+      checkDeclare(
+        log,
+        "Require",
+        info.required,
+        info.toRequire,
+        info.ignoredRequire
+      ) || needToFix;
     needToFix =
       checkDeclare(
         log,
@@ -291,7 +329,12 @@ function checkDeclare(
     log.items(missing);
     log.info("");
   }
-  let unnecessary = difference(declared, toDeclare, ignoredDeclare, optionalToDeclare);
+  let unnecessary = difference(
+    declared,
+    toDeclare,
+    ignoredDeclare,
+    optionalToDeclare
+  );
   unnecessary = uniqArray(unnecessary);
   if (unnecessary.length > 0) {
     needToFix = true;

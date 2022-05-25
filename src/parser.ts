@@ -7,7 +7,7 @@ import type {
   ExpressionStatement,
   Program,
   SimpleCallExpression,
-  SourceLocation
+  SourceLocation,
 } from "estree-jsx";
 import difference from "lodash.difference";
 import * as def from "./default";
@@ -83,7 +83,7 @@ export class Parser {
 
     this.providedNamespaces_ = def.getProvidedNamespaces();
     if (options.providedNamespace) {
-      options.providedNamespace.forEach(method => {
+      options.providedNamespace.forEach((method) => {
         this.providedNamespaces_.add(method);
       });
     }
@@ -124,10 +124,21 @@ export class Parser {
     const requireTyped = this.extractRequireTyped_(parsed);
     const forwardDeclared = this.extractForwardDeclared_(parsed);
     const ignored = this.extractSuppressUnused_(parsed, comments);
-    const toProvide = this.ignoreProvides_ ? provided : this.extractToProvide_(parsed, comments);
+    const toProvide = this.ignoreProvides_
+      ? provided
+      : this.extractToProvide_(parsed, comments);
     const fromJsDoc = this.extractToRequireTypeFromJsDoc_(comments);
-    const toRequire = this.extractToRequire_(parsed, toProvide, comments, fromJsDoc.toRequire);
-    const toRequireType = difference(fromJsDoc.toRequireType, toProvide, toRequire);
+    const toRequire = this.extractToRequire_(
+      parsed,
+      toProvide,
+      comments,
+      fromJsDoc.toRequire
+    );
+    const toRequireType = difference(
+      fromJsDoc.toRequireType,
+      toProvide,
+      toRequire
+    );
 
     return {
       provided,
@@ -149,13 +160,16 @@ export class Parser {
     };
   }
 
-  private extractToProvide_(parsed: UsedNamespace[], comments: Comment[]): string[] {
+  private extractToProvide_(
+    parsed: UsedNamespace[],
+    comments: Comment[]
+  ): string[] {
     const suppressComments = this.getSuppressProvideComments_(comments);
     return parsed
-      .filter(namespace => this.suppressFilter_(suppressComments, namespace))
-      .map(namespace => this.toProvideMapper_(comments, namespace))
+      .filter((namespace) => this.suppressFilter_(suppressComments, namespace))
+      .map((namespace) => this.toProvideMapper_(comments, namespace))
       .filter(isDefAndNotNull)
-      .filter(provide => this.provideRootFilter_(provide))
+      .filter((provide) => this.provideRootFilter_(provide))
       .sort()
       .reduce(uniq, []);
   }
@@ -165,10 +179,13 @@ export class Parser {
    * This method assume the JSDoc is at a line just before the node.
    * Use ESLint context like `context.getJSDocComment(node)` if possible.
    */
-  private hasTypedefAnnotation_(node: ExpressionStatement, comments: Comment[]): boolean {
+  private hasTypedefAnnotation_(
+    node: ExpressionStatement,
+    comments: Comment[]
+  ): boolean {
     const { line } = getLoc(node).start;
     const jsDocComments = comments.filter(
-      comment =>
+      (comment) =>
         getLoc(comment).end.line === line - 1 &&
         isBlockComment(comment) &&
         /^\*/.test(comment.value)
@@ -176,26 +193,28 @@ export class Parser {
     if (jsDocComments.length === 0) {
       return false;
     }
-    return jsDocComments.every(comment => {
+    return jsDocComments.every((comment) => {
       const jsdoc = doctrine.parse(`/*${comment.value}*/`, { unwrap: true });
       return (
-        jsdoc.tags.some(tag => tag.title === "typedef") &&
-        !jsdoc.tags.some(tag => tag.title === "private")
+        jsdoc.tags.some((tag) => tag.title === "typedef") &&
+        !jsdoc.tags.some((tag) => tag.title === "private")
       );
     });
   }
 
   private getSuppressProvideComments_(comments: Comment[]): Comment[] {
     return comments.filter(
-      comment =>
-        isLineComment(comment) && /^\s*fixclosure\s*:\s*suppressProvide\b/.test(comment.value)
+      (comment) =>
+        isLineComment(comment) &&
+        /^\s*fixclosure\s*:\s*suppressProvide\b/.test(comment.value)
     );
   }
 
   private getSuppressRequireComments_(comments: Comment[]): Comment[] {
     return comments.filter(
-      comment =>
-        isLineComment(comment) && /^\s*fixclosure\s*:\s*suppressRequire\b/.test(comment.value)
+      (comment) =>
+        isLineComment(comment) &&
+        /^\s*fixclosure\s*:\s*suppressRequire\b/.test(comment.value)
     );
   }
 
@@ -208,9 +227,9 @@ export class Parser {
     const additional = opt_required || [];
     const suppressComments = this.getSuppressRequireComments_(comments);
     const toRequire = parsed
-      .filter(namespace => this.toRequireFilter_(namespace))
-      .filter(namespace => this.suppressFilter_(suppressComments, namespace))
-      .map(namespace => this.toRequireMapper_(namespace))
+      .filter((namespace) => this.toRequireFilter_(namespace))
+      .filter((namespace) => this.suppressFilter_(suppressComments, namespace))
+      .map((namespace) => this.toRequireMapper_(namespace))
       .concat(additional)
       .filter(isDefAndNotNull)
       .sort()
@@ -218,41 +237,48 @@ export class Parser {
     return difference(toRequire, toProvide);
   }
 
-  private extractToRequireTypeFromJsDoc_(
-    comments: Comment[]
-  ): { toRequire: string[]; toRequireType: string[] } {
+  private extractToRequireTypeFromJsDoc_(comments: Comment[]): {
+    toRequire: string[];
+    toRequireType: string[];
+  } {
     const toRequire: string[] = [];
     const toRequireType: string[] = [];
     comments
       .filter(
-        comment =>
+        (comment) =>
           // JSDoc Style
           isBlockComment(comment) && /^\*/.test(comment.value)
       )
-      .forEach(comment => {
-        const { tags } = doctrine.parse(`/*${comment.value}*/`, { unwrap: true });
+      .forEach((comment) => {
+        const { tags } = doctrine.parse(`/*${comment.value}*/`, {
+          unwrap: true,
+        });
         tags
-          .filter(tag => tagsHavingType.has(tag.title) && tag.type)
+          .filter((tag) => tagsHavingType.has(tag.title) && tag.type)
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          .map(tag => this.extractType(tag.type!))
-          .forEach(names => {
+          .map((tag) => this.extractType(tag.type!))
+          .forEach((names) => {
             toRequireType.push(...names);
           });
         tags
-          .filter(tag => (tag.title === "implements" || tag.title === "extends") && tag.type)
+          .filter(
+            (tag) =>
+              (tag.title === "implements" || tag.title === "extends") &&
+              tag.type
+          )
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          .map(tag => this.extractType(tag.type!))
-          .forEach(names => {
+          .map((tag) => this.extractType(tag.type!))
+          .forEach((names) => {
             toRequire.push(...names);
           });
       });
     return {
       toRequire: toRequire
-        .filter(name => this.isProvidedNamespace_(name))
+        .filter((name) => this.isProvidedNamespace_(name))
         .sort()
         .reduce(uniq, []),
       toRequireType: toRequireType
-        .filter(name => this.isProvidedNamespace_(name))
+        .filter((name) => this.isProvidedNamespace_(name))
         .sort()
         .reduce(uniq, []),
     };
@@ -273,12 +299,16 @@ export class Parser {
         return this.extractType(type.expression);
       case "TypeApplication":
         result = this.extractType(type.expression);
-        result.push(...flat<string>(type.applications.map(app => this.extractType(app))));
+        result.push(
+          ...flat<string>(type.applications.map((app) => this.extractType(app)))
+        );
         break;
       case "UnionType":
-        return flat<string>(type.elements.map(el => this.extractType(el)));
+        return flat<string>(type.elements.map((el) => this.extractType(el)));
       case "RecordType":
-        return flat<string>(type.fields.map(field => this.extractType(field)));
+        return flat<string>(
+          type.fields.map((field) => this.extractType(field))
+        );
       case "FieldType":
         if (type.value) {
           return this.extractType(type.value);
@@ -286,7 +316,9 @@ export class Parser {
           return [];
         }
       case "FunctionType":
-        result = flat<string>(type.params.map(param => this.extractType(param)));
+        result = flat<string>(
+          type.params.map((param) => this.extractType(param))
+        );
         if (type.result) {
           result.push(...this.extractType(type.result));
         }
@@ -307,10 +339,15 @@ export class Parser {
   private extractSuppressUnused_(
     parsed: UsedNamespace[],
     comments: Comment[]
-  ): { provide: string[]; require: string[]; requireType: string[]; forwardDeclare: string[] } {
+  ): {
+    provide: string[];
+    require: string[];
+    requireType: string[];
+    forwardDeclare: string[];
+  } {
     const suppresses = comments
       .filter(
-        comment =>
+        (comment) =>
           isLineComment(comment) &&
           /^\s*fixclosure\s*:\s*(?:suppressUnused|ignore)\b/.test(comment.value)
       )
@@ -327,8 +364,8 @@ export class Parser {
       parsed
         .filter(isSimpleCallExpression)
         .filter(isCalledMethodName(method))
-        .filter(namespace => this.updateMinMaxLine_(namespace))
-        .filter(req => !!suppresses[getLoc(req.node).start.line])
+        .filter((namespace) => this.updateMinMaxLine_(namespace))
+        .filter((req) => !!suppresses[getLoc(req.node).start.line])
         .map(getArgStringLiteralOrNull)
         .filter(isDefAndNotNull)
         .sort();
@@ -361,11 +398,14 @@ export class Parser {
    * @param parsed
    * @param method like 'goog.provide' or 'goog.require'
    */
-  private extractGoogDeclaration_(parsed: UsedNamespace[], method: string): string[] {
+  private extractGoogDeclaration_(
+    parsed: UsedNamespace[],
+    method: string
+  ): string[] {
     return parsed
       .filter(isSimpleCallExpression)
       .filter(isCalledMethodName(method))
-      .filter(namespace => this.updateMinMaxLine_(namespace))
+      .filter((namespace) => this.updateMinMaxLine_(namespace))
       .map(getArgStringLiteralOrNull)
       .filter(isDefAndNotNull)
       .sort();
@@ -392,7 +432,10 @@ export class Parser {
   /**
    * @return Provided namespace
    */
-  private toProvideMapper_(comments: Comment[], use: UsedNamespace): string | null {
+  private toProvideMapper_(
+    comments: Comment[],
+    use: UsedNamespace
+  ): string | null {
     const name = use.name.join(".");
     switch (use.node.type) {
       case "AssignmentExpression":
@@ -440,7 +483,9 @@ export class Parser {
    */
   private suppressFilter_(comments: Comment[], use: UsedNamespace): boolean {
     const start = getLoc(use.node).start.line;
-    const suppressComment = comments.some(comment => getLoc(comment).start.line + 1 === start);
+    const suppressComment = comments.some(
+      (comment) => getLoc(comment).start.line + 1 === start
+    );
     return !suppressComment;
   }
 
@@ -506,12 +551,14 @@ export class Parser {
   }
 
   private isPrivateProp_(names: string[]): boolean {
-    return names.some(name => name.endsWith("_"));
+    return names.some((name) => name.endsWith("_"));
   }
 
   private replaceMethod_(method: string): string {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.replaceMap_.has(method) ? this.replaceMap_.get(method)! : method;
+    return this.replaceMap_.has(method)
+      ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.replaceMap_.get(method)!
+      : method;
   }
 
   private isProvidedNamespace_(name: string): boolean {
@@ -527,15 +574,20 @@ export class Parser {
   }
 }
 
-function isSimpleCallExpression(use: UsedNamespace): use is UsedNamespace<SimpleCallExpression> {
+function isSimpleCallExpression(
+  use: UsedNamespace
+): use is UsedNamespace<SimpleCallExpression> {
   return use.node.type === "CallExpression";
 }
 
 function isCalledMethodName(method: string) {
-  return (use: UsedNamespace<SimpleCallExpression>) => use.name.join(".") === method;
+  return (use: UsedNamespace<SimpleCallExpression>) =>
+    use.name.join(".") === method;
 }
 
-function getArgStringLiteralOrNull(use: UsedNamespace<SimpleCallExpression>): string | null {
+function getArgStringLiteralOrNull(
+  use: UsedNamespace<SimpleCallExpression>
+): string | null {
   const arg = use.node.arguments[0];
   if (arg.type === "Literal" && typeof arg.value === "string") {
     return arg.value;

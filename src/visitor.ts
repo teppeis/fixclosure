@@ -1,10 +1,20 @@
 import type { EstraverseController } from "estraverse-fb";
-import type { Identifier, JSXIdentifier, JSXMemberExpression, MemberExpression, Node } from "estree-jsx";
+import type {
+  Identifier,
+  JSXIdentifier,
+  JSXMemberExpression,
+  MemberExpression,
+  Node,
+} from "estree-jsx";
 
 /**
  * Visitor for estraverse.
  */
-export function leave(this: EstraverseController, node: Node, uses: UsedNamespace[]) {
+export function leave(
+  this: EstraverseController,
+  node: Node,
+  uses: UsedNamespace[]
+) {
   /* eslint-disable no-invalid-this */
   switch (node.type) {
     case "MemberExpression":
@@ -12,13 +22,12 @@ export function leave(this: EstraverseController, node: Node, uses: UsedNamespac
       if (hasComputedProperty_(node)) {
         return;
       }
-      if (isIdentifierType_(node.object) && !isLocalVar_(node.object, this.parents())) {
-        const parents = this.parents()
-          .concat(node)
-          .reverse();
-        const path = nonNullable(this.path())
-          .concat("object")
-          .reverse();
+      if (
+        isIdentifierType_(node.object) &&
+        !isLocalVar_(node.object, this.parents())
+      ) {
+        const parents = this.parents().concat(node).reverse();
+        const path = nonNullable(this.path()).concat("object").reverse();
         const use = registerIdentifier_(node.object, parents, path);
         if (use) {
           uses.push(use);
@@ -34,7 +43,9 @@ export function leave(this: EstraverseController, node: Node, uses: UsedNamespac
 function nonNullable<T>(value: T): NonNullable<T> {
   /* istanbul ignore if */
   if (value == null) {
-    throw new TypeError(`The value must be non-nullable, but actually ${value}`);
+    throw new TypeError(
+      `The value must be non-nullable, but actually ${value}`
+    );
   }
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return value!;
@@ -43,7 +54,9 @@ function nonNullable<T>(value: T): NonNullable<T> {
 /**
  * @return True if the property is computed like `foo["bar"]` not `foo.bar`.
  */
-function hasComputedProperty_(node: MemberExpression | JSXMemberExpression): boolean {
+function hasComputedProperty_(
+  node: MemberExpression | JSXMemberExpression
+): boolean {
   return node.type === "MemberExpression" && node.computed;
 }
 
@@ -58,7 +71,10 @@ function isIdentifierType_(node: Node): node is Identifier | JSXIdentifier {
  * @return True if the object is a local variable, not a global object.
  * TODO: use escope to support complicated patterns like destructuring.
  */
-function isLocalVar_(object: Identifier | JSXIdentifier, parents: Node[]): boolean {
+function isLocalVar_(
+  object: Identifier | JSXIdentifier,
+  parents: Node[]
+): boolean {
   const nodeName: string = object.name;
   let node: Node | undefined;
   parents = parents.slice();
@@ -68,7 +84,9 @@ function isLocalVar_(object: Identifier | JSXIdentifier, parents: Node[]): boole
       case "FunctionDeclaration":
         if (
           node.params &&
-          node.params.some(param => param.type === "Identifier" && param.name === nodeName)
+          node.params.some(
+            (param) => param.type === "Identifier" && param.name === nodeName
+          )
         ) {
           return true;
         }
@@ -77,10 +95,10 @@ function isLocalVar_(object: Identifier | JSXIdentifier, parents: Node[]): boole
         if (
           node.body &&
           node.body.some(
-            bodyPart =>
+            (bodyPart) =>
               bodyPart.type === "VariableDeclaration" &&
               bodyPart.declarations.some(
-                declaration =>
+                (declaration) =>
                   declaration.type === "VariableDeclarator" &&
                   declaration.id.type === "Identifier" &&
                   declaration.id.name === nodeName
@@ -109,7 +127,10 @@ function registerIdentifier_(
     switch (current.type) {
       case "MemberExpression":
       case "JSXMemberExpression":
-        if (!hasComputedProperty_(current) && isIdentifierType_(current.property)) {
+        if (
+          !hasComputedProperty_(current) &&
+          isIdentifierType_(current.property)
+        ) {
           namespace.push(current.property.name);
         } else {
           return createMemberObject_(namespace, current, parentKey);
@@ -128,7 +149,11 @@ export interface UsedNamespace<T extends Node = Node> {
   key: string;
 }
 
-function createMemberObject_(namespace: string[], node: Node, parentKey: string): UsedNamespace {
+function createMemberObject_(
+  namespace: string[],
+  node: Node,
+  parentKey: string
+): UsedNamespace {
   return {
     name: namespace,
     node,

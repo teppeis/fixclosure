@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
- 
+
 import { should } from "chai";
 import fs from "fs";
 import sinon from "sinon";
@@ -74,16 +74,28 @@ describe("Command line", () => {
   });
 
   it("output all error types", async () => {
-    await cli(cmd.concat(["test/fixtures/cli/all-ng-types.js", ns]), out, err, exit);
+    await cli(
+      cmd.concat(["test/fixtures/cli/all-ng-types.js", ns]),
+      out,
+      err,
+      exit
+    );
     exit.calledOnce.should.be.true;
     exit.firstCall.args.should.eql([1]);
-    const expected = fs.readFileSync("test/fixtures/cli/all-ng-types.js.error.txt", "utf8");
+    const expected = fs.readFileSync(
+      "test/fixtures/cli/all-ng-types.js.error.txt",
+      "utf8"
+    );
     err.toString().should.be.eql(expected);
   });
 
   it("output all error types with --useForwardDeclare", async () => {
     await cli(
-      cmd.concat(["test/fixtures/cli/all-ng-types.js", "--useForwardDeclare", ns]),
+      cmd.concat([
+        "test/fixtures/cli/all-ng-types.js",
+        "--useForwardDeclare",
+        ns,
+      ]),
       out,
       err,
       exit
@@ -98,10 +110,18 @@ describe("Command line", () => {
   });
 
   it("duplicated provide", async () => {
-    await cli(cmd.concat(["test/fixtures/cli/duplicated_provide.js"]), out, err, exit);
+    await cli(
+      cmd.concat(["test/fixtures/cli/duplicated_provide.js"]),
+      out,
+      err,
+      exit
+    );
     exit.calledOnce.should.be.true;
     exit.firstCall.args.should.eql([1]);
-    const expected = fs.readFileSync("test/fixtures/cli/duplicated_provide.js.txt", "utf8");
+    const expected = fs.readFileSync(
+      "test/fixtures/cli/duplicated_provide.js.txt",
+      "utf8"
+    );
     err.toString().should.be.eql(expected);
   });
 
@@ -115,7 +135,10 @@ describe("Command line", () => {
       );
       exit.calledOnce.should.be.false;
 
-      const expected = fs.readFileSync("test/fixtures/cli/ignore_require.js.txt", "utf8");
+      const expected = fs.readFileSync(
+        "test/fixtures/cli/ignore_require.js.txt",
+        "utf8"
+      );
       out.toString().should.be.eql(expected);
     });
 
@@ -128,7 +151,10 @@ describe("Command line", () => {
       );
       exit.calledOnce.should.be.false;
 
-      const expected = fs.readFileSync("test/fixtures/cli/ignore_provide.js.txt", "utf8");
+      const expected = fs.readFileSync(
+        "test/fixtures/cli/ignore_provide.js.txt",
+        "utf8"
+      );
       out.toString().should.be.eql(expected);
     });
   });
@@ -150,7 +176,11 @@ describe("Command line", () => {
 
     it("--depsJs", async () => {
       await cli(
-        cmd.concat(["test/fixtures/cli/depsjs.js", "--depsJs=test/fixtures/cli/deps.js", ns]),
+        cmd.concat([
+          "test/fixtures/cli/depsjs.js",
+          "--depsJs=test/fixtures/cli/deps.js",
+          ns,
+        ]),
         out,
         err,
         exit
@@ -160,18 +190,31 @@ describe("Command line", () => {
 
     describe("--provideRoots", () => {
       it('includes "goog,proto2,soy,soydata,svgpan" by default', async () => {
-        await cli(cmd.concat(["test/fixtures/cli/provideRootsDefault.js", ns]), out, err, exit);
+        await cli(
+          cmd.concat(["test/fixtures/cli/provideRootsDefault.js", ns]),
+          out,
+          err,
+          exit
+        );
         sinon.assert.notCalled(exit);
       });
 
       it('does not include "foo,bar" by default', async () => {
-        await cli(cmd.concat(["test/fixtures/cli/provideRoots.js", ns]), out, err, exit);
+        await cli(
+          cmd.concat(["test/fixtures/cli/provideRoots.js", ns]),
+          out,
+          err,
+          exit
+        );
         sinon.assert.called(exit);
       });
 
       it("includes specified roots", async () => {
         await cli(
-          cmd.concat(["test/fixtures/cli/provideRoots.js", "--provideRoots=foo,bar"]),
+          cmd.concat([
+            "test/fixtures/cli/provideRoots.js",
+            "--provideRoots=foo,bar",
+          ]),
           out,
           err,
           exit
@@ -181,7 +224,11 @@ describe("Command line", () => {
 
       it("does not include default roots if a value is specified", async () => {
         await cli(
-          cmd.concat(["test/fixtures/cli/provideRootsDefault.js", "--provideRoots=foo,bar", ns]),
+          cmd.concat([
+            "test/fixtures/cli/provideRootsDefault.js",
+            "--provideRoots=foo,bar",
+            ns,
+          ]),
           out,
           err,
           exit
@@ -193,7 +240,10 @@ describe("Command line", () => {
     describe("--ignoreProvides", () => {
       it("does not remove any provides", async () => {
         await cli(
-          cmd.concat(["test/fixtures/cli/ignoreProvidesAdd.js", "--ignoreProvides"]),
+          cmd.concat([
+            "test/fixtures/cli/ignoreProvidesAdd.js",
+            "--ignoreProvides",
+          ]),
           out,
           err,
           exit
@@ -239,14 +289,22 @@ describe("Command line", () => {
       );
       exit.calledOnce.should.be.true;
       exit.firstCall.args.should.eql([1]);
-      const expectedErr = fs.readFileSync("test/fixtures/cli/ng.js.txt", "utf8");
+      const expectedErr = fs.readFileSync(
+        "test/fixtures/cli/ng.js.txt",
+        "utf8"
+      );
       out.toString().should.be.eql("");
       err.toString().should.be.eql(expectedErr);
     });
 
     it("--showSuccess", async () => {
       await cli(
-        cmd.concat(["test/fixtures/cli/ok.js", "test/fixtures/cli/ng.js", "--showSuccess", ns]),
+        cmd.concat([
+          "test/fixtures/cli/ok.js",
+          "test/fixtures/cli/ng.js",
+          "--showSuccess",
+          ns,
+        ]),
         out,
         err,
         exit
@@ -254,18 +312,25 @@ describe("Command line", () => {
       exit.calledOnce.should.be.true;
       exit.firstCall.args.should.eql([1]);
       const expectedOk = fs.readFileSync("test/fixtures/cli/ok.js.txt", "utf8");
-      const expectedErr = fs.readFileSync("test/fixtures/cli/ng.js.txt", "utf8");
+      const expectedErr = fs.readFileSync(
+        "test/fixtures/cli/ng.js.txt",
+        "utf8"
+      );
       out.toString().should.be.eql(expectedOk);
       err.toString().should.be.eql(expectedErr);
     });
 
     describe("--fix-in-place", () => {
-      it("fix in place all error types", () => testFixInPlace("all-ng-types.js"));
+      it("fix in place all error types", () =>
+        testFixInPlace("all-ng-types.js"));
 
       it("fix in place all error types with --useForwardDeclare", () =>
-        testFixInPlace("all-ng-types.js.forwarddeclare", ["--useForwardDeclare"]));
+        testFixInPlace("all-ng-types.js.forwarddeclare", [
+          "--useForwardDeclare",
+        ]));
 
-      it("fix a file without provide", () => testFixInPlace("fix-no-provide.js"));
+      it("fix a file without provide", () =>
+        testFixInPlace("fix-no-provide.js"));
 
       it("fix a file with header comment and no provide", () =>
         testFixInPlace("fix-comment-and-no-provide.js"));
@@ -275,10 +340,18 @@ describe("Command line", () => {
   const testFixInPlace = async (filename: string, options: string[] = []) => {
     const tmppath = tempy.file();
     fs.copyFileSync(`test/fixtures/cli/${filename}`, tmppath);
-    await cli(cmd.concat([tmppath, "--fix-in-place", ns]).concat(options), out, err, exit);
+    await cli(
+      cmd.concat([tmppath, "--fix-in-place", ns]).concat(options),
+      out,
+      err,
+      exit
+    );
     exit.calledOnce.should.be.false;
     const fixedSrc = fs.readFileSync(tmppath, "utf8");
-    const expected = fs.readFileSync(`test/fixtures/cli/${filename}.fixed.txt`, "utf8");
+    const expected = fs.readFileSync(
+      `test/fixtures/cli/${filename}.fixed.txt`,
+      "utf8"
+    );
     fixedSrc.should.be.eql(expected);
   };
 
@@ -293,13 +366,21 @@ describe("Command line", () => {
       // change cwd to ./test to load ./test/.fixclosurerc
       process.chdir(`${__dirname}/fixtures/findconfig`);
 
-      await cli(cmd.concat([`${__dirname}/fixtures/cli/config.js`]), out, err, exit);
+      await cli(
+        cmd.concat([`${__dirname}/fixtures/cli/config.js`]),
+        out,
+        err,
+        exit
+      );
       exit.called.should.be.false;
     });
 
     it('loaded by "--config" option', async () => {
       await cli(
-        cmd.concat(["test/fixtures/cli/config.js", "--config=test/fixtures/cli/.fixclosurerc1"]),
+        cmd.concat([
+          "test/fixtures/cli/config.js",
+          "--config=test/fixtures/cli/.fixclosurerc1",
+        ]),
         out,
         err,
         exit
