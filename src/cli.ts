@@ -1,4 +1,3 @@
-import flat from "array.prototype.flat";
 import clc from "cli-color";
 import commander from "commander";
 import fs from "fs";
@@ -113,12 +112,9 @@ function parseArgs(
     const results = opts.depsJs.map((file) =>
       depsJsParser.parseFile(path.resolve(opt_dir || process.cwd(), file))
     );
-    const symbols = flat<string>(
-      results.map((result) =>
-        result.dependencies.map((dep) => dep.closureSymbols)
-      ),
-      2
-    );
+    const symbols = results
+      .map((result) => result.dependencies.map((dep) => dep.closureSymbols))
+      .flat(2);
     opts.depsJsSymbols = symbols;
   }
   return { opts, program };

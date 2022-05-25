@@ -1,5 +1,4 @@
 import doctrine from "@teppeis/doctrine";
-import flat from "array.prototype.flat";
 import * as espree from "espree";
 import { traverse } from "estraverse-fb";
 import type {
@@ -300,15 +299,13 @@ export class Parser {
       case "TypeApplication":
         result = this.extractType(type.expression);
         result.push(
-          ...flat<string>(type.applications.map((app) => this.extractType(app)))
+          ...type.applications.map((app) => this.extractType(app)).flat()
         );
         break;
       case "UnionType":
-        return flat<string>(type.elements.map((el) => this.extractType(el)));
+        return type.elements.map((el) => this.extractType(el)).flat();
       case "RecordType":
-        return flat<string>(
-          type.fields.map((field) => this.extractType(field))
-        );
+        return type.fields.map((field) => this.extractType(field)).flat();
       case "FieldType":
         if (type.value) {
           return this.extractType(type.value);
@@ -316,9 +313,7 @@ export class Parser {
           return [];
         }
       case "FunctionType":
-        result = flat<string>(
-          type.params.map((param) => this.extractType(param))
-        );
+        result = type.params.map((param) => this.extractType(param)).flat();
         if (type.result) {
           result.push(...this.extractType(type.result));
         }
