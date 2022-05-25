@@ -1,6 +1,6 @@
 import doctrine from "@teppeis/doctrine";
 import flat from "array.prototype.flat";
-import espree from "espree";
+import * as espree from "espree";
 import { traverse } from "estraverse-fb";
 import type {
   Comment,
