@@ -25,7 +25,7 @@ goog.provide("goog.foo.Bar");
 goog.require("goog.foo");
 goog.require("goog.unused");
 
-goog.foo.Bar = function() {
+goog.foo.Bar = function () {
   goog.foo.baz();
   goog.missing.require();
 };
@@ -66,7 +66,7 @@ goog.provide("goog.foo.Bar");
 goog.require("goog.foo");
 goog.require("goog.missing");
 
-goog.foo.Bar = function() {
+goog.foo.Bar = function () {
   goog.foo.baz();
   goog.missing.require();
 };
@@ -194,7 +194,7 @@ Suppress `goog.provide` auto insertion.
 
 ```javascript
 // fixclosure: suppressProvide
-goog.Foo = function() {};
+goog.Foo = function () {};
 ```
 
 In the above, `goog.provide('goog.Foo')` will not inserted.

@@ -65,7 +65,10 @@ export namespace parser {
    * Parses a file that contains only goog.addDependency statements. This is regex
    * based to be lightweight and avoid addtional dependencies.
    */
-  export function parseDependencyFile(text: string, filePath: string): ParseResult;
+  export function parseDependencyFile(
+    text: string,
+    filePath: string
+  ): ParseResult;
 }
 
 export namespace depGraph {
@@ -191,7 +194,10 @@ export namespace depGraph {
     /** @const */
     moduleResolver: ModuleResolver;
 
-    constructor(dependencies: readonly Dependency[], moduleResolver?: ModuleResolver);
+    constructor(
+      dependencies: readonly Dependency[],
+      moduleResolver?: ModuleResolver
+    );
 
     /**
      * Validates the dependency graph. Throws an error if the graph is invalid.

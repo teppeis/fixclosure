@@ -24,7 +24,12 @@ export type Node =
 export interface JSXAttribute extends ESTree.BaseNode {
   type: "JSXAttribute";
   name: JSXIdentifier | JSXNamespacedName;
-  value: JSXElement | JSXFragment | ESTree.SimpleLiteral | JSXExpressionContainer | null;
+  value:
+    | JSXElement
+    | JSXFragment
+    | ESTree.SimpleLiteral
+    | JSXExpressionContainer
+    | null;
 }
 
 export interface JSXClosingElement extends ESTree.BaseNode {
@@ -36,7 +41,9 @@ export interface JSXElement extends ESTree.BaseNode {
   type: "JSXElement";
   openingElement: JSXOpeningElement;
   closingElement: JSXClosingElement | null;
-  children: Array<JSXText | JSXExpressionContainer | JSXSpreadChild | JSXElement | JSXFragment>;
+  children: Array<
+    JSXText | JSXExpressionContainer | JSXSpreadChild | JSXElement | JSXFragment
+  >;
   selfClosing: any;
 }
 
@@ -93,7 +100,9 @@ export interface JSXFragment extends ESTree.BaseNode {
   type: "JSXFragment";
   openingFragment: JSXOpeningFragment;
   closingFragment: JSXClosingFragment;
-  children: Array<JSXText | JSXExpressionContainer | JSXSpreadChild | JSXElement | JSXFragment>;
+  children: Array<
+    JSXText | JSXExpressionContainer | JSXSpreadChild | JSXElement | JSXFragment
+  >;
 }
 
 export interface JSXOpeningFragment extends ESTree.BaseNode {
