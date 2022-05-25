@@ -52,7 +52,7 @@ describe("Command line", () => {
     exit = sinon.spy();
   });
 
-  it("suceed with file argument", async () => {
+  it("succeed with file argument", async () => {
     await cli(cmd.concat(["test/fixtures/cli/ok.js", ns]), out, err, exit);
     exit.called.should.be.false;
   });
