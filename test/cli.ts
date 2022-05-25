@@ -3,7 +3,6 @@
 import { should } from "chai";
 import fs from "fs";
 import sinon from "sinon";
-import tempy from "tempy";
 import { cli } from "../src/cli";
 
 should();
@@ -338,7 +337,8 @@ describe("Command line", () => {
   });
 
   const testFixInPlace = async (filename: string, options: string[] = []) => {
-    const tmppath = tempy.file();
+    const { temporaryFile } = await import("tempy");
+    const tmppath = temporaryFile();
     fs.copyFileSync(`test/fixtures/cli/${filename}`, tmppath);
     await cli(
       cmd.concat([tmppath, "--fix-in-place", ns]).concat(options),
