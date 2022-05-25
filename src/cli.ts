@@ -2,7 +2,6 @@ import flat from "array.prototype.flat";
 import clc from "cli-color";
 import commander from "commander";
 import fs from "fs";
-import globby from "globby";
 import { parser as depsJsParser } from "google-closure-deps";
 import difference from "lodash.difference";
 import path from "path";
@@ -142,6 +141,7 @@ export function resolveConfig({
 }
 
 async function getFiles(args: string[]): Promise<string[]> {
+  const { globby } = await import("globby");
   return globby(args, {
     expandDirectories: { files: ["*"], extensions: ["js"] },
   });
