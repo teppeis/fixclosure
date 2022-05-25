@@ -104,12 +104,14 @@ const findConfig_: (dir: string) => string | null = memoize<
   return findConfig_(parent);
 });
 
-function parseArgs(argv: string[], opt_dir?: string): commander.Command {
+function parseArgs(
+  argv: string[],
+  opt_dir?: string
+): { opts: commander.OptionValues; program: commander.Command } {
   const program = new commander.Command();
-  setCommandOptions(program).parse(argv);
-
-  if (Array.isArray(program.depsJs) && program.depsJs.length > 0) {
-    const results = program.depsJs.map((file) =>
+  const opts = setCommandOptions(program).parse(argv).opts();
+  if (Array.isArray(opts.depsJs) && opts.depsJs.length > 0) {
+    const results = opts.depsJs.map((file) =>
       depsJsParser.parseFile(path.resolve(opt_dir || process.cwd(), file))
     );
     const symbols = flat<string>(
@@ -118,9 +120,9 @@ function parseArgs(argv: string[], opt_dir?: string): commander.Command {
       ),
       2
     );
-    program.depsJsSymbols = symbols;
+    opts.depsJsSymbols = symbols;
   }
-  return program;
+  return { opts, program };
 }
 
 interface ResolveConfigOptions {
@@ -128,10 +130,10 @@ interface ResolveConfigOptions {
   cwd?: string;
 }
 
-export function resolveConfig({
-  config,
-  cwd,
-}: ResolveConfigOptions = {}): commander.Command | null {
+export function resolveConfig({ config, cwd }: ResolveConfigOptions = {}): {
+  opts: commander.OptionValues;
+  program: commander.Command;
+} | null {
   const configPath = config || findConfig(cwd);
   if (!configPath) {
     return null;
@@ -153,12 +155,13 @@ async function main(
   stderr: LogOutput,
   exit: (exitCode: number) => void
 ): Promise<void> {
-  const argsOptions = parseArgs(argv);
-  const rcOptions = resolveConfig({ config: argsOptions.config });
+  const { opts: argsOptions, program } = parseArgs(argv);
+  const { opts: rcOptions } =
+    resolveConfig({ config: argsOptions.config }) ?? {};
   const options: any = { ...rcOptions, ...argsOptions };
 
-  if (options.args.length < 1) {
-    argsOptions.outputHelp();
+  if (program.args.length < 1) {
+    program.outputHelp();
     exit(1);
   }
 
@@ -171,7 +174,7 @@ async function main(
   let ng = 0;
   let fixed = 0;
 
-  const files = await getFiles(options.args);
+  const files = await getFiles(program.args);
   const promises = files.map(async (file: string) => {
     const log = new Logger(options.color, stdout, stderr);
     log.warn(`File: ${file}\n`);
