@@ -122,7 +122,7 @@ export class Parser {
     const required = this.extractRequired_(parsed);
     const requireTyped = this.extractRequireTyped_(parsed);
     const forwardDeclared = this.extractForwardDeclared_(parsed);
-    const ignored = this.extractSuppressUnused_(parsed, comments);
+    const ignored = this.extractIgnored_(parsed, comments);
     const toProvide = this.ignoreProvides_
       ? provided
       : this.extractToProvide_(parsed, comments);
@@ -328,10 +328,9 @@ export class Parser {
   }
 
   /**
-   * Extract "goog.require('goog.foo') // fixclosure: ignore".
-   * "suppressUnused" is deprecated.
+   * Extract `goog.require('goog.foo') // fixclosure: ignore`.
    */
-  private extractSuppressUnused_(
+  private extractIgnored_(
     parsed: UsedNamespace[],
     comments: Comment[]
   ): {
@@ -344,7 +343,7 @@ export class Parser {
       .filter(
         (comment) =>
           isLineComment(comment) &&
-          /^\s*fixclosure\s*:\s*(?:suppressUnused|ignore)\b/.test(comment.value)
+          /^\s*fixclosure\s*:\s*ignore\b/.test(comment.value)
       )
       .reduce((prev, item) => {
         prev[getLoc(item).start.line] = true;
