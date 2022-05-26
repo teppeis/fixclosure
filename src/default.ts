@@ -17,41 +17,7 @@ const replaceMap = {
 
 const ignorePackages = ["goog"];
 
-/**
- * @deprecated Use --depsJs
- */
-const providedNamespaces = [
-  "goog.color.names",
-  "goog.date.month",
-  "goog.date.weekDay",
-  "goog.debug.errorHandlerWeakDep",
-  "goog.dispose",
-  "goog.dom.query",
-  "goog.ds.logger",
-  "goog.events.actionEventWrapper",
-  "goog.i18n.currencyCodeMap",
-  "goog.i18n.currencyCodeMapTier2",
-  "goog.i18n.mime.encode",
-  "goog.labs.mock",
-  "goog.labs.testing.assertThat",
-  "goog.locale.countries",
-  "goog.locale.defaultLocaleNameConstants",
-  "goog.locale.genericFontNamesData",
-  "goog.locale.nativeNameConstants",
-  "goog.locale.scriptToLanguages",
-  "goog.memoize",
-  "goog.net.cookies",
-  "goog.string.format",
-  "goog.string.html.htmlSanitize",
-  "goog.testing.recordConstructor",
-  "goog.testing.recordFunction",
-  "goog.ui.decorate",
-  "goog.userAgent.product.isVersion",
-];
-
 export const getReplaceMap = () => new Map(Object.entries(replaceMap));
-
-export const getProvidedNamespaces = () => new Set(providedNamespaces);
 
 export const getRoots = () => new Set(roots);
 

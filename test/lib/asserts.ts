@@ -67,6 +67,7 @@ export const assertFile = (file: string, options?: ParserOptions) => {
     providedNamespace: [
       // 'goog' is included in deps.js of Closure Library
       "goog",
+      "goog.dispose",
       "goog.foo",
       "goog.bar",
       "goog.baz",

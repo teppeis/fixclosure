@@ -80,7 +80,7 @@ export class Parser {
       });
     }
 
-    this.providedNamespaces_ = def.getProvidedNamespaces();
+    this.providedNamespaces_ = new Set();
     if (options.providedNamespace) {
       options.providedNamespace.forEach((method) => {
         this.providedNamespaces_.add(method);
