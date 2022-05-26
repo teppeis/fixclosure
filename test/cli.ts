@@ -159,20 +159,6 @@ describe("Command line", () => {
   });
 
   describe("Options", () => {
-    it("--namespaceMethods", async () => {
-      await cli(
-        cmd.concat([
-          "test/fixtures/cli/package_method.js",
-          "--namespaceMethods=goog.foo.namespacemethod1,goog.foo.namespacemethod2",
-          ns,
-        ]),
-        out,
-        err,
-        exit
-      );
-      exit.called.should.be.false;
-    });
-
     it("--depsJs", async () => {
       await cli(
         cmd.concat([

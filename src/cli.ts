@@ -39,11 +39,6 @@ function setCommandOptions(command: commander.Command) {
     )
     .option("--ignoreProvides", "Provides will remain unchanged")
     .option(
-      "--namespaceMethods <methods>",
-      "DEPRECATED: Use --namespaces",
-      list
-    )
-    .option(
       "--namespaces <methods>",
       "Provided namespaces separated by comma.",
       list
@@ -162,9 +157,9 @@ async function main(
   }
 
   // for Parser
-  options.providedNamespace = (options.depsJsSymbols || [])
-    .concat(options.namespaceMethods || [])
-    .concat(options.namespaces || []);
+  options.providedNamespace = (options.depsJsSymbols || []).concat(
+    options.namespaces || []
+  );
 
   let ok = 0;
   let ng = 0;
