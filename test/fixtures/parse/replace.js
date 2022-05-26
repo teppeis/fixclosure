@@ -1,3 +1,3 @@
-goog.disposeAll(foo, bar);
+new goog.Promise.CancellationError(opt_message);
 
-// toRequire: goog.dispose
+// toRequire: goog.Promise
