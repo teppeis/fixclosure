@@ -122,10 +122,6 @@ Default: `${process.cwd()}/.fixclosurerc`
 Specify your root namespaces to provide. Default is `goog`.
 Comma separated list.
 
-### `--namespaceMethods <methods>` (deprecated)
-
-Use `--namespaces`.
-
 ### `--namespaces <namespaces>`
 
 Specify method or property exported as a namespace itself like `goog.dispose`.  
