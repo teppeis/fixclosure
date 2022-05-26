@@ -169,8 +169,6 @@ Also `goog.require('goog.bar')` will not removed if it isn't used.
 The hint affects only _same_ line.
 Useful in module declaration.
 
-_`fixclosure: suppressUnused` is deprecated and will be removed next update._
-
 ### `suppressRequire`
 
 Suppress `goog.require` auto insertion.
