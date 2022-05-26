@@ -1,3 +1,3 @@
-foo(goog.ui.decorate);
+foo(goog.dispose);
 
-// toRequire: goog.ui.decorate
+// toRequire: goog.dispose
