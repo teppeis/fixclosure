@@ -277,7 +277,8 @@ export class Parser {
         .sort()
         .reduce(uniq, []),
       toRequireType: toRequireType
-        .filter((name) => this.isProvidedNamespace_(name))
+        .map((name) => this.getRequiredPackageName_(name))
+        .filter(isDefAndNotNull)
         .sort()
         .reduce(uniq, []),
     };
@@ -430,7 +431,7 @@ export class Parser {
     comments: Comment[],
     use: UsedNamespace
   ): string | null {
-    const name = use.name.join(".");
+    let name = use.name.join(".");
     switch (use.node.type) {
       case "AssignmentExpression":
         if (use.key === "left" && getLoc(use.node).start.column === 0) {
@@ -439,6 +440,11 @@ export class Parser {
         break;
       case "ExpressionStatement":
         if (this.hasTypedefAnnotation_(use.node, comments)) {
+          const parent = use.name.slice(0, -1);
+          const parentLastname = parent[parent.length - 1];
+          if (/^[A-Z]/.test(parentLastname)) {
+            name = parent.join(".");
+          }
           return this.getProvidedPackageName_(name);
         }
         break;
