@@ -15,7 +15,6 @@ export function leave(
   node: Node,
   uses: UsedNamespace[]
 ) {
-  /* eslint-disable no-invalid-this */
   switch (node.type) {
     case "MemberExpression":
     case "JSXMemberExpression":
@@ -37,7 +36,6 @@ export function leave(
     default:
       break;
   }
-  /* eslint-enable no-invalid-this */
 }
 
 function nonNullable<T>(value: T): NonNullable<T> {
