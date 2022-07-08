@@ -8,26 +8,9 @@
   ],
   "overrides": [
     {
-      "files": ["**/*.ts"],
-      "rules": {
-        "node/no-missing-import": [
-          "error",
-          {
-            "allowModules": ["estree-jsx"]
-          }
-        ]
-      }
-    },
-    {
       "files": ["**/*.d.ts"],
       "rules": {
-        "node/no-missing-import": [
-          "error",
-          {
-            "allowModules": ["estree"]
-          }
-        ],
-        "node/no-extraneous-import": [
+        "n/no-extraneous-import": [
           "error",
           {
             "allowModules": ["estraverse"]
