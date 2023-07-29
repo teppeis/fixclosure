@@ -13,7 +13,7 @@ import type { EstraverseController } from "estraverse-fb";
 export function leave(
   this: EstraverseController,
   node: Node,
-  uses: UsedNamespace[]
+  uses: UsedNamespace[],
 ) {
   switch (node.type) {
     case "MemberExpression":
@@ -42,7 +42,7 @@ function nonNullable<T>(value: T): NonNullable<T> {
   /* istanbul ignore if */
   if (value == null) {
     throw new TypeError(
-      `The value must be non-nullable, but actually ${value}`
+      `The value must be non-nullable, but actually ${value}`,
     );
   }
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -53,7 +53,7 @@ function nonNullable<T>(value: T): NonNullable<T> {
  * @return True if the property is computed like `foo["bar"]` not `foo.bar`.
  */
 function hasComputedProperty_(
-  node: MemberExpression | JSXMemberExpression
+  node: MemberExpression | JSXMemberExpression,
 ): boolean {
   return node.type === "MemberExpression" && node.computed;
 }
@@ -71,7 +71,7 @@ function isIdentifierType_(node: Node): node is Identifier | JSXIdentifier {
  */
 function isLocalVar_(
   object: Identifier | JSXIdentifier,
-  parents: Node[]
+  parents: Node[],
 ): boolean {
   const nodeName: string = object.name;
   let node: Node | undefined;
@@ -83,7 +83,7 @@ function isLocalVar_(
         if (
           node.params &&
           node.params.some(
-            (param) => param.type === "Identifier" && param.name === nodeName
+            (param) => param.type === "Identifier" && param.name === nodeName,
           )
         ) {
           return true;
@@ -99,8 +99,8 @@ function isLocalVar_(
                 (declaration) =>
                   declaration.type === "VariableDeclarator" &&
                   declaration.id.type === "Identifier" &&
-                  declaration.id.name === nodeName
-              )
+                  declaration.id.name === nodeName,
+              ),
           )
         ) {
           return true;
@@ -116,7 +116,7 @@ function isLocalVar_(
 function registerIdentifier_(
   node: Identifier | JSXIdentifier,
   parents: Node[],
-  path: string[]
+  path: string[],
 ): UsedNamespace | null {
   const namespace = [node.name];
   for (let i = 0; i < parents.length; i++) {
@@ -150,7 +150,7 @@ export interface UsedNamespace<T extends Node = Node> {
 function createMemberObject_(
   namespace: string[],
   node: Node,
-  parentKey: string
+  parentKey: string,
 ): UsedNamespace {
   return {
     name: namespace,

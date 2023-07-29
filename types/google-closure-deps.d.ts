@@ -16,7 +16,7 @@ export namespace parser {
     constructor(
       dependencies: depGraph.Dependency[],
       errors: ParseError[],
-      source: ParseResult.Source
+      source: ParseResult.Source,
     );
   }
 
@@ -53,7 +53,7 @@ export namespace parser {
       message: string,
       sourceName: string,
       line: number,
-      lineOffset: number
+      lineOffset: number,
     );
   }
 
@@ -67,7 +67,7 @@ export namespace parser {
    */
   export function parseDependencyFile(
     text: string,
-    filePath: string
+    filePath: string,
   ): ParseResult;
 }
 
@@ -115,7 +115,7 @@ export namespace depGraph {
       filepath: string,
       closureSymbols: string[],
       imports: Import[],
-      language?: string
+      language?: string,
     );
 
     /**
@@ -196,7 +196,7 @@ export namespace depGraph {
 
     constructor(
       dependencies: readonly Dependency[],
-      moduleResolver?: ModuleResolver
+      moduleResolver?: ModuleResolver,
     );
 
     /**
@@ -230,6 +230,6 @@ export namespace depFile {
   export function getDepFileText(
     pathToClosure: string,
     dependencies: depGraph.Dependency[],
-    moduleResolver?: depGraph.ModuleResolver
+    moduleResolver?: depGraph.ModuleResolver,
   ): string;
 }

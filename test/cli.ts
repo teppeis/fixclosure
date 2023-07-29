@@ -77,13 +77,13 @@ describe("Command line", () => {
       cmd.concat(["test/fixtures/cli/all-ng-types.js", ns]),
       out,
       err,
-      exit
+      exit,
     );
     exit.calledOnce.should.be.true;
     exit.firstCall.args.should.eql([1]);
     const expected = fs.readFileSync(
       "test/fixtures/cli/all-ng-types.js.error.txt",
-      "utf8"
+      "utf8",
     );
     err.toString().should.be.eql(expected);
   });
@@ -97,13 +97,13 @@ describe("Command line", () => {
       ]),
       out,
       err,
-      exit
+      exit,
     );
     exit.calledOnce.should.be.true;
     exit.firstCall.args.should.eql([1]);
     const expected = fs.readFileSync(
       "test/fixtures/cli/all-ng-types.js.forwarddeclare.error.txt",
-      "utf8"
+      "utf8",
     );
     err.toString().should.be.eql(expected);
   });
@@ -113,13 +113,13 @@ describe("Command line", () => {
       cmd.concat(["test/fixtures/cli/duplicated_provide.js"]),
       out,
       err,
-      exit
+      exit,
     );
     exit.calledOnce.should.be.true;
     exit.firstCall.args.should.eql([1]);
     const expected = fs.readFileSync(
       "test/fixtures/cli/duplicated_provide.js.txt",
-      "utf8"
+      "utf8",
     );
     err.toString().should.be.eql(expected);
   });
@@ -130,13 +130,13 @@ describe("Command line", () => {
         cmd.concat(["test/fixtures/cli/ignore_require.js", "--showSuccess"]),
         out,
         err,
-        exit
+        exit,
       );
       exit.calledOnce.should.be.false;
 
       const expected = fs.readFileSync(
         "test/fixtures/cli/ignore_require.js.txt",
-        "utf8"
+        "utf8",
       );
       out.toString().should.be.eql(expected);
     });
@@ -146,13 +146,13 @@ describe("Command line", () => {
         cmd.concat(["test/fixtures/cli/ignore_provide.js", "--showSuccess"]),
         out,
         err,
-        exit
+        exit,
       );
       exit.calledOnce.should.be.false;
 
       const expected = fs.readFileSync(
         "test/fixtures/cli/ignore_provide.js.txt",
-        "utf8"
+        "utf8",
       );
       out.toString().should.be.eql(expected);
     });
@@ -168,7 +168,7 @@ describe("Command line", () => {
         ]),
         out,
         err,
-        exit
+        exit,
       );
       exit.called.should.be.false;
     });
@@ -179,7 +179,7 @@ describe("Command line", () => {
           cmd.concat(["test/fixtures/cli/provideRootsDefault.js", ns]),
           out,
           err,
-          exit
+          exit,
         );
         sinon.assert.notCalled(exit);
       });
@@ -189,7 +189,7 @@ describe("Command line", () => {
           cmd.concat(["test/fixtures/cli/provideRoots.js", ns]),
           out,
           err,
-          exit
+          exit,
         );
         sinon.assert.called(exit);
       });
@@ -202,7 +202,7 @@ describe("Command line", () => {
           ]),
           out,
           err,
-          exit
+          exit,
         );
         sinon.assert.notCalled(exit);
       });
@@ -216,7 +216,7 @@ describe("Command line", () => {
           ]),
           out,
           err,
-          exit
+          exit,
         );
         sinon.assert.called(exit);
       });
@@ -231,7 +231,7 @@ describe("Command line", () => {
           ]),
           out,
           err,
-          exit
+          exit,
         );
         exit.called.should.be.false;
       });
@@ -245,7 +245,7 @@ describe("Command line", () => {
           ]),
           out,
           err,
-          exit
+          exit,
         );
         exit.called.should.be.false;
       });
@@ -260,7 +260,7 @@ describe("Command line", () => {
         ]),
         out,
         err,
-        exit
+        exit,
       );
       exit.called.should.be.false;
     });
@@ -270,13 +270,13 @@ describe("Command line", () => {
         cmd.concat(["test/fixtures/cli/ok.js", "test/fixtures/cli/ng.js", ns]),
         out,
         err,
-        exit
+        exit,
       );
       exit.calledOnce.should.be.true;
       exit.firstCall.args.should.eql([1]);
       const expectedErr = fs.readFileSync(
         "test/fixtures/cli/ng.js.txt",
-        "utf8"
+        "utf8",
       );
       out.toString().should.be.eql("");
       err.toString().should.be.eql(expectedErr);
@@ -292,14 +292,14 @@ describe("Command line", () => {
         ]),
         out,
         err,
-        exit
+        exit,
       );
       exit.calledOnce.should.be.true;
       exit.firstCall.args.should.eql([1]);
       const expectedOk = fs.readFileSync("test/fixtures/cli/ok.js.txt", "utf8");
       const expectedErr = fs.readFileSync(
         "test/fixtures/cli/ng.js.txt",
-        "utf8"
+        "utf8",
       );
       out.toString().should.be.eql(expectedOk);
       err.toString().should.be.eql(expectedErr);
@@ -330,13 +330,13 @@ describe("Command line", () => {
       cmd.concat([tmppath, "--fix-in-place", ns]).concat(options),
       out,
       err,
-      exit
+      exit,
     );
     exit.calledOnce.should.be.false;
     const fixedSrc = fs.readFileSync(tmppath, "utf8");
     const expected = fs.readFileSync(
       `test/fixtures/cli/${filename}.fixed.txt`,
-      "utf8"
+      "utf8",
     );
     fixedSrc.should.be.eql(expected);
   };
@@ -356,7 +356,7 @@ describe("Command line", () => {
         cmd.concat([`${__dirname}/fixtures/cli/config.js`]),
         out,
         err,
-        exit
+        exit,
       );
       exit.called.should.be.false;
     });
@@ -369,7 +369,7 @@ describe("Command line", () => {
         ]),
         out,
         err,
-        exit
+        exit,
       );
       exit.called.should.be.false;
     });
@@ -388,7 +388,7 @@ describe("Command line", () => {
         ]),
         out,
         err,
-        exit
+        exit,
       );
       console.error(err.toString());
       exit.called.should.be.false;

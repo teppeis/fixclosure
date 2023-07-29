@@ -16,8 +16,8 @@ describe("Parser", () => {
     const files = fs.readdirSync(`${__dirname}/fixtures/parse-es6-script/`);
     files.forEach((file) =>
       it(file, () =>
-        assertFile(`/parse-es6-script/${file}`, { parserOptions: {} })
-      )
+        assertFile(`/parse-es6-script/${file}`, { parserOptions: {} }),
+      ),
     );
   });
 
@@ -29,8 +29,8 @@ describe("Parser", () => {
           parserOptions: {
             sourceType: "module",
           },
-        })
-      )
+        }),
+      ),
     );
   });
   describe("extractType", () => {
