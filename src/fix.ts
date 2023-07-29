@@ -5,7 +5,7 @@ import type { FixclosureInfo } from "./parser";
 export function fixInPlace(
   file: string,
   src: string,
-  info: FixclosureInfo
+  info: FixclosureInfo,
 ): Promise<void> {
   const fixedSrc = getFixedSource(src, info);
   return promisify(fs.writeFile)(file, fixedSrc, "utf8");
@@ -71,7 +71,7 @@ function getRequireTypeSrc(info: FixclosureInfo): string[] {
   return getDeclarationSrc(
     info.toRequireType,
     info.ignoredRequireType,
-    "goog.requireType"
+    "goog.requireType",
   );
 }
 
@@ -79,18 +79,18 @@ function getForwardDeclareSrc(info: FixclosureInfo): string[] {
   return getDeclarationSrc(
     info.toForwardDeclare,
     info.ignoredForwardDeclare,
-    "goog.forwardDeclare"
+    "goog.forwardDeclare",
   );
 }
 
 function getDeclarationSrc(
   to: string[],
   ignored: string[],
-  method: string
+  method: string,
 ): string[] {
   const declarations = to.map((namespace) => `${method}('${namespace}');`);
   const ignores = ignored.map(
-    (namespace) => `${method}('${namespace}'); // fixclosure: ignore`
+    (namespace) => `${method}('${namespace}'); // fixclosure: ignore`,
   );
   return declarations.concat(ignores).sort();
 }

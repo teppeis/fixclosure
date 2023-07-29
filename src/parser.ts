@@ -1,6 +1,5 @@
 import doctrine from "@teppeis/doctrine";
-import * as espree from "espree";
-import { traverse } from "estraverse-fb";
+import { strict as assert } from "assert";
 import type {
   Comment,
   ExpressionStatement,
@@ -9,6 +8,8 @@ import type {
   SourceLocation,
 } from "estree-jsx";
 import difference from "lodash.difference";
+import * as espree from "espree";
+import { traverse } from "estraverse-fb";
 import * as def from "./default";
 import type { UsedNamespace } from "./visitor";
 import { leave } from "./visitor";
@@ -131,12 +132,12 @@ export class Parser {
       parsed,
       toProvide,
       comments,
-      fromJsDoc.toRequire
+      fromJsDoc.toRequire,
     );
     const toRequireType = difference(
       fromJsDoc.toRequireType,
       toProvide,
-      toRequire
+      toRequire,
     );
 
     return {
@@ -161,7 +162,7 @@ export class Parser {
 
   private extractToProvide_(
     parsed: UsedNamespace[],
-    comments: Comment[]
+    comments: Comment[],
   ): string[] {
     const suppressComments = this.getSuppressProvideComments_(comments);
     return parsed
@@ -180,14 +181,14 @@ export class Parser {
    */
   private hasTypedefAnnotation_(
     node: ExpressionStatement,
-    comments: Comment[]
+    comments: Comment[],
   ): boolean {
     const { line } = getLoc(node).start;
     const jsDocComments = comments.filter(
       (comment) =>
         getLoc(comment).end.line === line - 1 &&
         isBlockComment(comment) &&
-        /^\*/.test(comment.value)
+        /^\*/.test(comment.value),
     );
     if (jsDocComments.length === 0) {
       return false;
@@ -205,7 +206,7 @@ export class Parser {
     return comments.filter(
       (comment) =>
         isLineComment(comment) &&
-        /^\s*fixclosure\s*:\s*suppressProvide\b/.test(comment.value)
+        /^\s*fixclosure\s*:\s*suppressProvide\b/.test(comment.value),
     );
   }
 
@@ -213,7 +214,7 @@ export class Parser {
     return comments.filter(
       (comment) =>
         isLineComment(comment) &&
-        /^\s*fixclosure\s*:\s*suppressRequire\b/.test(comment.value)
+        /^\s*fixclosure\s*:\s*suppressRequire\b/.test(comment.value),
     );
   }
 
@@ -221,7 +222,7 @@ export class Parser {
     parsed: UsedNamespace[],
     toProvide: string[],
     comments: Comment[],
-    opt_required?: string[]
+    opt_required?: string[],
   ): string[] {
     const additional = opt_required || [];
     const suppressComments = this.getSuppressRequireComments_(comments);
@@ -246,7 +247,7 @@ export class Parser {
       .filter(
         (comment) =>
           // JSDoc Style
-          isBlockComment(comment) && /^\*/.test(comment.value)
+          isBlockComment(comment) && /^\*/.test(comment.value),
       )
       .forEach((comment) => {
         const { tags } = doctrine.parse(`/*${comment.value}*/`, {
@@ -263,7 +264,7 @@ export class Parser {
           .filter(
             (tag) =>
               (tag.title === "implements" || tag.title === "extends") &&
-              tag.type
+              tag.type,
           )
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           .map((tag) => this.extractType(tag.type!))
@@ -300,7 +301,7 @@ export class Parser {
       case "TypeApplication":
         result = this.extractType(type.expression);
         result.push(
-          ...type.applications.map((app) => this.extractType(app)).flat()
+          ...type.applications.map((app) => this.extractType(app)).flat(),
         );
         break;
       case "UnionType":
@@ -333,7 +334,7 @@ export class Parser {
    */
   private extractIgnored_(
     parsed: UsedNamespace[],
-    comments: Comment[]
+    comments: Comment[],
   ): {
     provide: string[];
     require: string[];
@@ -344,12 +345,15 @@ export class Parser {
       .filter(
         (comment) =>
           isLineComment(comment) &&
-          /^\s*fixclosure\s*:\s*ignore\b/.test(comment.value)
+          /^\s*fixclosure\s*:\s*ignore\b/.test(comment.value),
       )
-      .reduce((prev, item) => {
-        prev[getLoc(item).start.line] = true;
-        return prev;
-      }, {} as { [index: number]: true });
+      .reduce(
+        (prev, item) => {
+          prev[getLoc(item).start.line] = true;
+          return prev;
+        },
+        {} as { [index: number]: true },
+      );
 
     if (Object.keys(suppresses).length === 0) {
       return { provide: [], require: [], requireType: [], forwardDeclare: [] };
@@ -395,7 +399,7 @@ export class Parser {
    */
   private extractGoogDeclaration_(
     parsed: UsedNamespace[],
-    method: string
+    method: string,
   ): string[] {
     return parsed
       .filter(isSimpleCallExpression)
@@ -429,7 +433,7 @@ export class Parser {
    */
   private toProvideMapper_(
     comments: Comment[],
-    use: UsedNamespace
+    use: UsedNamespace,
   ): string | null {
     let name = use.name.join(".");
     switch (use.node.type) {
@@ -441,7 +445,8 @@ export class Parser {
       case "ExpressionStatement":
         if (this.hasTypedefAnnotation_(use.node, comments)) {
           const parent = use.name.slice(0, -1);
-          const parentLastname = parent[parent.length - 1];
+          const parentLastname = parent.at(-1);
+          assert(parentLastname);
           if (/^[A-Z]/.test(parentLastname)) {
             name = parent.join(".");
           }
@@ -484,7 +489,7 @@ export class Parser {
   private suppressFilter_(comments: Comment[], use: UsedNamespace): boolean {
     const start = getLoc(use.node).start.line;
     const suppressComment = comments.some(
-      (comment) => getLoc(comment).start.line + 1 === start
+      (comment) => getLoc(comment).start.line + 1 === start,
     );
     return !suppressComment;
   }
@@ -504,7 +509,6 @@ export class Parser {
   private getProvidedPackageName_(name: string): string | null {
     name = this.replaceMethod_(name);
     let names = name.split(".");
-    let lastname = names[names.length - 1];
     // Remove prototype or superClass_.
     names = names.reduceRight((prev, cur) => {
       if (cur === "prototype") {
@@ -516,14 +520,16 @@ export class Parser {
     }, [] as string[]);
 
     if (!this.isProvidedNamespace_(name)) {
-      lastname = names[names.length - 1];
+      let lastname = names.at(-1);
+      assert(lastname);
       if (/^[a-z$]/.test(lastname)) {
         // Remove the last method name.
         names.pop();
       }
 
       while (names.length > 0) {
-        lastname = names[names.length - 1];
+        lastname = names.at(-1);
+        assert(lastname);
         if (/^[A-Z][_0-9A-Z]+$/.test(lastname)) {
           // Remove the last constant name.
           names.pop();
@@ -575,7 +581,7 @@ export class Parser {
 }
 
 function isSimpleCallExpression(
-  use: UsedNamespace
+  use: UsedNamespace,
 ): use is UsedNamespace<SimpleCallExpression> {
   return use.node.type === "CallExpression";
 }
@@ -586,7 +592,7 @@ function isCalledMethodName(method: string) {
 }
 
 function getArgStringLiteralOrNull(
-  use: UsedNamespace<SimpleCallExpression>
+  use: UsedNamespace<SimpleCallExpression>,
 ): string | null {
   const arg = use.node.arguments[0];
   if (arg.type === "Literal" && typeof arg.value === "string") {
@@ -616,7 +622,7 @@ function getLoc(node: { loc?: SourceLocation | null }): SourceLocation {
   /* istanbul ignore if */
   if (!node.loc) {
     throw new TypeError(
-      `Enable "loc" option of your parser. The node doesn't have "loc" property: ${node}`
+      `Enable "loc" option of your parser. The node doesn't have "loc" property: ${node}`,
     );
   }
   return node.loc;
@@ -633,7 +639,7 @@ function isDefAndNotNull<T>(item: T): item is NonNullable<T> {
  * Use like `array.reduce(uniq, [])`
  */
 function uniq(prev: string[], cur: string): string[] {
-  if (prev[prev.length - 1] !== cur) {
+  if (prev.at(-1) !== cur) {
     prev.push(cur);
   }
   return prev;

@@ -1,10 +1,10 @@
 import clc from "cli-color";
 import commander from "commander";
 import fs from "fs";
-import { parser as depsJsParser } from "google-closure-deps";
 import difference from "lodash.difference";
 import path from "path";
 import { promisify } from "util";
+import { parser as depsJsParser } from "google-closure-deps";
 import type { LogOutput } from "./clilogger";
 import Logger from "./clilogger";
 import { fixInPlace } from "./fix";
@@ -35,22 +35,22 @@ function setCommandOptions(command: commander.Command) {
     .option(
       "--provideRoots <roots>",
       "Root namespaces to provide separated by comma.",
-      list
+      list,
     )
     .option("--ignoreProvides", "Provides will remain unchanged")
     .option(
       "--namespaces <methods>",
       "Provided namespaces separated by comma.",
-      list
+      list,
     )
     .option(
       "--replaceMap <map>",
       'Methods or properties to namespaces mapping like "before1:after1,before2:after2".',
-      map
+      map,
     )
     .option(
       "--useForwardDeclare",
-      "Use goog.forwardDeclare() instead of goog.requireType()."
+      "Use goog.forwardDeclare() instead of goog.requireType().",
     )
     .option("--config <file>", ".fixclosurerc file path.")
     .option("--depsJs <files>", "deps.js file paths separated by comma.", list)
@@ -99,13 +99,13 @@ const findConfig_: (dir: string) => string | null = memoize<
 
 function parseArgs(
   argv: string[],
-  opt_dir?: string
+  opt_dir?: string,
 ): { opts: commander.OptionValues; program: commander.Command } {
   const program = new commander.Command();
   const opts = setCommandOptions(program).parse(argv).opts();
   if (Array.isArray(opts.depsJs) && opts.depsJs.length > 0) {
     const results = opts.depsJs.map((file) =>
-      depsJsParser.parseFile(path.resolve(opt_dir || process.cwd(), file))
+      depsJsParser.parseFile(path.resolve(opt_dir || process.cwd(), file)),
     );
     const symbols = results
       .map((result) => result.dependencies.map((dep) => dep.closureSymbols))
@@ -144,7 +144,7 @@ async function main(
   argv: string[],
   stdout: LogOutput,
   stderr: LogOutput,
-  exit: (exitCode: number) => void
+  exit: (exitCode: number) => void,
 ): Promise<void> {
   const { opts: argsOptions, program } = parseArgs(argv);
   const { opts: rcOptions } =
@@ -158,7 +158,7 @@ async function main(
 
   // for Parser
   options.providedNamespace = (options.depsJsSymbols || []).concat(
-    options.namespaces || []
+    options.namespaces || [],
   );
 
   let ok = 0;
@@ -181,16 +181,16 @@ async function main(
     log.items(
       info.provided.map(
         (item) =>
-          item + (info.ignoredProvide.includes(item) ? " (ignored)" : "")
-      )
+          item + (info.ignoredProvide.includes(item) ? " (ignored)" : ""),
+      ),
     );
     log.info("");
     log.info("Required:");
     log.items(
       info.required.map(
         (item) =>
-          item + (info.ignoredRequire.includes(item) ? " (ignored)" : "")
-      )
+          item + (info.ignoredRequire.includes(item) ? " (ignored)" : ""),
+      ),
     );
     log.info("");
     if (info.requireTyped.length > 0) {
@@ -198,8 +198,8 @@ async function main(
       log.items(
         info.requireTyped.map(
           (item) =>
-            item + (info.ignoredRequireType.includes(item) ? " (ignored)" : "")
-        )
+            item + (info.ignoredRequireType.includes(item) ? " (ignored)" : ""),
+        ),
       );
       log.info("");
     }
@@ -209,8 +209,8 @@ async function main(
         info.forwardDeclared.map(
           (item) =>
             item +
-            (info.ignoredForwardDeclare.includes(item) ? " (ignored)" : "")
-        )
+            (info.ignoredForwardDeclare.includes(item) ? " (ignored)" : ""),
+        ),
       );
       log.info("");
     }
@@ -222,7 +222,7 @@ async function main(
         "Provide",
         info.provided,
         info.toProvide,
-        info.ignoredProvide
+        info.ignoredProvide,
       ) || needToFix;
     needToFix =
       checkDeclare(
@@ -230,7 +230,7 @@ async function main(
         "Require",
         info.required,
         info.toRequire,
-        info.ignoredRequire
+        info.ignoredRequire,
       ) || needToFix;
     needToFix =
       checkDeclare(
@@ -240,7 +240,7 @@ async function main(
         info.toRequireType,
         info.ignoredRequireType,
         info.forwardDeclared,
-        info.toForwardDeclare
+        info.toForwardDeclare,
       ) || needToFix;
     needToFix =
       checkDeclare(
@@ -250,7 +250,7 @@ async function main(
         info.toForwardDeclare,
         info.ignoredForwardDeclare,
         info.requireTyped,
-        info.toRequireType
+        info.toRequireType,
       ) || needToFix;
 
     if (needToFix) {
@@ -306,7 +306,7 @@ function checkDeclare(
   toDeclare: string[],
   ignoredDeclare: string[],
   optionalDeclared: string[] = [],
-  optionalToDeclare: string[] = []
+  optionalToDeclare: string[] = [],
 ): boolean {
   let needToFix = false;
   const duplicated = getDuplicated(declared);
@@ -327,7 +327,7 @@ function checkDeclare(
     declared,
     toDeclare,
     ignoredDeclare,
-    optionalToDeclare
+    optionalToDeclare,
   );
   unnecessary = uniqArray(unnecessary);
   if (unnecessary.length > 0) {

@@ -5,12 +5,12 @@ export interface Visitor {
   enter?: (
     this: EstraverseController,
     node: Node,
-    parentNode: Node | null
+    parentNode: Node | null,
   ) => VisitorOption | Node | void;
   leave?: (
     this: EstraverseController,
     node: Node,
-    parentNode: Node | null
+    parentNode: Node | null,
   ) => VisitorOption | Node | void;
   fallback?: "iteration" | ((node: Node) => string[]);
   keys?: { [nodeType: string]: string[] };

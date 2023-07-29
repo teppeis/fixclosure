@@ -47,7 +47,7 @@ class Logger {
       items.map((item) => {
         item = `- ${item}`;
         return this.color_ ? clc.blackBright(item) : item;
-      }, this)
+      }, this),
     );
   }
 
