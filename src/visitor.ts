@@ -1,4 +1,3 @@
-import type { EstraverseController } from "estraverse-fb";
 import type {
   Identifier,
   JSXIdentifier,
@@ -6,6 +5,7 @@ import type {
   MemberExpression,
   Node,
 } from "estree-jsx";
+import type { EstraverseController } from "estraverse-fb";
 
 /**
  * Visitor for estraverse.

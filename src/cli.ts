@@ -1,10 +1,10 @@
 import clc from "cli-color";
 import commander from "commander";
 import fs from "fs";
-import { parser as depsJsParser } from "google-closure-deps";
 import difference from "lodash.difference";
 import path from "path";
 import { promisify } from "util";
+import { parser as depsJsParser } from "google-closure-deps";
 import type { LogOutput } from "./clilogger";
 import Logger from "./clilogger";
 import { fixInPlace } from "./fix";

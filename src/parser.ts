@@ -1,6 +1,5 @@
 import doctrine from "@teppeis/doctrine";
-import * as espree from "espree";
-import { traverse } from "estraverse-fb";
+import { strict as assert } from "assert";
 import type {
   Comment,
   ExpressionStatement,
@@ -9,6 +8,8 @@ import type {
   SourceLocation,
 } from "estree-jsx";
 import difference from "lodash.difference";
+import * as espree from "espree";
+import { traverse } from "estraverse-fb";
 import * as def from "./default";
 import type { UsedNamespace } from "./visitor";
 import { leave } from "./visitor";
@@ -441,7 +442,8 @@ export class Parser {
       case "ExpressionStatement":
         if (this.hasTypedefAnnotation_(use.node, comments)) {
           const parent = use.name.slice(0, -1);
-          const parentLastname = parent[parent.length - 1];
+          const parentLastname = parent.at(-1);
+          assert(parentLastname);
           if (/^[A-Z]/.test(parentLastname)) {
             name = parent.join(".");
           }
@@ -504,7 +506,6 @@ export class Parser {
   private getProvidedPackageName_(name: string): string | null {
     name = this.replaceMethod_(name);
     let names = name.split(".");
-    let lastname = names[names.length - 1];
     // Remove prototype or superClass_.
     names = names.reduceRight((prev, cur) => {
       if (cur === "prototype") {
@@ -516,14 +517,16 @@ export class Parser {
     }, [] as string[]);
 
     if (!this.isProvidedNamespace_(name)) {
-      lastname = names[names.length - 1];
+      let lastname = names.at(-1);
+      assert(lastname);
       if (/^[a-z$]/.test(lastname)) {
         // Remove the last method name.
         names.pop();
       }
 
       while (names.length > 0) {
-        lastname = names[names.length - 1];
+        lastname = names.at(-1);
+        assert(lastname);
         if (/^[A-Z][_0-9A-Z]+$/.test(lastname)) {
           // Remove the last constant name.
           names.pop();
@@ -633,7 +636,7 @@ function isDefAndNotNull<T>(item: T): item is NonNullable<T> {
  * Use like `array.reduce(uniq, [])`
  */
 function uniq(prev: string[], cur: string): string[] {
-  if (prev[prev.length - 1] !== cur) {
+  if (prev.at(-1) !== cur) {
     prev.push(cur);
   }
   return prev;
