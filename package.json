@@ -48,7 +48,7 @@
     "@types/lodash.difference": "^4.5.7",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.17.1",
-    "@types/sinon": "^10.0.15",
+    "@types/sinon": "^10.0.16",
     "chai": "^4.3.7",
     "coveralls": "^3.1.1",
     "eslint": "^8.46.0",
