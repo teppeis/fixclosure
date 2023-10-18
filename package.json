@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.3.9",
-    "@types/estraverse": "5.1.4",
+    "@types/estraverse": "5.1.5",
     "@types/lodash.difference": "^4.5.7",
     "@types/mocha": "^10.0.2",
     "@types/node": "^18.18.5",
