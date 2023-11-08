@@ -32,7 +32,7 @@
   "dependencies": {
     "@teppeis/doctrine": "^3.2.0",
     "@types/cli-color": "^2.0.5",
-    "@types/estree": "1.0.4",
+    "@types/estree": "1.0.5",
     "@types/estree-jsx": "^1.0.2",
     "cli-color": "^2.0.3",
     "commander": "^11.1.0",
