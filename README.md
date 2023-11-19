@@ -213,6 +213,4 @@ MIT License: Teppei Sato <teppeis@gmail.com>
 [deps-image]: https://badgen.net/david/dep/teppeis/fixclosure
 [deps-url]: https://david-dm.org/teppeis/fixclosure
 [node-version]: https://badgen.net/npm/node/fixclosure
-[coverage-image]: https://coveralls.io/repos/github/teppeis/fixclosure/badge.svg?branch=master
-[coverage-url]: https://coveralls.io/github/teppeis/fixclosure?branch=master
 [license]: https://badgen.net/npm/license/fixclosure
