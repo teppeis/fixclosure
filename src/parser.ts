@@ -1,5 +1,5 @@
 import doctrine from "@teppeis/doctrine";
-import { strict as assert } from "assert";
+import { strict as assert } from "node:assert";
 import type {
   Comment,
   ExpressionStatement,

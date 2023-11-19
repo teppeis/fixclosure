@@ -119,8 +119,7 @@ function registerIdentifier_(
   path: string[],
 ): UsedNamespace | null {
   const namespace = [node.name];
-  for (let i = 0; i < parents.length; i++) {
-    const current = parents[i];
+  for (const [i, current] of parents.entries()) {
     const parentKey = path[i];
     switch (current.type) {
       case "MemberExpression":

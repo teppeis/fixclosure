@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
 import { should } from "chai";
-import fs from "fs";
+import fs from "node:fs";
 import sinon from "sinon";
 import { cli } from "../src/cli";
 

@@ -1,6 +1,6 @@
 import assert = require("assert");
 import { should } from "chai";
-import fs from "fs";
+import fs from "node:fs";
 import { Parser } from "../src/parser";
 import { assertFile } from "./lib/asserts";
 
