@@ -30,6 +30,7 @@
   "dependencies": {
     "@teppeis/doctrine": "^3.2.0",
     "@types/cli-color": "^2.0.5",
+    "@types/estraverse": "5.1.6",
     "@types/estree": "1.0.5",
     "@types/estree-jsx": "^1.0.3",
     "cli-color": "^2.0.3",
@@ -42,7 +43,6 @@
   },
   "devDependencies": {
     "@types/chai": "^4.3.10",
-    "@types/estraverse": "5.1.6",
     "@types/lodash.difference": "^4.5.9",
     "@types/mocha": "^10.0.4",
     "@types/node": "^18.18.9",
