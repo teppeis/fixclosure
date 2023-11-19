@@ -1,5 +1,5 @@
 import { should } from "chai";
-import fs from "fs";
+import fs from "node:fs";
 import type { ParserOptions } from "../../src/parser";
 import { Parser } from "../../src/parser";
 

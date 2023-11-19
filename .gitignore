@@ -1,7 +1,5 @@
 node_modules
 /lib
-/coverage
 /fixclosure-*.tgz
 .vscode
-.nyc_output
 .tsbuildinfo

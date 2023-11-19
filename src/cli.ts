@@ -1,9 +1,9 @@
 import clc from "cli-color";
 import commander from "commander";
-import fs from "fs";
+import fs from "node:fs";
 import difference from "lodash.difference";
-import path from "path";
-import { promisify } from "util";
+import path from "node:path";
+import { promisify } from "node:util";
 import { parser as depsJsParser } from "google-closure-deps";
 import type { LogOutput } from "./clilogger";
 import Logger from "./clilogger";

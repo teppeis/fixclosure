@@ -1,6 +1,6 @@
-import assert from "assert";
-import { spawnSync } from "child_process";
-import fs from "fs";
+import assert from "node:assert";
+import { spawnSync } from "node:child_process";
+import fs from "node:fs";
 
 describe("bin/fixclosure", () => {
   it("should be able to execute fixclosure", () => {
