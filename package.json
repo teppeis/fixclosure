@@ -45,7 +45,7 @@
     "@types/chai": "^4.3.17",
     "@types/lodash.difference": "^4.5.9",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^18.19.44",
+    "@types/node": "^18.19.45",
     "@types/sinon": "^17.0.3",
     "chai": "^4.5.0",
     "eslint": "^8.57.0",
