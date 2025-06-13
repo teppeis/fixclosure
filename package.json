@@ -31,7 +31,7 @@
     "@teppeis/doctrine": "^3.2.0",
     "@types/cli-color": "^2.0.6",
     "@types/estraverse": "5.1.7",
-    "@types/estree": "1.0.7",
+    "@types/estree": "1.0.8",
     "@types/estree-jsx": "^1.0.5",
     "cli-color": "^2.0.4",
     "commander": "^11.1.0",
